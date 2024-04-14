@@ -16,7 +16,7 @@ app.use("/user/login", loginRoute);
 app.use("/user/register", registerRoute)
 
 app.get("/", (req, res) => {
-    res.send("Lego Štěpán API v1.0.0")
+    res.send("Lego Štěpán API v1")
 })
 
 app.listen(PORT, () => {

@@ -9,7 +9,7 @@ interface ISet {
     bought: boolean
     yearBought: Date
     price: number
-    imageUrl: string[]
+    imageThumbnailUrl: string
     instructionsUrl: string
     ownedBy: any
 }
@@ -44,8 +44,8 @@ const setSchema = new Schema<ISet>({
     price: {
         type: Number,
     },
-    imageUrl: {
-        type: [String],
+    imageThumbnailUrl: {
+        type: String,
         required: true
     },
     instructionsUrl: {
