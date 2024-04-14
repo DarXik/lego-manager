@@ -13,7 +13,7 @@ interface ISet {
     price: number
     imageThumbnailUrl: string
     instructionsUrl: string
-    ownedBy: string
+    ownedBy: any
     addedOn: Date
 }
 
@@ -65,7 +65,7 @@ const setSchema = new Schema<ISet>({
         required: true
     },
     ownedBy: {
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'users',
         required: true
     },

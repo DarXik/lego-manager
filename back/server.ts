@@ -5,6 +5,7 @@ import loginRoute from "./routes/user/login/User"
 import registerRoute from "./routes/user/register/User"
 import setsSearchRoute from "./routes/api/v1/search/Search"
 import setsAddRoute from "./routes/api/v1/add/Add"
+import userCheckRoute from "./routes/user/check/User"
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +19,7 @@ app.use("/user/login", loginRoute);
 app.use("/user/register", registerRoute);
 app.use("/api/v1/sets/search", setsSearchRoute);
 app.use("/api/v1/sets/add", setsAddRoute);
+app.use("/user/check", userCheckRoute)
 
 app.get("/", (req, res) => {
     res.send("Lego Štěpán API v1")

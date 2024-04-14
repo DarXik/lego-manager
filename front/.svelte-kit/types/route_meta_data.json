@@ -1,7 +1,8 @@
 {
 	"/(site)": [
-		"src/routes/(site)/+layout.server.js",
-		"src/routes/(site)/+layout.server.js"
+		"src/routes/(site)/+page.server.ts",
+		"src/routes/(site)/+layout.server.ts",
+		"src/routes/(site)/+layout.server.ts"
 	],
 	"/": [],
 	"/login": [

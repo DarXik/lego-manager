@@ -21,21 +21,23 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.send("user not found").status(404);
     }
     if (!(yield (user === null || user === void 0 ? void 0 : user.isValidPassword(req.body.password)))) {
+        console.log(yield (user === null || user === void 0 ? void 0 : user.isValidPassword(req.body.password)));
         return res.send("wrong password").status(401);
     }
-    const userSession = (0, userAuthentication_1.createToken)(user === null || user === void 0 ? void 0 : user.customId.toString());
+    const userSession = (0, userAuthentication_1.createToken)(user.customId.toString()).toString();
+    console.log(userSession);
     try {
-        user === null || user === void 0 ? void 0 : user.sessions.push(userSession);
+        yield User_1.User.updateOne({ customId: user.customId }, { sessions: [...user.sessions, userSession] });
+        res.send({
+            session: userSession,
+            username: user.username,
+            email: user.email,
+            sets: user.sets
+        }).status(200);
     }
     catch (err) {
         console.log(err);
         res.send("could not be authenticated").status(503);
     }
-    res.send({
-        session: userSession,
-        username: user === null || user === void 0 ? void 0 : user.username,
-        email: user === null || user === void 0 ? void 0 : user.email,
-        sets: user === null || user === void 0 ? void 0 : user.sets
-    }).status(200);
 });
 exports.default = { post };

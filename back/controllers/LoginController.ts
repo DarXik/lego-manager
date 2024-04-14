@@ -16,25 +16,28 @@ const post = async (req: Request, res: Response) => {
     }
 
     if (!await user?.isValidPassword(req.body.password)) {
+        console.log(await user?.isValidPassword(req.body.password))
         return res.send("wrong password").status(401)
     }
 
-    const userSession = createToken(user?.customId.toString())
+    const userSession: string = createToken(user.customId.toString()).toString()
+    console.log(userSession)
 
     try {
-        user?.sessions.push(userSession)
+        await User.updateOne({customId: user.customId}, {sessions: [...user.sessions, userSession]})
+
+        res.send({
+            session: userSession,
+            username: user.username,
+            email: user.email,
+            sets: user.sets
+
+        }).status(200)
+
     } catch (err) {
         console.log(err)
         res.send("could not be authenticated").status(503)
     }
-
-    res.send({
-        session: userSession,
-        username: user?.username,
-        email: user?.email,
-        sets: user?.sets
-
-    }).status(200)
 }
 
 export default {post}

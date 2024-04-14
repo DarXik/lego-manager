@@ -1,9 +1,6 @@
-import {redirect} from "@sveltejs/kit";
-
 export const actions = {
-    default: async ({request}) => {
+    default: async ({request, cookies}) => {
         const data = await request.formData();
-        console.log(data);
 
         const email = data.get("email");
         const password = data.get("password");
@@ -30,9 +27,24 @@ export const actions = {
             })
 
             if (response.ok) {
-                return redirect(302, "/");
-            }
-            else {
+                let res1 = await response.json()
+
+                cookies.set("session", res1.session, {
+                    path: "/",
+                    httpOnly: true,
+                    sameSite: "strict",
+                    secure: true,
+                    maxAge: 60 * 60 * 24 * 60
+                })
+
+                return {
+                    success: true,
+                    username: res1.username,
+                    email: res1.email,
+                    sets: res1.sets,
+                }
+
+            } else {
                 return {
                     problem: await response.text()
                 }

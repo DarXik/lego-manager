@@ -1,5 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { User } from "../models/User";
+
 dotenv.config()
 
 const secretKey = process.env.JWT_SECRET || "";
@@ -10,9 +12,22 @@ const createToken = (user: string) => {
     })
 }
 
-const verifyToken = (token: string) => {
-    console.log(jwt.verify(token, secretKey));
-    return jwt.verify(token, secretKey)
+const verifyUser = async (token: string) => {
+    try {
+        const decoded: any = jwt.verify(token, secretKey)
+        const foundUser = await User.findOne({ sessions: token })
+
+        console.log("decoded: ", decoded.user);
+        console.log("foundUser: ", foundUser);
+
+        return {
+            user: foundUser,
+            token: decoded.user
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
 }
 
-export { createToken, verifyToken }
+export { createToken, verifyUser }

@@ -1,8 +1,9 @@
 <script lang="ts">
     import "../../app.css";
-    import { enhance } from "$app/forms";
-    import { fade } from "svelte/transition";
-    import { onMount } from "svelte";
+    import {enhance} from "$app/forms";
+    import {fade} from "svelte/transition";
+    import {onMount} from "svelte";
+    import {goto} from "$app/navigation";
 
     export let form: any;
     export let data: any;
@@ -15,9 +16,15 @@
         password = document.getElementById("password");
     });
 
-    function submit() {}
-    $:  if (password.length === 0 ) {
+    function submit() {
+    }
+
+    $:  if (password.length === 0) {
         passwordMatch = false;
+    }
+
+    $:if (form?.success) {
+        goto("/")
     }
 </script>
 

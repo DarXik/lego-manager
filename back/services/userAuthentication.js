@@ -22,13 +22,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyToken = exports.createToken = void 0;
+exports.verifyUser = exports.createToken = void 0;
 const jwt = __importStar(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const User_1 = require("../models/User");
 dotenv_1.default.config();
 const secretKey = process.env.JWT_SECRET || "";
 const createToken = (user) => {
@@ -37,8 +47,19 @@ const createToken = (user) => {
     });
 };
 exports.createToken = createToken;
-const verifyToken = (token) => {
-    console.log(jwt.verify(token, secretKey));
-    return jwt.verify(token, secretKey);
-};
-exports.verifyToken = verifyToken;
+const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const decoded = jwt.verify(token, secretKey);
+        const foundUser = yield User_1.User.findOne({ sessions: token });
+        console.log("decoded: ", decoded.user);
+        console.log("foundUser: ", foundUser);
+        return {
+            user: foundUser,
+            token: decoded.user
+        };
+    }
+    catch (err) {
+        console.log(err);
+    }
+});
+exports.verifyUser = verifyUser;

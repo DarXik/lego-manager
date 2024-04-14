@@ -24,8 +24,12 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         password: req.body.password
     });
     try {
-        yield newUser.save();
-        res.send("user registered").status(201);
+        if (yield newUser.save()) {
+            res.send("user registered").status(201);
+        }
+        else {
+            res.send("user could not be registered").status(503);
+        }
     }
     catch (err) {
         res.send("user could not be registered").status(503);

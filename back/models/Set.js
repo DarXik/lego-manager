@@ -1,7 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Set = void 0;
 const mongoose_1 = require("mongoose");
 const setSchema = new mongoose_1.Schema({
+    setNumber: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     name: {
         type: String,
         required: true,
@@ -10,29 +16,33 @@ const setSchema = new mongoose_1.Schema({
     description: {
         type: String,
     },
-    theme: {
+    partsAmount: {
+        type: Number,
+        required: true
+    },
+    themeId: {
+        type: Number,
+        required: true
+    },
+    themeName: {
         type: String,
         required: true
     },
-    released: {
-        type: Boolean,
-        default: true
-    },
     yearReleased: {
-        type: Date,
+        type: Number,
     },
     bought: {
         type: Boolean,
         default: true
     },
     yearBought: {
-        type: Date,
+        type: Number,
     },
     price: {
         type: Number,
     },
-    imageUrl: {
-        type: [String],
+    imageThumbnailUrl: {
+        type: String,
         required: true
     },
     instructionsUrl: {
@@ -43,6 +53,10 @@ const setSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'users',
         required: true
+    },
+    addedOn: {
+        type: Date,
+        default: Date.now
     }
 });
-const Set = (0, mongoose_1.model)('sets', setSchema);
+exports.Set = (0, mongoose_1.model)('sets', setSchema);

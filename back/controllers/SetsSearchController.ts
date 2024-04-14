@@ -1,7 +1,22 @@
-import {Request, Response} from "express"
+import { Request, Response } from "express"
+import { verifyUser } from "../services/userAuthentication";
 
-const post = async (req: Request, res: Response) => {
-    const set = req.body.setNumber
+const get = async (req: Request, res: Response) => {
+    console.log(req.headers.authorization);
+
+
+    if (!req.query.q || !req.headers.authorization) {
+        return res.send("something is missing").status(404)
+    }
+
+    const verifiedUser: any = verifyUser(req.headers.authorization)
+    console.log("verifiedUser: ", await verifiedUser)
+
+    if (!verifiedUser.user || verifiedUser.token !== verifiedUser.user.customId || !verifiedUser) {
+        return res.send("user not found").status(404)
+    }
+
+    const set = await req.query.q
     console.log(set)
 
     try {
@@ -14,6 +29,7 @@ const post = async (req: Request, res: Response) => {
             method: 'GET',
             headers: headers
         })
+
         const resSetJSON: any = await responseRebrickableSet.json()
 
         if (resSetJSON.count > 0) {
@@ -34,4 +50,4 @@ const post = async (req: Request, res: Response) => {
 
 }
 
-export default {post}
+export default { get }
