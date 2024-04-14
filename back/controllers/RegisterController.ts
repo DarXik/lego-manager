@@ -19,8 +19,12 @@ const post = async (req: Request, res: Response) => {
     })
 
     try {
-        await newUser.save()
-        res.send("user registered").status(201)
+        if(await newUser.save()){
+            res.send("user registered").status(201)
+        }
+        else{
+            res.send("user could not be registered").status(503)
+        }
     }
     catch (err) {
         res.send("user could not be registered").status(503)
