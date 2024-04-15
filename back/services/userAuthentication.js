@@ -50,9 +50,14 @@ exports.createToken = createToken;
 const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const decoded = jwt.verify(token, secretKey);
-        const foundUser = yield User_1.User.findOne({ sessions: token });
-        console.log("decoded: ", decoded.user);
-        console.log("foundUser: ", foundUser);
+        const foundUser = yield User_1.User.findOne({ customId: decoded.user, sessions: { $in: [token] } });
+        console.log("auth: ", foundUser);
+        if (!foundUser) {
+            return {
+                user: null,
+                token: null
+            };
+        }
         return {
             user: foundUser,
             token: decoded.user
@@ -60,6 +65,10 @@ const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.log(err);
+        return {
+            user: null,
+            token: null
+        };
     }
 });
 exports.verifyUser = verifyUser;

@@ -5,6 +5,10 @@
 		"src/routes/(site)/+layout.server.ts"
 	],
 	"/": [],
+	"/(site)/add-set": [
+		"src/routes/(site)/add-set/+page.server.ts",
+		"src/routes/(site)/+layout.server.ts"
+	],
 	"/login": [
 		"src/routes/login/+page.server.js"
 	],

@@ -48,7 +48,6 @@ const setSchema = new Schema<ISet>({
     },
     bought: {
         type: Boolean,
-        default: true
     },
     yearBought: {
         type: Number,
@@ -58,11 +57,9 @@ const setSchema = new Schema<ISet>({
     },
     imageThumbnailUrl: {
         type: String,
-        required: true
     },
     instructionsUrl: {
         type: String,
-        required: true
     },
     ownedBy: {
         type: Schema.Types.ObjectId,

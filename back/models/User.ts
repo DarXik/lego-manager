@@ -39,12 +39,10 @@ const userSchema = new Schema<IUser, UserModel, UserMethods>({
     },
     sets: {
         type: [Schema.Types.ObjectId],
-        default: [],
         ref: 'sets'
     },
     sessions: {
         type: [String],
-        default: []
     }
 })
 

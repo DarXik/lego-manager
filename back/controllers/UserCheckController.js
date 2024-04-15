@@ -10,17 +10,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userAuthentication_1 = require("../services/userAuthentication");
-const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.body || !req.headers.authorization) {
-        return res.send(false).status(404);
+const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.headers.authorization) {
+        return res.send(false).status(400);
     }
-    const verifiedUser = (0, userAuthentication_1.verifyUser)(req.headers.authorization);
-    console.log("user check: ", verifiedUser);
-    if (!verifiedUser.user || verifiedUser.token !== verifiedUser.user.customId || !verifiedUser) {
-        return res.send(false).status(404);
-    }
-    else {
+    const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization);
+    if (verifiedUser.user && verifiedUser.token) {
         return res.send(true).status(200);
     }
+    else {
+        return res.send(false).status(404);
+    }
 });
-exports.default = { post };
+exports.default = { get };

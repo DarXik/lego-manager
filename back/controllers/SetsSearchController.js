@@ -13,13 +13,13 @@ const userAuthentication_1 = require("../services/userAuthentication");
 const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.headers.authorization);
     if (!req.query.q || !req.headers.authorization) {
-        return res.send("something is missing").status(404);
+        return res.send("something is missing").status(400);
     }
     const verifiedUser = (0, userAuthentication_1.verifyUser)(req.headers.authorization);
     console.log("verifiedUser: ", yield verifiedUser);
-    // if (!verifiedUser.user || verifiedUser.token !== verifiedUser.user.customId || !verifiedUser) {
-    //     return res.send("user not found").status(404)
-    // }
+    if (!verifiedUser.user || verifiedUser.token !== verifiedUser.user.customId || !verifiedUser) {
+        return res.send("user not found").status(404);
+    }
     const set = yield req.query.q;
     console.log(set);
     try {

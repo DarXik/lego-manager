@@ -1,22 +1,21 @@
-import {Request, Response} from "express"
-import {Set} from "../models/Set"
-import {verifyUser} from "../services/userAuthentication";
-import {User} from "../models/User";
+import { Request, Response } from "express"
+import { Set } from "../models/Set"
+import { verifyUser } from "../services/userAuthentication";
+import { User } from "../models/User";
 
-const post = async (req: Request, res: Response) => {
+const post = async (req: Request, res: Response) => {    
     if (!req.body || !req.headers.authorization) {
-        return res.send("something is missing").status(404)
+        return res.send("something is missing").status(400)
     }
 
-    const verifiedUser: any = verifyUser(req.headers.authorization)
-    console.log(verifiedUser)
+    const verifiedUser: any = verifyUser(req.headers.authorization.toString())
 
-    if (!verifiedUser.user || verifiedUser.token !== verifiedUser.user.customId || !verifiedUser) {
+    if (!verifiedUser.user || !verifiedUser.token) {
         return res.send("user not found").status(404)
     }
 
     const set = await req.body.json()
-    console.log(set)
+    console.log("adding set: ", set)
 
     try {
         let resThemeName: string = "unknown" // dodělat od usera
@@ -41,36 +40,30 @@ const post = async (req: Request, res: Response) => {
             console.log(e)
         }
 
-        // res.send({
-        //     setNumber: responseSet.set_num,
-        //     name: resSetJSON.results[0].name,
-        //     yearReleased: resSetJSON.results[0].year,
-        //     partsAmount: resSetJSON.results[0].num_parts,
-        //     themeId: resSetJSON.results[0].theme_id,
-        //     themeName: resThemeName,
-        // }).status(200)
-
-
         const newSet = new Set({
             setNumber: set.number,
             name: set.name,
-            description: set.description,
+            description: set?.description,
             partsAmount: set.partsAmount,
             themeId: set.themeId,
             themeName: resThemeName,
-            yearReleased: set.year,
-            bought: set.bought,
-            yearBought: set.yearBought,
-            price: set.price,
-            imageThumbnailUrl: set.imageThumbnailUrl,
-            instructionsUrl: set.instructionsUrl,
+            yearReleased: set?.year,
+            bought: set?.bought,
+            yearBought: set?.yearBought,
+            price: set?.price,
+            imageThumbnailUrl: set?.imageThumbnailUrl,
+            instructionsUrl: set?.instructionsUrl,
             ownedBy: verifiedUser.user
         })
 
         try {
             if (await newSet.save()) {
-                res.send("set added").status(201)
-                await User.updateOne({customId: verifiedUser.user.customId}, {$push: {sets: newSet}})
+                if (await User.updateOne({ customId: verifiedUser.user.customId }, { $push: { sets: newSet } })) {
+                    res.send("set added").status(201)
+                }
+                else {
+                    res.send("set could not be added").status(503)
+                }
 
             } else {
                 res.send("set could not be added").status(503)
@@ -85,4 +78,4 @@ const post = async (req: Request, res: Response) => {
     }
 }
 
-export default {post}
+export default { post }

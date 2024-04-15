@@ -4,9 +4,8 @@ import { verifyUser } from "../services/userAuthentication";
 const get = async (req: Request, res: Response) => {
     console.log(req.headers.authorization);
 
-
     if (!req.query.q || !req.headers.authorization) {
-        return res.send("something is missing").status(404)
+        return res.send("something is missing").status(400)
     }
 
     const verifiedUser: any = verifyUser(req.headers.authorization)

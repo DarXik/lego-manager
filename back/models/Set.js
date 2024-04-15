@@ -33,7 +33,6 @@ const setSchema = new mongoose_1.Schema({
     },
     bought: {
         type: Boolean,
-        default: true
     },
     yearBought: {
         type: Number,
@@ -43,11 +42,9 @@ const setSchema = new mongoose_1.Schema({
     },
     imageThumbnailUrl: {
         type: String,
-        required: true
     },
     instructionsUrl: {
         type: String,
-        required: true
     },
     ownedBy: {
         type: mongoose_1.Schema.Types.ObjectId,

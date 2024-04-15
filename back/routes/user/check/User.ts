@@ -3,6 +3,6 @@ import controller from "../../../controllers/UserCheckController"
 
 const router = express.Router()
 
-router.post("/", controller.post)
+router.get("/", controller.get)
 
 export default router

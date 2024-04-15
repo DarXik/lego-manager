@@ -35,12 +35,10 @@ const userSchema = new mongoose_1.Schema({
     },
     sets: {
         type: [mongoose_1.Schema.Types.ObjectId],
-        default: [],
         ref: 'sets'
     },
     sessions: {
         type: [String],
-        default: []
     }
 });
 userSchema.pre("save", function (next) {

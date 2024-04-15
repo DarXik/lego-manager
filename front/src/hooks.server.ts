@@ -5,7 +5,6 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.session = event.cookies.get('session')?.toString() || ""
     console.log(event.locals.session);
 
-
     try {
         const user = await fetch("http://localhost:3000/user/check", {
             method: "GET",
@@ -14,7 +13,9 @@ export const handle: Handle = async ({ event, resolve }) => {
             }
         })
         
+        console.log("check: ", await user.status);
         
+
         if (await user.ok) {
             event.locals.user = true
 
