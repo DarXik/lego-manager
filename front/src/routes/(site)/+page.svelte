@@ -1,23 +1,16 @@
 <script>
-    import { enhance } from "$app/forms";
-    import { page } from "$app/stores";
+    
 
     let searchQuery;
     export let form;
     export let data;
 </script>
 
-<div>
-    <form method="POST" action="?/searchLegoSet" use:enhance>
-        <label for="searchQuery">Hledaný výraz: </label>
-        <input
-            type="text"
-            name="searchQuery"
-            id="searchQuery"
-            class="bg-blue-300"
-        />
-        <button type="submit">Hledat</button>
-    </form>
+<section class="text-white px-20">
+    <h1 class="font-bold text-3xl mb-2 mt-8">Vítej zpět, Štěpáne</h1>
+    <div class="h-[35em] mb-10">
+        <p>Zde jsou tvé stavebnice</p>
+    </div>
 
     {#if form}
         {#if form?.success}
@@ -29,4 +22,4 @@
             <p>{form?.message}</p>
         {/if}
     {/if}
-</div>
+</section>

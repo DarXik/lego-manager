@@ -4,6 +4,6 @@
 
 @layer{
     body{
-        @apply bg-zinc-700;
+        @apply bg-gradient-to-tr from-red-900 from-10%  to-black to-90% bg-no-repeat bg-cover h-full;
     }
 }
