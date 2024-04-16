@@ -20,11 +20,11 @@ const post = async (req: Request, res: Response) => {
         return res.send("wrong password").status(401)
     }
 
-    const userSession: string = createToken(user.customId.toString()).toString()
+    const userSession: string = createToken(user._id.toString()).toString()
     console.log(userSession)
 
     try {
-        await User.updateOne({customId: user.customId}, {sessions: [...user.sessions, userSession]})
+        await User.updateOne({_id: user._id}, {sessions: [...user.sessions, userSession]})
 
         res.send({
             session: userSession,

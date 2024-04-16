@@ -6,13 +6,18 @@ import registerRoute from "./routes/user/register/User"
 import setsSearchRoute from "./routes/api/v1/search/Search"
 import setsAddRoute from "./routes/api/v1/add/Add"
 import userCheckRoute from "./routes/user/check/User"
+// import multer from "multer"
 
 const app = express();
+// const upload = multer();
 const PORT = 3000;
 
 connectDB();
 
 app.use(express.json())
+app.use(express.urlencoded({extended: true})); 
+// app.use(upload.none());
+
 
 app.use("/api/v1/sets", setsRoute);
 app.use("/user/login", loginRoute);

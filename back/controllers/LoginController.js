@@ -24,10 +24,10 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(yield (user === null || user === void 0 ? void 0 : user.isValidPassword(req.body.password)));
         return res.send("wrong password").status(401);
     }
-    const userSession = (0, userAuthentication_1.createToken)(user.customId.toString()).toString();
+    const userSession = (0, userAuthentication_1.createToken)(user._id.toString()).toString();
     console.log(userSession);
     try {
-        yield User_1.User.updateOne({ customId: user.customId }, { sessions: [...user.sessions, userSession] });
+        yield User_1.User.updateOne({ _id: user._id }, { sessions: [...user.sessions, userSession] });
         res.send({
             session: userSession,
             username: user.username,

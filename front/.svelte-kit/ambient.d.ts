@@ -43,8 +43,10 @@ declare module '$env/static/private' {
 	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
 	export const EDITOR: string;
-	export const EFC_6184: string;
+	export const EFC_6448: string;
 	export const EnableLog: string;
+	export const FPS_BROWSER_APP_PROFILE_STRING: string;
+	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
@@ -127,7 +129,9 @@ declare module '$env/static/private' {
  * ```
  */
 declare module '$env/static/public' {
-	
+	export const PUBLIC_VITE_CLOUDINARY_CLOUD_NAME: string;
+	export const PUBLIC_VITE_CLOUDINARY_API_KEY: string;
+	export const PUBLIC_VITE_CLOUDINARY_API_SECRET: string;
 }
 
 /**
@@ -163,8 +167,10 @@ declare module '$env/dynamic/private' {
 		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
 		EDITOR: string;
-		EFC_6184: string;
+		EFC_6448: string;
 		EnableLog: string;
+		FPS_BROWSER_APP_PROFILE_STRING: string;
+		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
 		HOME: string;
 		HOMEDRIVE: string;
@@ -254,6 +260,9 @@ declare module '$env/dynamic/private' {
  */
 declare module '$env/dynamic/public' {
 	export const env: {
+		PUBLIC_VITE_CLOUDINARY_CLOUD_NAME: string;
+		PUBLIC_VITE_CLOUDINARY_API_KEY: string;
+		PUBLIC_VITE_CLOUDINARY_API_SECRET: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

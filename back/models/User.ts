@@ -1,9 +1,9 @@
 import {model, Model, Schema} from 'mongoose'
 import {compare, hash} from 'bcrypt'
-import {v4 as uuidv4} from 'uuid'
+import uniqid from 'uniqid'
 
 interface IUser {
-    customId: string
+    // customId: string
     username: string
     email: string
     password: string
@@ -18,12 +18,12 @@ interface UserMethods {
 type UserModel = Model<IUser, {}, UserMethods>
 
 const userSchema = new Schema<IUser, UserModel, UserMethods>({
-    customId:{
-        type: String,
-        unique: true,
-        required: true,
-        default: () => uuidv4()
-    },
+    // customId:{
+    //     type: String,
+    //     unique: true,
+    //     required: true,
+    //     default: () => uniqid("lego-")
+    // },
     username: {
         type: String,
         unique: true,

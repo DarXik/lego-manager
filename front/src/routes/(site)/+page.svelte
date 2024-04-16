@@ -20,9 +20,13 @@
     </form>
 
     {#if form}
-        {#each form.sets as set}
-            <p>{set.name}</p>
-            <p>{set.setNumber}</p>
-        {/each}
+        {#if form?.success}
+            {#each form.sets as set}
+                <p>{set.name}</p>
+                <p>{set.setNumber}</p>
+            {/each}
+        {:else}
+            <p>{form?.message}</p>
+        {/if}
     {/if}
 </div>

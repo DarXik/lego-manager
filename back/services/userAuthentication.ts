@@ -15,21 +15,23 @@ const createToken = (user: string) => {
 const verifyUser = async (token: string) => {
     try {
         const decoded: any = jwt.verify(token, secretKey)
-        const foundUser = await User.findOne({ customId: decoded.user, sessions: { $in: [token] } })
+        const foundUser = await User.findOne({ _id: decoded.user, sessions: { $in: [token] } })
 
-        console.log("auth: ", foundUser);
+        console.log("auth: ", foundUser?.username);
+        console.log("decoded: ", decoded);
+        
 
-        if (!foundUser) {
+        if (foundUser) {
             return {
-                user: null,
-                token: null
+                user: foundUser,
+                token: decoded.user
             }
         }
-        return {
-            user: foundUser,
-            token: decoded.user
-        }
 
+        return {
+            user: null,
+            token: null
+        }
     } catch (err) {
         console.log(err)
         return {

@@ -11,14 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const userAuthentication_1 = require("../services/userAuthentication");
 const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.headers.authorization);
     if (!req.query.q || !req.headers.authorization) {
         return res.send("something is missing").status(400);
     }
-    const verifiedUser = (0, userAuthentication_1.verifyUser)(req.headers.authorization);
-    console.log("verifiedUser: ", yield verifiedUser);
-    if (!verifiedUser.user || verifiedUser.token !== verifiedUser.user.customId || !verifiedUser) {
-        return res.send("user not found").status(404);
+    const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization.toString());
+    console.log(verifiedUser);
+    if (!verifiedUser.user || !verifiedUser.token) {
+        return res.send({ message: "user not found" }).status(404);
     }
     const set = yield req.query.q;
     console.log(set);
@@ -40,12 +39,12 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }))).status(200);
         }
         else {
-            res.send("set not found").status(404);
+            res.send({ message: "set not found" }).status(404);
         }
     }
     catch (error) {
         console.log(error);
-        res.send("couldn't fetch from db").status(500);
+        res.send({ message: "couldn't fetch from db" }).status(500);
     }
 });
 exports.default = { get };

@@ -16,8 +16,17 @@ export const actions = {
 			})
 		});
 
-		return {
-			sets: await response.json()
+		if (response.ok) {
+			return {
+				success: true,
+				sets: await response.json()
+			}
+		}
+		else {
+			return {
+				success: false,
+				message: (await response.json()).message
+			}
 		}
 
 	}

@@ -11,10 +11,14 @@ const User_2 = __importDefault(require("./routes/user/register/User"));
 const Search_1 = __importDefault(require("./routes/api/v1/search/Search"));
 const Add_1 = __importDefault(require("./routes/api/v1/add/Add"));
 const User_3 = __importDefault(require("./routes/user/check/User"));
+// import multer from "multer"
 const app = (0, express_1.default)();
+// const upload = multer();
 const PORT = 3000;
 (0, db_1.default)();
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
+// app.use(upload.none());
 app.use("/api/v1/sets", Sets_1.default);
 app.use("/user/login", User_1.default);
 app.use("/user/register", User_2.default);
