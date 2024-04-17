@@ -30,7 +30,6 @@ const post = async (req: Request, res: Response) => {
             session: userSession,
             username: user.username,
             email: user.email,
-            sets: user.sets
 
         }).status(200)
 

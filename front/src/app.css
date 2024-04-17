@@ -4,6 +4,6 @@
 
 @layer{
     body{
-        @apply bg-gradient-to-tr from-red-900 from-10%  to-black to-90% bg-no-repeat bg-cover h-full;
+        @apply bg-gradient-to-b  from-red-950 from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
     }
 }

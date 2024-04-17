@@ -2,15 +2,15 @@
     import { enhance } from "$app/forms";
 </script>
 
-<nav class="bg-black ">
+<nav class="bg-black">
     <div class="flex justify-between items-center px-20 py-3">
         <div>
             <img src="../../LEGO_logo.svg" alt="lego" class="w-12" />
         </div>
         <div>
-            <p>maybe some button</p>
+            <p class="text-white">maybe some button</p>
         </div>
-        <div class="w-1-[40%] flex flex-row justify-end">
+        <div class="w-1/4  flex flex-row justify-end">
             <form
                 class="w-full"
                 method="POST"
@@ -20,8 +20,9 @@
                 <label
                     for="searchQuery"
                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-                    >Hledaný výraz:</label
                 >
+                    Hledaný výraz:
+                </label>
                 <div class="relative flex">
                     <div
                         class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
@@ -46,15 +47,18 @@
                         type="text"
                         name="searchQuery"
                         id="searchQuery"
-                        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-s-lg  bg-gray-50 focus:ring-none focus:border-gray-100 focus:outline-none  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-none dark:focus:border-gray-100 dark:outline-none transition-all"
+                        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-none focus:border-gray-100 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-none dark:focus:border-gray-100 dark:outline-none transition-all"
                         placeholder="Atreides Royal..."
                         required
                     />
+                    <!-- rounded-s-lg -->
+                    <!-- rounded-e-lg -->
                     <button
                         type="submit"
-                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium rounded-e-lg  text-sm px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 "
-                        >Hledat</button
+                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium  text-sm px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
                     >
+                        Hledat
+                    </button>
                 </div>
             </form>
         </div>

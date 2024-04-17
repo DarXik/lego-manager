@@ -1,9 +1,9 @@
 <script lang="ts">
     import "../../app.css";
-    import {enhance} from "$app/forms";
-    import {fade} from "svelte/transition";
-    import {onMount} from "svelte";
-    import {goto} from "$app/navigation";
+    import { enhance } from "$app/forms";
+    import { fade } from "svelte/transition";
+    import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
 
     export let form: any;
     export let data: any;
@@ -16,25 +16,26 @@
         password = document.getElementById("password");
     });
 
-    function submit() {
-    }
+    function submit() {}
 
-    $:  if (password.length === 0) {
+    $: if (password.length === 0) {
         passwordMatch = false;
     }
 
-    $:if (form?.success) {
-        goto("/")
+    $: if (form?.success) {
+        localStorage.setItem("username", form?.username);
+        localStorage.setItem("email", form?.email);
+        goto("/");
     }
 </script>
 
 <div
-        class="flex items-center justify-center min-h-screen"
-        in:fade={{ delay: 50, duration: 300 }}
+    class="flex items-center justify-center min-h-screen text-white"
+    in:fade={{ delay: 50, duration: 300 }}
 >
     <div
-            class:border-red-500={form?.problem}
-            class="w-full max-w-md p-8 space-y-4 bg-white border border-transparent rounded-2xl shadow-lg"
+        class:border-red-500={form?.problem}
+        class="w-full max-w-md p-8 space-y-4 bg-gray-950 border border-transparent shadow-lg"
     >
         <h1 class="text-2xl font-semibold text-center">Sign In</h1>
         {#if form?.problem}
@@ -43,47 +44,47 @@
             </p>
         {/if}
         <form method="POST" class="space-y-4" use:enhance>
-            <div class="flex flex-col space-y-1">
+            <div class="flex flex-col space-y-1 b-4">
                 <label for="email" class="text-sm font-medium"
-                >Email or Username</label
+                    >Email or Username</label
                 >
                 <input
-                        type="text"
-                        id="email"
-                        name="email"
-                        value={form?.email ?? ""}
-                        required
-                        autocomplete="off"
-                        class="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-600"
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={form?.email ?? ""}
+                    required
+                    autocomplete="off"
+                    class="px-3 py-2 bg-zinc-900 focus:border-none border-none ring-0 focus:ring-0 outline-none focus:outline-white focus:outline-2 transition-all"
                 />
             </div>
             <div class="flex flex-col space-y-1">
                 <label for="password" class="text-sm font-medium"
-                >Password</label
+                    >Password</label
                 >
                 <div class="w-full h-fit relative">
                     <input
-                            type={showPassword ? "text" : "password"}
-                            id="password"
-                            name="password"
-                            required
-                            autocomplete="off"
-                            class="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-600 relative z-10 w-full"
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="off"
+                        class="w-full px-3 py-2 bg-zinc-900 focus:border-none border-none ring-0 focus:ring-0 outline-none focus:outline-white focus:outline-2 transition-all"
                     />
                     <input
-                            type="checkbox"
-                            id="passwordCheckbox"
-                            bind:checked={showPassword}
-                            src="../../../signin/slashed-eye.svg"
-                            alt="eye"
-                            class="w-6 absolute top-1/2 -translate-y-1/2 right-0 -translate-x-2 z-20 cursor-pointer active:scale-90 transition-all"
+                        type="checkbox"
+                        id="passwordCheckbox"
+                        bind:checked={showPassword}
+                        src="../../../signin/slashed-eye.svg"
+                        alt="eye"
+                        class="w-6 absolute top-1/2 -translate-y-1/2 right-0 -translate-x-2 z-20 cursor-pointer active:scale-90 transition-all"
                     />
                 </div>
             </div>
             <button
-                    type="submit"
-                    disabled={passwordMatch}
-                    class="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed"
+                type="submit"
+                disabled={passwordMatch}
+                class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed mb-6"
             >
                 Sign In
             </button>
@@ -91,8 +92,9 @@
         <p class="text-sm text-center">
             Don't have an account? <a
                 href="/register"
-                class="text-blue-600 hover:underline select-none">Register here</a
-        >
+                class="text-blue-600 hover:underline select-none"
+                >Register here</a
+            >
         </p>
     </div>
 </div>

@@ -41,7 +41,6 @@ export const actions = {
                     success: true,
                     username: res1.username,
                     email: res1.email,
-                    sets: res1.sets,
                 }
 
             } else {
