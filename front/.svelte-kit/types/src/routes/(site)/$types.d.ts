@@ -24,7 +24,7 @@ type ExcludeActionFailure<T> = T extends Kit.ActionFailure<any> ? never : T exte
 type ActionsSuccess<T extends Record<string, (...args: any) => any>> = { [Key in keyof T]: ExcludeActionFailure<Awaited<ReturnType<T[Key]>>>; }[keyof T];
 type ExtractActionFailure<T> = T extends Kit.ActionFailure<infer X>	? X extends void ? never : X : never;
 type ActionsFailure<T extends Record<string, (...args: any) => any>> = { [Key in keyof T]: Exclude<ExtractActionFailure<Awaited<ReturnType<T[Key]>>>, void>; }[keyof T];
-type ActionsExport = typeof import('../../../../../src/routes/(site)/+page.server.js').actions
+type ActionsExport = typeof import('../../../../../node_modules/@sveltejs/kit/src/routes/(site)/+page.server.js').actions
 export type SubmitFunction = Kit.SubmitFunction<Expand<ActionsSuccess<ActionsExport>>, Expand<ActionsFailure<ActionsExport>>>
 export type ActionData = Expand<Kit.AwaitedActions<ActionsExport>> | null;
 export type PageServerData = null;
@@ -33,6 +33,6 @@ export type Action<OutputData extends Record<string, any> | void = Record<string
 export type Actions<OutputData extends Record<string, any> | void = Record<string, any> | void> = Kit.Actions<RouteParams, OutputData, RouteId>
 export type LayoutServerLoad<OutputData extends OutputDataShape<LayoutServerParentData> = OutputDataShape<LayoutServerParentData>> = Kit.ServerLoad<LayoutParams, LayoutServerParentData, OutputData, LayoutRouteId>;
 export type LayoutServerLoadEvent = Parameters<LayoutServerLoad>[0];
-export type LayoutServerData = Expand<OptionalUnion<EnsureDefined<Kit.LoadProperties<Awaited<ReturnType<typeof import('../../../../../src/routes/(site)/+layout.server.js').load>>>>>>;
+export type LayoutServerData = Expand<OptionalUnion<EnsureDefined<Kit.LoadProperties<Awaited<ReturnType<typeof import('../../../../../node_modules/@sveltejs/kit/src/routes/(site)/+layout.server.js').load>>>>>>;
 export type LayoutData = Expand<Omit<LayoutParentData, keyof LayoutServerData> & EnsureDefined<LayoutServerData>>;
 export type RequestEvent = Kit.RequestEvent<RouteParams, RouteId>;
