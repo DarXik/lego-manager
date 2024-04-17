@@ -1,21 +1,21 @@
 <script>
     import { onMount } from "svelte";
+    import { userInfo } from "$lib/store";
 
     export let form;
     export let data;
 
     let searchQuery;
-    let username = "" || localStorage.getItem("username");
-    console.log(data);
+    let username = $userInfo.username;
 </script>
 
-<section class="text-white px-20">
-    <h1 class="font-bold text-3xl mb-2 mt-8">Welcome back, {username}</h1>
+<section class="px-20">
+    <h1 class="font-bold text-3xl mt-8 mb-20">Welcome back, {username}</h1>
 
-    <article class="flex flex-row gap-10 flex-wrap mt-16">
+    <article class="flex flex-wrap gap-6 grow">
         {#each data.sets as set}
             <div
-                class="flex flex-col w-96 hover:scale-110 transition-all hover:cursor-pointer"
+                class="flex flex-col w-[20em] hover:scale-105 transition-all hover:cursor-pointer"
             >
                 <div class="">
                     <img
@@ -24,10 +24,10 @@
                         class="bg-white w-fit"
                     />
                 </div>
-                <div class="bg-gray-950 p-6 px-8">
+                <div class="bg-no-repeat bg-cover bg-gradient-to-tl from-gray-950  to-gray-900 p-6 px-8  select-none">
                     <div>
-                        <h3 class="text-2xl font-bold mb-14">
-                            <span class="text-sm text-gray-500 font-normal"
+                        <h3 class="text-2xl font-bold mb-14 truncate">
+                            <span class="text-sm text-gray-500 font-normal "
                                 >name
                             </span> <br />{set.name}
                         </h3>
@@ -41,11 +41,13 @@
                             &bull;
                             <span class="text-sm text-gray-500"
                                 >theme
-                            </span>{set.themeName} &bull;
+                            </span>{set.themeName}
+                        </p>
+                        <!-- <p>
                             <span class="text-sm text-gray-500"
                                 >owned
                             </span>{set.bought ? "Yes" : "No"}
-                        </p>
+                        </p> -->
                         <p>
                             <span class="text-sm text-gray-500"
                                 >added on

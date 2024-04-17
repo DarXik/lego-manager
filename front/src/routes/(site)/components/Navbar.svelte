@@ -5,12 +5,12 @@
 <nav class="bg-black">
     <div class="flex justify-between items-center px-20 py-3">
         <div>
-            <img src="../../LEGO_logo.svg" alt="lego" class="w-12" />
+            <button><a href="/"><img src="../../LEGO_logo.svg" alt="lego" class="w-12 cursor-pointer" /></a></button>
         </div>
         <div>
-            <p class="text-white">maybe some button</p>
+            <button><a href="/add-set">Add set</a></button>
         </div>
-        <div class="w-1/4  flex flex-row justify-end">
+        <div class="w-1/2 lg:w-1/4 flex flex-row justify-end">
             <form
                 class="w-full"
                 method="POST"
@@ -47,7 +47,7 @@
                         type="text"
                         name="searchQuery"
                         id="searchQuery"
-                        class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300  bg-gray-50 focus:ring-none focus:border-gray-100 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-none dark:focus:border-gray-100 dark:outline-none transition-all"
+                        class="block w-full p-2 ps-10 placeholder:text-gray-600 text-sm text-white bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all"
                         placeholder="Atreides Royal..."
                         required
                     />
@@ -55,7 +55,7 @@
                     <!-- rounded-e-lg -->
                     <button
                         type="submit"
-                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium  text-sm px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
+                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium text-sm px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
                     >
                         Hledat
                     </button>

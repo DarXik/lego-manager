@@ -52,7 +52,7 @@ const post = async (req: Request, res: Response) => {
             themeName: resThemeName,
             yearReleased: parseInt(set?.yearReleased),
             bought: set?.isBought,
-            yearBought: parseInt(set?.yearBought),
+            yearBought: parseInt(set.yearBought),
             price: parseInt(set?.price),
             imageThumbnailUrl: set?.imageThumbnailUrl,
             instructionsUrl: set?.instructionsUrl,

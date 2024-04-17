@@ -39,8 +39,10 @@ export const actions = {
 
                 return {
                     success: true,
-                    username: res1.username,
-                    email: res1.email,
+                    user:{
+                        username: res1.username,
+                        email: res1.email
+                    }
                 }
 
             } else {

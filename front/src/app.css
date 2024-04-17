@@ -4,6 +4,6 @@
 
 @layer{
     body{
-        @apply bg-gradient-to-b  from-red-950 from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
+        @apply text-white  bg-gradient-to-tl  from-[#330707] from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
     }
 }

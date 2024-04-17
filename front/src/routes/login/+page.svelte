@@ -4,6 +4,7 @@
     import { fade } from "svelte/transition";
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
+    import { userInfo } from "$lib/store";
 
     export let form: any;
     export let data: any;
@@ -23,8 +24,7 @@
     }
 
     $: if (form?.success) {
-        localStorage.setItem("username", form?.username);
-        localStorage.setItem("email", form?.email);
+        userInfo.set(form.user);
         goto("/");
     }
 </script>
@@ -55,7 +55,7 @@
                     value={form?.email ?? ""}
                     required
                     autocomplete="off"
-                    class="px-3 py-2 bg-zinc-900 focus:border-none border-none ring-0 focus:ring-0 outline-none focus:outline-white focus:outline-2 transition-all"
+                    class="px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all"
                 />
             </div>
             <div class="flex flex-col space-y-1">
@@ -69,7 +69,7 @@
                         name="password"
                         required
                         autocomplete="off"
-                        class="w-full px-3 py-2 bg-zinc-900 focus:border-none border-none ring-0 focus:ring-0 outline-none focus:outline-white focus:outline-2 transition-all"
+                        class="w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all"
                     />
                     <input
                         type="checkbox"
