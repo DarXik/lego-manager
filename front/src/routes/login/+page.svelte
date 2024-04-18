@@ -17,8 +17,6 @@
         password = document.getElementById("password");
     });
 
-    function submit() {}
-
     $: if (password.length === 0) {
         passwordMatch = false;
     }
@@ -55,7 +53,7 @@
                     value={form?.email ?? ""}
                     required
                     autocomplete="off"
-                    class="px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all"
+                    class="px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
                 />
             </div>
             <div class="flex flex-col space-y-1">
@@ -69,7 +67,7 @@
                         name="password"
                         required
                         autocomplete="off"
-                        class="w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all"
+                        class="w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
                     />
                     <input
                         type="checkbox"

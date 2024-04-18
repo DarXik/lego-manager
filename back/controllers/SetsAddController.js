@@ -53,7 +53,7 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             themeName: resThemeName,
             yearReleased: parseInt(set === null || set === void 0 ? void 0 : set.yearReleased),
             bought: set === null || set === void 0 ? void 0 : set.isBought,
-            yearBought: parseInt(set === null || set === void 0 ? void 0 : set.yearBought),
+            yearBought: parseInt(set.yearBought),
             price: parseInt(set === null || set === void 0 ? void 0 : set.price),
             imageThumbnailUrl: set === null || set === void 0 ? void 0 : set.imageThumbnailUrl,
             instructionsUrl: set === null || set === void 0 ? void 0 : set.instructionsUrl,
