@@ -10,7 +10,7 @@
     let username = $userInfo.username;
 
     // onMount(() => {
-    $: $userSets = data.sets;
+        $:$userSets = data.sets;
     // });
 </script>
 
@@ -19,7 +19,7 @@
 
     <article class="flex flex-wrap gap-6 grow">
         {#each $userSets as set}
-            <button on:click={() => goto(`/set/${set.setNumber}`)}>
+            <button on:click={() => goto(`/set/${set._id}`)}>
                 <div
                     class="flex flex-col w-[20em] hover:scale-105 transition-all hover:cursor-pointer"
                 >

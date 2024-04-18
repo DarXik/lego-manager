@@ -27,7 +27,7 @@
     }
 </script>
 
-<div
+<section
     class="flex items-center justify-center min-h-screen text-white"
     in:fade={{ delay: 50, duration: 300 }}
 >
@@ -95,4 +95,4 @@
             >
         </p>
     </div>
-</div>
+</section>

@@ -98,7 +98,7 @@
         </div>
         <div class="one-cell row-start-1 col-start-3 col-end-3">
             <label for="partsAmount"
-                >Amount of parts <span class="text-red-600">*</span></label
+                >Number of bricks <span class="text-red-600">*</span></label
             >
             <input
                 type="text"

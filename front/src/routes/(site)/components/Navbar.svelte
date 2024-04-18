@@ -1,18 +1,29 @@
 <script>
     import { enhance } from "$app/forms";
+    import { page } from "$app/stores";
+    import { onMount } from "svelte";
+
+    let isInSlug = false;
+    let searchInput=""
+    onMount(() => {
+        searchInput = ""
+    })
+
+    $: isInSlug = $page.url.pathname.includes("/set/");
 </script>
 
-<nav class="bg-black">
-    <div class="flex justify-between items-center px-20 py-3">
-        <div>
-            <button><a href="/"><img src="../../LEGO_logo.svg" alt="lego" class="w-12 cursor-pointer" /></a></button>
+<nav class=" w-full" class:absolute={isInSlug}>
+    <div class="flex justify-between items-center">
+        <div class="flex flex-row items-center gap-3 w-1/2 px-20 py-4 bg-transparent" class:!bg-black={!isInSlug}>
+            <button class="active:scale-90 transition-all"><a href="/"><img src="../../LEGO_logo.svg" alt="lego" class="w-12 cursor-pointer mr-8" /></a></button>
+            <button class="border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black active:scale-90 transition-all"><a href="/add-set"
+            class="select-none cursor-pointer">Add set</a></button>
+            <button class="border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black active:scale-90 transition-all"><a href="/settings"
+                class="select-none cursor-pointer">Settings</a></button>
         </div>
-        <div>
-            <button><a href="/add-set">Add set</a></button>
-        </div>
-        <div class="w-1/2 lg:w-1/4 flex flex-row justify-end">
+        <div class="w-1/2 flex flex-row justify-end  px-20 py-4" class:bg-black={!isInSlug}>
             <form
-                class="w-full"
+                class="lg:w-1/2"
                 method="POST"
                 action="?/searchLegoSet"
                 use:enhance
@@ -50,6 +61,7 @@
                         class="block w-full p-2 ps-10 placeholder:text-gray-600 text-sm text-white bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all"
                         placeholder="Atreides Royal..."
                         required
+                        bind:value={searchInput}
                     />
                     <!-- rounded-s-lg -->
                     <!-- rounded-e-lg -->

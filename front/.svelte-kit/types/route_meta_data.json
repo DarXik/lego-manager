@@ -14,5 +14,9 @@
 	],
 	"/register": [
 		"src/routes/register/+page.server.js"
+	],
+	"/(site)/set/[slug]": [
+		"src/routes/(site)/set/[slug]/+page.js",
+		"src/routes/(site)/+layout.server.ts"
 	]
 }
