@@ -13,6 +13,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/node": "^20.12.7",
 		"autoprefixer": "^10.4.19",
 		"postcss": "^8.4.38",
 		"svelte": "^4.2.7",
@@ -27,6 +28,8 @@
 		"@cloudinary/url-gen": "^1.19.0",
 		"axios": "^1.6.8",
 		"cloudinary": "^2.1.0",
+		"fs": "^0.0.1-security",
+		"googleapis": "^134.0.0",
 		"svelte-persisted-store": "^0.9.1"
 	}
 }
