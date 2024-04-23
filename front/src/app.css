@@ -4,10 +4,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer{
-    body{
-        @apply text-white  bg-gradient-to-tl  from-[#330707] from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
+@layer {
+    body {
+        @apply text-white bg-gradient-to-tl from-[#330707] from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
         font: Saira;
         font-family: 'Saira', sans-serif;
+    }
+
+    blockquote,
+    dl,
+    dd,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    hr,
+    figure,
+    p,
+    pre {
+        margin: 0;
+        padding: 0;
     }
 }

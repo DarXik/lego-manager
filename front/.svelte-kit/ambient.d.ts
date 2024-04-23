@@ -43,7 +43,7 @@ declare module '$env/static/private' {
 	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
 	export const EDITOR: string;
-	export const EFC_6436: string;
+	export const EFC_6188: string;
 	export const EnableLog: string;
 	export const FPS_BROWSER_APP_PROFILE_STRING: string;
 	export const FPS_BROWSER_USER_PROFILE_STRING: string;
@@ -167,7 +167,7 @@ declare module '$env/dynamic/private' {
 		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
 		EDITOR: string;
-		EFC_6436: string;
+		EFC_6188: string;
 		EnableLog: string;
 		FPS_BROWSER_APP_PROFILE_STRING: string;
 		FPS_BROWSER_USER_PROFILE_STRING: string;

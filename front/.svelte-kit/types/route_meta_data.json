@@ -9,6 +9,9 @@
 		"src/routes/(site)/add-set/+page.server.ts",
 		"src/routes/(site)/+layout.server.ts"
 	],
+	"/api/addSet": [
+		"src/routes/api/addSet/+server.ts"
+	],
 	"/login": [
 		"src/routes/login/+page.server.js"
 	],

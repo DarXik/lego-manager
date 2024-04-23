@@ -1,100 +1,78 @@
-import type { Actions } from './$types';
-import { google } from "googleapis";
-import apiKeys from "./apiKeyGoogle.json"
+// import type { Actions } from './$types';
+// import multer from "multer";
+// import ImageKit from "imagekit";
+
+// const fileToArrayBuffer = (filePath: string): Promise<ArrayBuffer> => {
+//     return new Promise((resolve, reject) => {
+//         fs.readFile(filePath, (err, data) => {
+//             if (err) {
+//                 reject(err);
+//             } else {
+//                 resolve(data.buffer);
+//             }
+//         });
+//     });
+// };
 
 
-async function authorize() {
+// export const actions = {
+//     addSet: async ({ request, cookies, locals }) => {
+//         const formData = await request.formData();
 
-    const SCOPE = ["https://www.googleapis.com/auth/drive"]
-    const auth = new google.auth.JWT(
-        apiKeys.client_email,
-        "" || undefined,
-        apiKeys.private_key,
-        SCOPE
-    )
+//         var imagekit = new ImageKit({
+//             publicKey: "public_hFsIFiIOg4axObbWKYA91OfgDfk=",
+//             privateKey: "private_Dr0ocLSWUIwBaySyfqdkScBPVFE=",
+//             urlEndpoint: "https://ik.imagekit.io/oaoxuk4he"
+//         })
 
-    await auth.authorize()
+//         const name = formData.get("name")?.toString();
+//         const description = formData.get("description")?.toString();
+//         const price = formData.get("price")?.toString();
+//         const setNumber = formData.get("setNumber")?.toString();
+//         const partsAmount = formData.get("partsAmount")?.toString();
+//         const themeId = formData.get("themeId")?.toString();
+//         const yearReleased = formData.get("yearReleased")?.toString();
+//         const yearBought = formData.get("yearBought")?.toString();
+//         const isBought = !!formData.get("isBought");
+//         const imageThumbnail = formData.get("imageThumbnail") as File;
 
-    return auth;
-}
+//         try {
+//             const fileData = await fileToArrayBuffer(imageThumbnail);
+//             const buffer = Buffer.from(fileData);
+//             const resp = await imagekit.upload({
+//                 file: buffer,
+//                 fileName: `image-thumbnail-${locals.session?.split(".")[0]}-${setNumber}.${imageThumbnail.name.split('.').pop()}`,
+//             })
 
-async function uploadFile(auth: any, fileID: string, file: any) {
-    return new Promise((resolve, reject) => {
-        const drive = google.drive({ version: 'v3', auth });
+//             console.log(resp)
+//         }
+//         catch (err) {
+//             console.log(err)
+//         }
 
-        var fileMetadata = {
-            name: fileID,
-            parents: ["1bBscV_4FIfGKcs7HvQ2-Fa87Wq0EEHox"]
-        }
+//         let newSet = await fetch("http://localhost:3000/api/v1/sets/add", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "Authorization": locals.session?.toString() || ""
+//             },
+//             body: JSON.stringify({
+//                 name: name,
+//                 description: description,
+//                 price: price,
+//                 setNumber: setNumber,
+//                 partsAmount: partsAmount,
+//                 themeId: themeId,
+//                 yearReleased: yearReleased,
+//                 yearBought: yearBought,
+//                 isBought: isBought,
+//             })
 
-        drive.files.create({
-            resource: fileMetadata,
-            media: {
-                body: file,
-                mimeType: "image/png"
-            },
-            fields: "id"
+//         })
 
-        }, (err: any, file: any) => {
-            if (err) {
-                console.error(err);
-                return reject(err);
-            } else {
-                resolve(file);
-            }
-        })
-    })
-}
+//         return {
+//             success: await newSet.text()
+//         }
 
-export const actions = {
-    addSet: async ({ request, cookies, locals }) => {
-        const formData = await request.formData();
-
-        const name = formData.get("name")?.toString();
-        const description = formData.get("description")?.toString();
-        const price = formData.get("price")?.toString();
-        const setNumber = formData.get("setNumber")?.toString();
-        const partsAmount = formData.get("partsAmount")?.toString();
-        const themeId = formData.get("themeId")?.toString();
-        const yearReleased = formData.get("yearReleased")?.toString();
-        const yearBought = formData.get("yearBought")?.toString();
-        const isBought = !!formData.get("isBought");
-
-        await authorize().then(auth => {
-            const legoSetName = (name || "lego-thumbnail") + new Date().getMilliseconds();
-            const file = formData.get("imageThumbnail")
-
-            uploadFile(auth, legoSetName, file)
-                .then(uploadResult => {
-                    console.log(uploadResult.data.id)
-                })
-                .catch(console.error)
-        })
-            .catch(console.error)
-
-        let newSet = await fetch("http://localhost:3000/api/v1/sets/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": locals.session?.toString() || ""
-            },
-            body: JSON.stringify({
-                name: name,
-                description: description,
-                price: price,
-                setNumber: setNumber,
-                partsAmount: partsAmount,
-                themeId: themeId,
-                yearReleased: yearReleased,
-                yearBought: yearBought,
-                isBought: isBought,
-            })
-
-        })
-
-        return {
-            success: await newSet.text()
-        }
-
-    }
-} satisfies Actions;
+//     }
+// } satisfies Actions;

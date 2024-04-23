@@ -20,14 +20,17 @@
 
 <section>
     {#if navbarHeight}
-        <article class="h-[100vh] flex flex-row text-zinc-300">
+        <article class="h-[100vh] flex flex-row text-zinc-100">
             <div
                 class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20 pb-10"
             >
                 <div>
+                    <p  style="margin-top: {navbarHeight + 32}px" class="text-gray-500 text-xs break-normal mb-1">
+                        name
+                    </p>
                     <h1
                         class="font-extrabold text-4xl lg:text-6xl uppercase mb-20"
-                        style="margin-top: {navbarHeight + 32}px"
+                       
                     >
                         {set.name}
                     </h1>

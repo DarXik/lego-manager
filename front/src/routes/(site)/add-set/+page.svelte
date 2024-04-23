@@ -5,9 +5,7 @@
 
     console.log(data);
 
-    // let imageFile;
-    // let base64String;
-
+    let file;
     let name;
     let setNumber;
     let yearReleased;
@@ -17,51 +15,38 @@
     let price;
     let partsAmount;
     let themeId;
+    let imageThumbnail;
+    let newSetResp;
 
-    // async function handleImageUpload(event) {
-    //     imageFile = event.detail.files[0];
+    async function submitSet() {
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("setNumber", setNumber);
+        formData.append("yearReleased", yearReleased);
+        formData.append("isBought", isBought);
+        formData.append("yearBought", yearBought);
+        formData.append("description", description);
+        formData.append("price", price);
+        formData.append("partsAmount", partsAmount);
+        formData.append("themeId", themeId);
+        formData.append("imageThumbnail", file);
 
-    //     if (!imageFile) return;
+        const resp = await fetch("/api/addSet", {
+            method: "POST",
+            body: formData,
+        });
 
-    //     const reader = new FileReader();
-    //     reader.readAsDataURL(imageFile);
-    //     reader.onload = () => {
-    //         const base64String = reader?.result?.split(",")[1];
-    //     };
-    // }
-
-    // async function handleFormSubmit(event) {
-    //     event.preventDefault();
-
-    //     const formData = new FormData();
-    //     formData.append("name", name);
-    //     formData.append("setNumber", setNumber);
-    //     formData.append("yearReleased", yearReleased);
-    //     formData.append("isBought", isBought);
-    //     formData.append("yearBought", yearBought);
-    //     formData.append("description", description);
-    //     formData.append("price", price);
-    //     formData.append("partsAmount", partsAmount);
-    //     formData.append("themeId", themeId);
-    //     formData.append("imageThumbnail", base64String);
-
-    //     const response = await fetch("http://localhost:3000/api/v1/sets/add", {
-    //         method: "POST",
-    //         headers: {
-    //             "Authorization": data.session,
-    //         },
-    //         body: formData,
-    //     })
-    // }
+        newSetResp = await resp.json();
+        console.log(newSetResp);
+    }
 </script>
 
-<section class="px-20">
+<section class="px-20 mb-10">
     <h1 class="font-bold text-3xl mb-20 mt-8">Add new set</h1>
 
     <form
         method="POST"
-        action="?/addSet"
-        use:enhance
+        on:submit|preventDefault={submitSet}
         enctype="multipart/form-data"
         class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col gap-4 lg:w-9/12"
     >
@@ -193,7 +178,9 @@
                 id="imageThumbnail"
                 name="imageThumbnail"
                 class="my-input"
-                accept=".jpg, .jpeg, .png, .webp"
+                accept="image/*"
+                on:change={(e) => (file = e?.target?.files[0])}
+                bind:value={imageThumbnail}
             />
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-2 col-end-3">
@@ -221,15 +208,14 @@
         <div class="one-cell row-start-7 row-end-7 col-start-1 col-end-1">
             <button
                 type="submit"
-                formaction="?/addSet"
                 class="bg-zinc-800 py-3 px-10 w-fit mt-10 text-white uppercase font-bold hover:bg-zinc-900 active:bg-zinc-950 transition-all"
                 >Add Set</button
             >
         </div>
     </form>
 
-    {#if form}
-        <p>{form.success}</p>
+    {#if newSetResp}
+        <img src={newSetResp.url} alt="set" />
     {/if}
 </section>
 
