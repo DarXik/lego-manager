@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const userAuthentication_1 = require("../services/userAuthentication");
-const Set_1 = require("../models/Set");
+const prisma_1 = __importDefault(require("../config/prisma"));
 const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.headers.authorization) {
         return res.send("something is missing").status(400);
@@ -20,7 +23,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.send({ message: "user not found" }).status(404);
     }
-    const resSetJSON = yield Set_1.Set.find({ ownedBy: verifiedUser.user._id });
+    const resSetJSON = yield prisma_1.default.sets.findMany({ where: { ownedBy: verifiedUser.user.id } });
     console.log(resSetJSON);
     return res.send(resSetJSON).status(200);
     // res.send(resSetJSON.results.map((set: any) => ({

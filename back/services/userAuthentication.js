@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyUser = exports.createToken = void 0;
 const jwt = __importStar(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const User_1 = require("../models/User");
+const prisma_1 = __importDefault(require("../config/prisma"));
 dotenv_1.default.config();
 const secretKey = process.env.JWT_SECRET || "";
 const createToken = (user) => {
@@ -50,19 +50,38 @@ exports.createToken = createToken;
 const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const decoded = jwt.verify(token, secretKey);
-        const foundUser = yield User_1.User.findOne({ _id: decoded.user, sessions: { $in: [token] } });
-        console.log("auth: ", foundUser === null || foundUser === void 0 ? void 0 : foundUser.username);
-        console.log("decoded: ", decoded);
-        if (foundUser) {
+        try {
+            const foundUser = yield prisma_1.default.users.findUnique({
+                where: {
+                    id: decoded.user,
+                },
+            });
+            if (!foundUser.sessions.sessions.includes(token)) {
+                return {
+                    user: null,
+                    token: null
+                };
+            }
+            console.log("auth: ", foundUser.sessions.sessions);
+            console.log("decoded: ", decoded);
+            if (foundUser) {
+                return {
+                    user: foundUser,
+                    token: decoded.user
+                };
+            }
             return {
-                user: foundUser,
-                token: decoded.user
+                user: null,
+                token: null
             };
         }
-        return {
-            user: null,
-            token: null
-        };
+        catch (err) {
+            console.log(err);
+            return {
+                user: null,
+                token: null
+            };
+        }
     }
     catch (err) {
         console.log(err);

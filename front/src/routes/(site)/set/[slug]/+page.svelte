@@ -15,12 +15,12 @@
     console.log(data.slug);
     $: console.log(navbarHeight);
 
-    let set = $userSets.find((set) => set._id == data.slug);
+    let set = $userSets.find((set) => set.id == data.slug);
 </script>
 
 <section>
     {#if navbarHeight}
-        <article class="h-[100vh] flex flex-row text-zinc-100">
+        <article class="h-[100vh] flex flex-row">
             <div
                 class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20 pb-10"
             >

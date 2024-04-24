@@ -1,6 +1,7 @@
-import {Request, Response} from "express"
-import {User} from "../models/User"
-import {createToken} from "../services/userAuthentication"
+import { Request, Response } from "express"
+import { createToken } from "../services/userAuthentication"
+import prisma from "../config/prisma"
+import { verifyPassword } from "../services/userHash"
 
 const post = async (req: Request, res: Response) => {
     console.log(req.body);
@@ -9,34 +10,49 @@ const post = async (req: Request, res: Response) => {
         return res.send("email and password are required").status(400)
     }
 
-    const user = await User.findOne({email: req.body.email}) || await User.findOne({username: req.body.email})
-
-    if (!user) {
-        return res.send("user not found").status(404)
-    }
-
-    if (!await user?.isValidPassword(req.body.password)) {
-        console.log(await user?.isValidPassword(req.body.password))
-        return res.send("wrong password").status(401)
-    }
-
-    const userSession: string = createToken(user._id.toString()).toString()
-    console.log(userSession)
-
     try {
-        await User.updateOne({_id: user._id}, {sessions: [...user.sessions, userSession]})
+        const user = await prisma.users.findUnique({ where: { email: req.body.email } } || { where: { username: req.body.email } })
+        console.log(user)
 
-        res.send({
-            session: userSession,
-            username: user.username,
-            email: user.email,
+        if (!user) {
+            return res.send("user not found").status(404)
+        }
 
-        }).status(200)
+        if (!await verifyPassword(req.body.password, user.password)) {
+            return res.send("wrong password").status(401)
+        }
 
-    } catch (err) {
+        const userSession: string = createToken(user.id.toString()).toString()
+        console.log(userSession)
+
+        try {
+
+            await prisma.users.update({
+                where: { id: user.id },
+                data: {
+                    sessions: {
+                        sessions: [...user.sessions.sessions, userSession]
+                    }
+                }
+            })
+
+            res.send({
+                session: userSession,
+                username: user.username,
+                email: user.email,
+
+            }).status(200)
+
+        } catch (err) {
+
+            console.log(err)
+            res.send("could not be authenticated").status(503)
+        }
+    }
+    catch (err) {
         console.log(err)
         res.send("could not be authenticated").status(503)
     }
 }
 
-export default {post}
+export default { post }

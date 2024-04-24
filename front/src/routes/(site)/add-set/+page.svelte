@@ -18,27 +18,27 @@
     let imageThumbnail;
     let newSetResp;
 
-    async function submitSet() {
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("setNumber", setNumber);
-        formData.append("yearReleased", yearReleased);
-        formData.append("isBought", isBought);
-        formData.append("yearBought", yearBought);
-        formData.append("description", description);
-        formData.append("price", price);
-        formData.append("partsAmount", partsAmount);
-        formData.append("themeId", themeId);
-        formData.append("imageThumbnail", file);
+    // async function submitSet() {
+    //     const formData = new FormData();
+    //     formData.append("name", name);
+    //     formData.append("setNumber", setNumber);
+    //     formData.append("yearReleased", yearReleased);
+    //     formData.append("isBought", isBought);
+    //     formData.append("yearBought", yearBought);
+    //     formData.append("description", description);
+    //     formData.append("price", price);
+    //     formData.append("partsAmount", partsAmount);
+    //     formData.append("themeId", themeId);
+    //     formData.append("imageThumbnail", file);
 
-        const resp = await fetch("/api/addSet", {
-            method: "POST",
-            body: formData,
-        });
+    //     const resp = await fetch("/api/addSet", {
+    //         method: "POST",
+    //         body: formData,
+    //     });
 
-        newSetResp = await resp.json();
-        console.log(newSetResp);
-    }
+    //     newSetResp = await resp.json();
+    //     console.log(newSetResp);
+    // }
 </script>
 
 <section class="px-20 mb-10">
@@ -46,7 +46,7 @@
 
     <form
         method="POST"
-        on:submit|preventDefault={submitSet}
+        action="?/addSet"
         enctype="multipart/form-data"
         class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col gap-4 lg:w-9/12"
     >
@@ -106,7 +106,7 @@
                 bind:value={description}
                 autocomplete="off"
                 rows="3"
-                class="w-full resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
+                class="w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
                 maxlength="256"
                 placeholder="Autentic replica of the Atreides Royal Ornithopter from Dune..."
             ></textarea>

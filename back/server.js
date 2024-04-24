@@ -4,18 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const db_1 = __importDefault(require("./config/db"));
+// import connectDB from "./config/db";
 const Sets_1 = __importDefault(require("./routes/api/v1/Sets"));
 const User_1 = __importDefault(require("./routes/user/login/User"));
 const User_2 = __importDefault(require("./routes/user/register/User"));
 const Search_1 = __importDefault(require("./routes/api/v1/search/Search"));
 const Add_1 = __importDefault(require("./routes/api/v1/add/Add"));
 const User_3 = __importDefault(require("./routes/user/check/User"));
-// import multer from "multer"
 const app = (0, express_1.default)();
-// const upload = multer();
 const PORT = 3000;
-(0, db_1.default)();
+// connectDB();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 // app.use(upload.none());
@@ -26,7 +24,7 @@ app.use("/api/v1/sets/search", Search_1.default);
 app.use("/api/v1/sets/add", Add_1.default);
 app.use("/user/check", User_3.default);
 app.get("/", (req, res) => {
-    res.send("Lego Štěpán API v1");
+    res.send("Lego Manager API v1");
 });
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);

@@ -1,6 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { User } from "../models/User";
+import prisma from "../config/prisma";
 
 dotenv.config()
 
@@ -15,22 +15,42 @@ const createToken = (user: string) => {
 const verifyUser = async (token: string) => {
     try {
         const decoded: any = jwt.verify(token, secretKey)
-        const foundUser = await User.findOne({ _id: decoded.user, sessions: { $in: [token] } })
 
-        console.log("auth: ", foundUser?.username);
-        console.log("decoded: ", decoded);
-        
+        try {
+            const foundUser = await prisma.users.findUnique({
+                where: {
+                    id: decoded.user,
+                },
+            })
 
-        if (foundUser) {
+            if (!foundUser.sessions.sessions.includes(token)) {
+                return {
+                    user: null,
+                    token: null
+                }
+            }
+            console.log("auth: ", foundUser.sessions.sessions);
+            console.log("decoded: ", decoded);
+
+
+            if (foundUser) {
+                return {
+                    user: foundUser,
+                    token: decoded.user
+                }
+            }
+
             return {
-                user: foundUser,
-                token: decoded.user
+                user: null,
+                token: null
             }
         }
-
-        return {
-            user: null,
-            token: null
+        catch (err) {
+            console.log(err)
+            return {
+                user: null,
+                token: null
+            }
         }
     } catch (err) {
         console.log(err)

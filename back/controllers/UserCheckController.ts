@@ -8,11 +8,13 @@ const get = async (req: Request, res: Response) => {
     }
 
     const verifiedUser: any = await verifyUser(req.headers.authorization)    
-
-    if (verifiedUser.user && verifiedUser.token) {        
+    
+    if (verifiedUser.user && verifiedUser.token) {      
+        console.log("user verified: ", verifiedUser.username)  
         return res.send(true).status(200)
     }
     else{
+        console.log("user not verified")  
         return res.send(false).status(404)
     }
 }

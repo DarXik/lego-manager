@@ -10,70 +10,75 @@
     let username = $userInfo.username;
 
     // onMount(() => {
-        $:$userSets = data.sets;
+    $: $userSets = data.sets;
     // });
 </script>
 
-<section class="px-20">
-    <h1 class="font-bold text-3xl mt-8 mb-20">Welcome back, {username}</h1>
+<section class="px-20 ">
+    <h1 class="font-bold text-4xl mt-8 mb-20"><span class="text-gray-500 text-2xl">Welcome back</span> {username? username : '--'}</h1>
 
     <article class="flex flex-wrap gap-6 grow">
-        {#each $userSets as set}
-            <button on:click={() => goto(`/set/${set._id}`)}>
-                <div
-                    class="flex flex-col w-[20em] hover:scale-105 transition-all hover:cursor-pointer"
-                >
-                    <div class="">
-                        <img
-                            src="../../ornithopter-testing.webp"
-                            alt="testing"
-                            class="bg-white w-fit"
-                        />
-                    </div>
+        {#if $userSets.length > 0}
+            {#each $userSets as set}
+                <button on:click={() => goto(`/set/${set.id}`)}>
                     <div
-                        class="bg-no-repeat bg-cover bg-gradient-to-tl from-gray-950 to-gray-900 p-6 px-8 select-none"
+                        class="flex flex-col w-[20em] hover:scale-105 transition-all hover:cursor-pointer"
                     >
-                        <div>
-                            <h3 class="text-2xl font-bold mb-14 truncate">
-                                <span class="text-sm text-gray-500 font-normal"
-                                    >name
-                                </span> <br />{set.name}
-                            </h3>
-                            <!-- <p class="text-lg"><span class="text-sm text-gray-500">desc. </span><br>{set.description}</p> -->
+                        <div class="">
+                            <img
+                                src="../../ornithopter-testing.webp"
+                                alt="testing"
+                                class="bg-white w-fit"
+                            />
                         </div>
-                        <div class="mt-6">
-                            <p class="text-lg">
-                                <span class="text-sm text-gray-500"
-                                    >no.
-                                </span>{set.setNumber}
-                                &bull;
-                                <span class="text-sm text-gray-500"
-                                    >theme
-                                </span>{set.themeName}
-                            </p>
-                            <!-- <p>
-                        <span class="text-sm text-gray-500"
-                            >owned
-                        </span>{set.bought ? "Yes" : "No"}
-                    </p> -->
-                            <p>
-                                <span class="text-sm text-gray-500"
-                                    >added on
-                                </span>{new Date(set.addedOn)
-                                    .toLocaleString({
-                                        timeZone: "Europe/Paris",
-                                    })
-                                    .split(",")[0]}
-                                &bull;
-                                <span class="text-sm text-gray-500"
-                                    >bought in
-                                </span>{set.yearBought}
-                            </p>
+                        <div
+                            class="bg-no-repeat bg-cover bg-gradient-to-tl from-gray-950 to-gray-900 p-6 px-8 select-none"
+                        >
+                            <div>
+                                <h3 class="text-2xl font-bold mb-14 truncate">
+                                    <span
+                                        class="text-sm text-gray-500 font-normal"
+                                        >name
+                                    </span> <br />{set.name}
+                                </h3>
+                                <!-- <p class="text-lg"><span class="text-sm text-gray-500">desc. </span><br>{set.description}</p> -->
+                            </div>
+                            <div class="mt-6">
+                                <p class="text-lg">
+                                    <span class="text-sm text-gray-500"
+                                        >no.
+                                    </span>{set.setNumber}
+                                    &bull;
+                                    <span class="text-sm text-gray-500"
+                                        >theme
+                                    </span>{set.themeName}
+                                </p>
+                                <!-- <p>
+                   <span class="text-sm text-gray-500"
+                       >owned
+                   </span>{set.bought ? "Yes" : "No"}
+               </p> -->
+                                <p>
+                                    <span class="text-sm text-gray-500"
+                                        >added on
+                                    </span>{new Date(set.addedOn)
+                                        .toLocaleString({
+                                            timeZone: "Europe/Paris",
+                                        })
+                                        .split(",")[0]}
+                                    &bull;
+                                    <span class="text-sm text-gray-500"
+                                        >bought in
+                                    </span>{set.yearBought}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </button>
-        {/each}
+                </button>
+            {/each}
+        {:else}
+            <p class="italic">No sets found</p>
+        {/if}
     </article>
 
     {#if form}

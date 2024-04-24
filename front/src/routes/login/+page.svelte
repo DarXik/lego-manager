@@ -35,7 +35,7 @@
         class:border-red-500={form?.problem}
         class="w-full max-w-md p-8 space-y-4 bg-gray-950 border border-transparent shadow-lg"
     >
-        <h1 class="text-2xl font-semibold text-center">Sign In</h1>
+        <h1 class="text-2xl font-semibold text-center">Log In</h1>
         {#if form?.problem}
             <p class="text-lg text-center font-semibold error text-red-500">
                 {form?.problem}
@@ -75,6 +75,7 @@
                         bind:checked={showPassword}
                         src="../../../signin/slashed-eye.svg"
                         alt="eye"
+                        tabindex="-1"
                         class="w-6 absolute top-1/2 -translate-y-1/2 right-0 -translate-x-2 z-20 cursor-pointer active:scale-90 transition-all"
                     />
                 </div>
@@ -87,7 +88,7 @@
                 Sign In
             </button>
         </form>
-        <p class="text-sm text-center">
+        <p class="text-sm text-center pt-4">
             Don't have an account? <a
                 href="/register"
                 class="text-blue-600 hover:underline select-none"

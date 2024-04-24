@@ -8,20 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const userAuthentication_1 = require("../services/userAuthentication");
-const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.headers.authorization) {
-        return res.send(false).status(400);
-    }
-    const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization);
-    if (verifiedUser.user && verifiedUser.token) {
-        console.log("user verified: ", verifiedUser.username);
-        return res.send(true).status(200);
-    }
-    else {
-        console.log("user not verified");
-        return res.send(false).status(404);
+exports.findUser = void 0;
+const prisma_1 = __importDefault(require("../config/prisma"));
+const findUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    if ((yield prisma_1.default.users.findUnique({ where: { email: user.email } })) || (yield prisma_1.default.users.findUnique({ where: { username: user.username } }))) {
     }
 });
-exports.default = { get };
+exports.findUser = findUser;

@@ -6,7 +6,7 @@
 
 @layer {
     body {
-        @apply text-white bg-gradient-to-tl from-[#330707] from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
+        @apply text-zinc-100 bg-gradient-to-tl from-[#330707] from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
         font: Saira;
         font-family: 'Saira', sans-serif;
     }

@@ -51,7 +51,6 @@ const setSchema = new Schema<ISet>({
     },
     yearBought: {
         type: Number,
-        required: true
     },
     price: {
         type: Number,

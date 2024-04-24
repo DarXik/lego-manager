@@ -16,25 +16,25 @@
     <div class="flex justify-between items-center">
         <div class="flex flex-row items-center gap-3 w-1/2 px-20 py-4 bg-transparent" class:!bg-black={!isInSlug}>
             <button class="active:scale-90 transition-all"><a href="/"><img src="../../LEGO_logo.svg" alt="lego" class="w-12 cursor-pointer mr-8" /></a></button>
-            <button class="border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black active:scale-90 transition-all"><a href="/add-set"
+            <button class="border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black transition-all"><a href="/add-set"
             class="select-none cursor-pointer">Add set</a></button>
-            <button class="border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black active:scale-90 transition-all"><a href="/settings"
+            <button class="border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black transition-all"><a href="/settings"
                 class="select-none cursor-pointer">Settings</a></button>
         </div>
-        <div class="w-1/2 flex flex-row justify-end  px-20 py-4" class:bg-black={!isInSlug}>
+        <div class="w-1/2 flex flex-row justify-end  lg:px-20 py-4" class:bg-black={!isInSlug}>
             <form
-                class="lg:w-1/2"
+                class="2xl:w-1/2 w-full"
                 method="POST"
                 action="?/searchLegoSet"
                 use:enhance
             >
-                <label
+                <!-- <label
                     for="searchQuery"
                     class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
                     Hledaný výraz:
-                </label>
-                <div class="relative flex">
+                </label> -->
+                <div class="relative flex w-full">
                     <div
                         class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                     >

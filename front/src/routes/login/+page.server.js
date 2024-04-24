@@ -26,7 +26,7 @@ export const actions = {
                 })
             })
 
-            if (response.ok) {
+            if (response.status == 200) {
                 let res1 = await response.json()
 
                 cookies.set("session", res1.session, {

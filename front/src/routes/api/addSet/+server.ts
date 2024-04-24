@@ -6,13 +6,13 @@ import type { RequestHandler } from './$types';
 export const POST: RequestHandler = async ({ request }: { request: Request }) => {
     const formData = await request.formData();
     const user = request.headers.get("Cookies") || "";    
-    const storage = multer.memoryStorage();
-    const upload = multer({ storage: storage });
-    var imagekit = new ImageKit({
-        publicKey: "public_hFsIFiIOg4axObbWKYA91OfgDfk=",
-        privateKey: "private_Dr0ocLSWUIwBaySyfqdkScBPVFE=",
-        urlEndpoint: "https://ik.imagekit.io/oaoxuk4he"
-    })
+    // const storage = multer.memoryStorage();
+    // const upload = multer({ storage: storage });
+    // var imagekit = new ImageKit({
+    //     publicKey: "public_hFsIFiIOg4axObbWKYA91OfgDfk=",
+    //     privateKey: "private_Dr0ocLSWUIwBaySyfqdkScBPVFE=",
+    //     urlEndpoint: "https://ik.imagekit.io/oaoxuk4he"
+    // })
 
     const name = formData.get("name")?.toString();
     const description = formData.get("description")?.toString();
@@ -23,39 +23,39 @@ export const POST: RequestHandler = async ({ request }: { request: Request }) =>
     const yearReleased = formData.get("yearReleased")?.toString();
     const yearBought = formData.get("yearBought")?.toString();
     const isBought = !!formData.get("isBought");
-    const imageThumbnail = formData.get("imageThumbnail") as File;
-    console.log(imageThumbnail)
+    // const imageThumbnail = formData.get("imageThumbnail") as File;
+    // console.log(imageThumbnail)
 
-    try {
-        const buffer = Buffer.from(await imageThumbnail.arrayBuffer());
-        const base64Image = buffer.toString('base64');
-        const imageData = `data:${imageThumbnail?.type};base64,${base64Image}`
+    // try {
+    //     const buffer = Buffer.from(await imageThumbnail.arrayBuffer());
+    //     const base64Image = buffer.toString('base64');
+    //     const imageData = `data:${imageThumbnail?.type};base64,${base64Image}`
 
-        const resp = await imagekit.upload({
-            file: imageData,
-            fileName: `lego-${uuidv4()}`,
-            // ${imageThumbnail.name.split('.').pop()}
-        })
+    //     const resp = await imagekit.upload({
+    //         file: imageData,
+    //         fileName: `lego-${uuidv4()}`,
+    //         // ${imageThumbnail.name.split('.').pop()}
+    //     })
 
-        return new Response(
-            JSON.stringify({
-                url: await resp.url,
-                status: 200,
-                statusText: "Image uploaded successfully"
-            })
-        );
+    //     return new Response(
+    //         JSON.stringify({
+    //             url: await resp.url,
+    //             status: 200,
+    //             statusText: "Image uploaded successfully"
+    //         })
+    //     );
 
-    }
-    catch (error) {
-        console.log(error)
-        return new Response(
-            JSON.stringify({
-                error: error,
-                status: 400,
-                statusText: "Image upload failed"
-            })
-        )
-    }
+    // }
+    // catch (error) {
+    //     console.log(error)
+    //     return new Response(
+    //         JSON.stringify({
+    //             error: error,
+    //             status: 400,
+    //             statusText: "Image upload failed"
+    //         })
+    //     )
+    // }
 
     let newSet = await fetch("http://localhost:3000/api/v1/sets/add", {
         method: "POST",

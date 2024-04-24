@@ -1,7 +1,7 @@
-import {redirect} from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 
 export const actions = {
-    default: async ({request}) => {
+    default: async ({ request }) => {
         const data = await request.formData();
         console.log(data);
 
@@ -32,13 +32,19 @@ export const actions = {
             })
 
             if (response.ok) {
-                return redirect(302, "/login");
-            }
-            else {
+                let res1 = await response.json()
+                // return redirect(302, "/login"); // nefunguje
                 return {
+                    success: true,
+                }
+
+            } else {
+                return {
+                    success: false,
                     problem: await response.text()
                 }
             }
+
         } catch (error) {
             console.error(error);
         }

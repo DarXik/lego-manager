@@ -1,6 +1,5 @@
 import {model, Model, Schema} from 'mongoose'
 import {compare, hash} from 'bcrypt'
-import uniqid from 'uniqid'
 
 interface IUser {
     // customId: string

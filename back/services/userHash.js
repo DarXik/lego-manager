@@ -9,19 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userAuthentication_1 = require("../services/userAuthentication");
-const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.headers.authorization) {
-        return res.send(false).status(400);
-    }
-    const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization);
-    if (verifiedUser.user && verifiedUser.token) {
-        console.log("user verified: ", verifiedUser.username);
-        return res.send(true).status(200);
-    }
-    else {
-        console.log("user not verified");
-        return res.send(false).status(404);
-    }
+exports.verifyPassword = exports.hashPassword = void 0;
+const bcrypt_1 = require("bcrypt");
+const hashPassword = (userPassword) => __awaiter(void 0, void 0, void 0, function* () {
+    const password = yield (0, bcrypt_1.hash)(userPassword, 4);
+    return password;
 });
-exports.default = { get };
+exports.hashPassword = hashPassword;
+const verifyPassword = (userPassword, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
+    const isValid = yield (0, bcrypt_1.compare)(userPassword, hashedPassword);
+    console.log("password: ", isValid);
+    return isValid;
+});
+exports.verifyPassword = verifyPassword;

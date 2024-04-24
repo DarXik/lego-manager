@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { verifyUser } from "../services/userAuthentication";
-import { Set } from "../models/Set";
+import prisma from "../config/prisma";
 
 const get = async (req: Request, res: Response) => {
     if (!req.headers.authorization) {
@@ -15,7 +15,7 @@ const get = async (req: Request, res: Response) => {
         return res.send({message:"user not found"}).status(404)
     }
 
-    const resSetJSON = await Set.find({ownedBy: verifiedUser.user._id})
+    const resSetJSON = await prisma.sets.findMany({where: {ownedBy: verifiedUser.user.id}})
 
     console.log(resSetJSON);
 

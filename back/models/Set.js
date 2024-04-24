@@ -36,7 +36,6 @@ const setSchema = new mongoose_1.Schema({
     },
     yearBought: {
         type: Number,
-        required: true
     },
     price: {
         type: Number,

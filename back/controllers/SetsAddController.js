@@ -8,10 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Set_1 = require("../models/Set");
 const userAuthentication_1 = require("../services/userAuthentication");
-const User_1 = require("../models/User");
+const prisma_1 = __importDefault(require("../config/prisma"));
+const uuid_1 = require("uuid");
 const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body || !req.headers.authorization) {
         return res.send("something is missing").status(400);
@@ -44,24 +47,53 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         catch (e) {
             console.log(e);
         }
-        const newSet = new Set_1.Set({
-            setNumber: parseInt(set.setNumber),
-            name: set.name,
-            description: set === null || set === void 0 ? void 0 : set.description,
-            partsAmount: parseInt(set.partsAmount),
-            themeId: parseInt(set.themeId),
-            themeName: resThemeName,
-            yearReleased: parseInt(set === null || set === void 0 ? void 0 : set.yearReleased),
-            bought: set === null || set === void 0 ? void 0 : set.isBought,
-            yearBought: parseInt(set.yearBought),
-            price: parseInt(set === null || set === void 0 ? void 0 : set.price),
-            imageThumbnailUrl: set === null || set === void 0 ? void 0 : set.imageThumbnailUrl,
-            instructionsUrl: set === null || set === void 0 ? void 0 : set.instructionsUrl,
-            ownedBy: verifiedUser.user
+        // const newSet = new Set({
+        //     setNumber: parseInt(set.setNumber),
+        //     name: set.name,
+        //     description: set?.description,
+        //     partsAmount: parseInt(set.partsAmount),
+        //     themeId: parseInt(set.themeId),
+        //     themeName: resThemeName,
+        //     yearReleased: parseInt(set?.yearReleased),
+        //     bought: set?.isBought,
+        //     yearBought: parseInt(set.yearBought),
+        //     price: parseInt(set?.price),
+        //     imageThumbnailUrl: set?.imageThumbnailUrl,
+        //     instructionsUrl: set?.instructionsUrl,
+        //     ownedBy: verifiedUser.user
+        // })
+        const newSet = yield prisma_1.default.sets.create({
+            data: {
+                id: (0, uuid_1.v4)(),
+                setNumber: parseInt(set.setNumber),
+                name: set.name,
+                description: set.description || null,
+                partsAmount: parseInt(set.partsAmount),
+                themeId: parseInt(set.themeId),
+                themeName: resThemeName,
+                yearReleased: parseInt(set.yearReleased) || null,
+                bought: set.isBought || null,
+                yearBought: parseInt(set.yearBought) || null,
+                price: parseInt(set.price) || null,
+                imageThumbnail: set.imageThumbnail || null,
+                instructionsUrl: set.instructionsUrl || null,
+                ownedBy: verifiedUser.user.id,
+                addedOn: new Date()
+            }
         });
+        console.log("new set: ", newSet);
         try {
-            if (yield newSet.save()) {
-                if (yield User_1.User.updateOne({ _id: verifiedUser.user._id }, { $push: { sets: newSet } })) {
+            if (yield newSet) {
+                if (yield prisma_1.default.users.update({
+                    where: {
+                        id: verifiedUser.user.id
+                    },
+                    data: {
+                        sets: {
+                            sets: [...verifiedUser.user.sets.sets, newSet]
+                        }
+                    }
+                })) {
                     res.send("set added").status(201);
                 }
                 else {
