@@ -23,13 +23,13 @@ const verifyUser = async (token: string) => {
                 },
             })
 
-            if (!foundUser.sessions.sessions.includes(token)) {
+            if (!foundUser?.sessions?.sessions?.includes(token)) {
                 return {
                     user: null,
                     token: null
                 }
             }
-            console.log("auth: ", foundUser.sessions.sessions);
+            console.log("auth: ", foundUser?.user?.username);
             console.log("decoded: ", decoded);
 
 

@@ -1,4 +1,5 @@
 import type { Actions } from './$types';
+import axios from 'axios';
 // import multer from "multer";
 // import ImageKit from "imagekit";
 
@@ -18,7 +19,7 @@ import type { Actions } from './$types';
 export const actions = {
     addSet: async ({ request, cookies, locals }) => {
         const formData = await request.formData();
-        console.log(formData)
+        // const boundary = formData.getBoundary();
 
         // var imagekit = new ImageKit({
         //     publicKey: "public_hFsIFiIOg4axObbWKYA91OfgDfk=",
@@ -35,7 +36,7 @@ export const actions = {
         const yearReleased = formData.get("yearReleased")?.toString();
         const yearBought = formData.get("yearBought")?.toString();
         const isBought = !!formData.get("isBought");
-        const imageThumbnail = formData.get("imageThumbnail") as File;
+        const imageThumbnail = formData.get("imageThumbnail")?.valueOf() as File;
 
         // try {
         //     const fileData = await fileToArrayBuffer(imageThumbnail);
@@ -51,28 +52,40 @@ export const actions = {
         //     console.log(err)
         // }
 
-        let newSet = await fetch("http://localhost:3000/api/v1/sets/add", {
+        // console.log(
+        //     imageThumbnail?.name,
+        //     imageThumbnail?.type,
+        //     imageThumbnail?.size,
+
+        // )
+
+        // const arrayBuffer = await imageThumbnail.arrayBuffer();
+        // const buffer = Buffer.from(arrayBuffer);
+
+        // console.log(buffer)
+
+        // let newSet = await fetch("http://localhost:3000/api/v1/sets/add", {
+        //     method: "POST",
+        //     headers: {
+        //         "Authorization": locals.session?.toString() || "",
+        //         'Content-Type': `multipart/form-data; boundary=${boundary}`
+        //     },
+        //     body: formData
+
+        // })
+
+        const newSet = await axios({
+            url: "http://localhost:3000/api/v1/sets/add",
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": locals.session?.toString() || ""
+                "Authorization": locals.session?.toString() || "",
+                'Content-Type': `multipart/form-data`
             },
-            body: JSON.stringify({
-                name: name,
-                description: description,
-                price: price,
-                setNumber: setNumber,
-                partsAmount: partsAmount,
-                themeId: themeId,
-                yearReleased: yearReleased,
-                yearBought: yearBought,
-                isBought: isBought,
-            })
-
+            data: formData
         })
 
         return {
-            success: await newSet.text()
+            // success: await newSet.text()
         }
 
     }

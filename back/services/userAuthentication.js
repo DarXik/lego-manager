@@ -48,6 +48,7 @@ const createToken = (user) => {
 };
 exports.createToken = createToken;
 const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b, _c;
     try {
         const decoded = jwt.verify(token, secretKey);
         try {
@@ -56,13 +57,13 @@ const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
                     id: decoded.user,
                 },
             });
-            if (!foundUser.sessions.sessions.includes(token)) {
+            if (!((_b = (_a = foundUser === null || foundUser === void 0 ? void 0 : foundUser.sessions) === null || _a === void 0 ? void 0 : _a.sessions) === null || _b === void 0 ? void 0 : _b.includes(token))) {
                 return {
                     user: null,
                     token: null
                 };
             }
-            console.log("auth: ", foundUser.sessions.sessions);
+            console.log("auth: ", (_c = foundUser === null || foundUser === void 0 ? void 0 : foundUser.user) === null || _c === void 0 ? void 0 : _c.username);
             console.log("decoded: ", decoded);
             if (foundUser) {
                 return {

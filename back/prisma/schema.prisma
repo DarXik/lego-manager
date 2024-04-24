@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model images {
+  id             Int    @id @default(autoincrement())
+  filename       String @db.VarChar(255)
+  mimetype       String @db.VarChar(255)
+  imageThumbnail String @db.LongText
+  addedBy        String @db.Char(36)
+}
+
 model sets {
   id              String   @id @unique(map: "id") @db.Char(36)
   setNumber       Int      @unique(map: "setNumber") @db.UnsignedInt

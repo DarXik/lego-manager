@@ -16,7 +16,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization);
     if (verifiedUser.user && verifiedUser.token) {
-        console.log("user verified: ", verifiedUser.username);
+        console.log("user verified: ", verifiedUser.user.username);
         return res.send(true).status(200);
     }
     else {

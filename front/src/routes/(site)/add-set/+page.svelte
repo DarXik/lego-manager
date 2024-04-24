@@ -1,44 +1,28 @@
-<script>
+<script lang="ts">
     import { enhance } from "$app/forms";
     export let form;
     export let data;
 
     console.log(data);
+    let name: any;
+    let setNumber: any;
+    let yearReleased: any;
+    let isBought: any;
+    let yearBought: any;
+    let description: any;
+    let price: any;
+    let partsAmount: any;
+    let themeId: any;
+    let imageThumbnail: any;
+    let newSetResp: any;
+    let uploadedImage: string;
 
-    let file;
-    let name;
-    let setNumber;
-    let yearReleased;
-    let isBought;
-    let yearBought;
-    let description;
-    let price;
-    let partsAmount;
-    let themeId;
-    let imageThumbnail;
-    let newSetResp;
+    function handleImageUpload(e: Event) {
+        const image = (e.target as HTMLInputElement)?.files?.[0];
+        if (!image) return;
 
-    // async function submitSet() {
-    //     const formData = new FormData();
-    //     formData.append("name", name);
-    //     formData.append("setNumber", setNumber);
-    //     formData.append("yearReleased", yearReleased);
-    //     formData.append("isBought", isBought);
-    //     formData.append("yearBought", yearBought);
-    //     formData.append("description", description);
-    //     formData.append("price", price);
-    //     formData.append("partsAmount", partsAmount);
-    //     formData.append("themeId", themeId);
-    //     formData.append("imageThumbnail", file);
-
-    //     const resp = await fetch("/api/addSet", {
-    //         method: "POST",
-    //         body: formData,
-    //     });
-
-    //     newSetResp = await resp.json();
-    //     console.log(newSetResp);
-    // }
+        uploadedImage = URL.createObjectURL(image);
+    }
 </script>
 
 <section class="px-20 mb-10">
@@ -59,7 +43,7 @@
                 bind:value={name}
                 required
                 autocomplete="off"
-                maxlength="256"
+                maxlength="100"
                 class="my-input"
                 placeholder="Atreides Royal..."
             />
@@ -97,7 +81,6 @@
                 placeholder="1369"
             />
         </div>
-
         <div class="one-cell row-start-2 row-end-4 col-start-1 col-end-3">
             <label for="description">Description (max 256)</label>
             <textarea
@@ -111,7 +94,6 @@
                 placeholder="Autentic replica of the Atreides Royal Ornithopter from Dune..."
             ></textarea>
         </div>
-
         <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
             <label for="themeId"
                 >Theme ID (custom/official) <span class="text-red-600">*</span
@@ -143,14 +125,11 @@
             />
         </div>
         <div class="one-cell row-start-4 row-end-4 col-start-2 col-end-2">
-            <label for="yearBought"
-                >Year of purchase <span class="text-red-600">*</span></label
-            >
+            <label for="yearBought">Year of purchase</label>
             <input
                 type="text"
                 name="yearBought"
                 id="yearBought"
-                required
                 bind:value={yearBought}
                 autocomplete="off"
                 maxlength="4"
@@ -173,15 +152,23 @@
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-1 col-end-2">
             <label for="imageThumbnail">Image URL</label>
-            <input
-                type="file"
-                id="imageThumbnail"
-                name="imageThumbnail"
-                class="my-input"
-                accept="image/*"
-                on:change={(e) => (file = e?.target?.files[0])}
-                bind:value={imageThumbnail}
-            />
+            <div class="my-input">
+                <input
+                    type="file"
+                    id="imageThumbnail"
+                    name="imageThumbnail"
+                    accept="image/*"
+                    on:change={handleImageUpload}
+                    bind:value={imageThumbnail}
+                />
+                {#if uploadedImage}
+                    <img
+                        src={uploadedImage}
+                        class="w-32 m-4"
+                        alt="uploaded image"
+                    />
+                {/if}
+            </div>
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-2 col-end-3">
             <label for="instructions">PDF Manual</label>
