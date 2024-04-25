@@ -27,7 +27,7 @@ model sets {
   bought          Boolean?
   yearBought      Int?
   price           Int?
-  imageThumbnail  Bytes?
+  imageThumbnail  Int?
   instructionsUrl String?  @db.Text
   ownedBy         String   @db.Char(36)
   addedOn         DateTime @db.DateTime(0)

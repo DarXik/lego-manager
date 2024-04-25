@@ -29,7 +29,7 @@ const verifyUser = async (token: string) => {
                     token: null
                 }
             }
-            console.log("auth: ", foundUser?.user?.username);
+            console.log("auth: ", foundUser?.username);
             console.log("decoded: ", decoded);
 
 

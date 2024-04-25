@@ -23,13 +23,26 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.send({ message: "user not found" }).status(404);
     }
-    const resSetJSON = yield prisma_1.default.sets.findMany({ where: { ownedBy: verifiedUser.user.id } });
-    console.log(resSetJSON);
-    return res.send(resSetJSON).status(200);
-    // res.send(resSetJSON.results.map((set: any) => ({
-    //     setNumber: set.set_num,
-    //     name: set.name,
-    //     yearReleased: set.year,
-    // }))).status(200);
+    try {
+        const sets = yield prisma_1.default.sets.findMany({ where: { ownedBy: verifiedUser.user.id } });
+        if (!sets || sets.length == 0) {
+            return res.send({ message: "sets not found" }).status(404);
+        }
+        const setsWithImages = [];
+        for (const set of sets) {
+            const image = yield prisma_1.default.images.findUnique({ where: { id: set.imageThumbnail } });
+            if (!image) {
+                console.error("image not found for set: ", set.imageThumbnail);
+                continue;
+            }
+            const setWithImage = Object.assign(Object.assign({}, set), { imageThumbnail: image });
+            setsWithImages.push(setWithImage);
+        }
+        return res.send(setsWithImages).status(200);
+    }
+    catch (err) {
+        console.log(err);
+        return res.send({ message: "sets could not be found" }).status(500);
+    }
 });
 exports.default = { get };

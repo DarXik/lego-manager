@@ -25,12 +25,14 @@
                 class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20 pb-10"
             >
                 <div>
-                    <p  style="margin-top: {navbarHeight + 32}px" class="text-gray-500 text-xs break-normal mb-1">
+                    <p
+                        style="margin-top: {navbarHeight + 32}px"
+                        class="text-gray-500 text-xs break-normal mb-1"
+                    >
                         name
                     </p>
                     <h1
                         class="font-extrabold text-4xl lg:text-6xl uppercase mb-20"
-                       
                     >
                         {set.name}
                     </h1>
@@ -124,10 +126,13 @@
                     </div>
                 </div>
             </div>
-            <div
-                class="w-1/2 h-full bg-[url('../../ornithopter-testing-3.png')] bg-no-repeat bg-cover bg-center bg-black"
-            >
-                <!-- <img src="../../ornithopter-testing.webp" alt="set detail h-full w-full"> -->
+            <div class="w-1/2 h-full bg-no-repeat bg-cover bg-center bg-black">
+                <img
+                    loading="lazy"
+                    class="h-full w-full object-cover"
+                    src={set.imageThumbnail.imageThumbnail}
+                    alt={set.imageThumbnail.filename}
+                />
             </div>
         </article>
     {/if}

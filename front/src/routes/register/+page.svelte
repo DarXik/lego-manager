@@ -33,7 +33,7 @@
 </script>
 
 <section
-    class="flex items-center justify-center min-h-screen text-white"
+    class="flex items-center justify-center min-h-screen "
     in:fade={{ delay: 50, duration: 300 }}
 >
     <div

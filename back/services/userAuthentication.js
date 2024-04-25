@@ -48,7 +48,7 @@ const createToken = (user) => {
 };
 exports.createToken = createToken;
 const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _a, _b;
     try {
         const decoded = jwt.verify(token, secretKey);
         try {
@@ -63,7 +63,7 @@ const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
                     token: null
                 };
             }
-            console.log("auth: ", (_c = foundUser === null || foundUser === void 0 ? void 0 : foundUser.user) === null || _c === void 0 ? void 0 : _c.username);
+            console.log("auth: ", foundUser === null || foundUser === void 0 ? void 0 : foundUser.username);
             console.log("decoded: ", decoded);
             if (foundUser) {
                 return {

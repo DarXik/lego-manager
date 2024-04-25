@@ -1,5 +1,6 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
+    import { onMount } from "svelte";
     export let form;
     export let data;
 
@@ -7,7 +8,7 @@
     let name: any;
     let setNumber: any;
     let yearReleased: any;
-    let isBought: any;
+    let isBought: boolean = false;
     let yearBought: any;
     let description: any;
     let price: any;
@@ -16,6 +17,8 @@
     let imageThumbnail: any;
     let newSetResp: any;
     let uploadedImage: string;
+
+    $: imageThumbnail = "";
 
     function handleImageUpload(e: Event) {
         const image = (e.target as HTMLInputElement)?.files?.[0];
@@ -89,9 +92,9 @@
                 bind:value={description}
                 autocomplete="off"
                 rows="3"
-                class="w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
+                class="placeholder:italic w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
                 maxlength="256"
-                placeholder="Autentic replica of the Atreides Royal Ornithopter from Dune..."
+                placeholder="Authentic replica of the Atreides Royal Ornithopter from Dune..."
             ></textarea>
         </div>
         <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
@@ -175,20 +178,23 @@
         </div>
         <div
             htmlFor="isBought"
+            class:bg-zinc-900={isBought}
             class="cursor-pointer select-none flex flex-row items-center gap-3 hover:bg-zinc-900 w-fit px-3 py-2 text-gray-500 row-start-6 row-end-6 col-start-1 col-end-1 transition-all"
         >
             <input
                 type="checkbox"
                 name="isBought"
                 id="isBought"
-                bind:value={isBought}
+                on:click={() => (isBought = !isBought)}
+                
                 class="w-5 h-5 cursor-pointer checked:bg-red-900 bg-transparent"
                 autocomplete="off"
             />
             <label
                 htmlFor="isBought"
                 class="w-fit text-white cursor-pointer"
-                for="isBought">I already own this set</label
+                for="isBought"
+                >{isBought ? "I own this set" : "Do I own this set?"}</label
             >
         </div>
 
@@ -208,7 +214,7 @@
 
 <style lang="postcss">
     .my-input {
-        @apply placeholder:text-gray-600 text-sm text-white w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all;
+        @apply placeholder:italic  placeholder:text-gray-600 text-sm text-white w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all;
     }
     .one-cell {
         @apply flex flex-col gap-2 text-gray-500;
