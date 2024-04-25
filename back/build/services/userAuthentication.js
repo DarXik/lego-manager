@@ -51,12 +51,9 @@ const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
         const decoded = jwt.verify(token, secretKey);
+        console.log(decoded);
         try {
-            const foundUser = yield prisma_1.default.users.findUnique({
-                where: {
-                    id: decoded.user,
-                },
-            });
+            const foundUser = yield prisma_1.default.users.findUnique({ where: { id: decoded.user } });
             if (!((_b = (_a = foundUser === null || foundUser === void 0 ? void 0 : foundUser.sessions) === null || _a === void 0 ? void 0 : _a.sessions) === null || _b === void 0 ? void 0 : _b.includes(token))) {
                 return {
                     user: null,

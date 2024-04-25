@@ -26,7 +26,7 @@ export const actions = {
                 })
             })
 
-            if (response.status == 200) {
+            if (response.ok) {
                 let res1 = await response.json()
 
                 cookies.set("session", res1.session, {
@@ -36,7 +36,7 @@ export const actions = {
                     secure: true,
                     maxAge: 60 * 60 * 24 * 60
                 })
-
+                
                 return {
                     success: true,
                     user:{
@@ -47,7 +47,7 @@ export const actions = {
 
             } else {
                 return {
-                    problem: await response.text()
+                    problem: await response.json()
                 }
             }
         } catch (error) {

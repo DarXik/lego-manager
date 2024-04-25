@@ -28,8 +28,6 @@ const post = async (req: Request, res: Response) => {
 
     const verifiedUser: any = await verifyUser(req.headers.authorization.toString())
 
-    console.log(verifiedUser.user.username);
-
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.send("user not found").status(404)
     }

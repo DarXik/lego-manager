@@ -15,13 +15,9 @@ const createToken = (user: string) => {
 const verifyUser = async (token: string) => {
     try {
         const decoded: any = jwt.verify(token, secretKey)
-
+        console.log(decoded)
         try {
-            const foundUser = await prisma.users.findUnique({
-                where: {
-                    id: decoded.user,
-                },
-            })
+            const foundUser = await prisma.users.findUnique({ where: { id: decoded.user } })
 
             if (!foundUser?.sessions?.sessions?.includes(token)) {
                 return {

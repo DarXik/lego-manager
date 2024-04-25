@@ -30,18 +30,16 @@ export const actions = {
                     username: username
                 })
             })
-
+            
             if (response.ok) {
-                let res1 = await response.json()
-                // return redirect(302, "/login"); // nefunguje
+                // throw  redirect(301, "localhost:3000/login") // nefunguje
                 return {
                     success: true,
                 }
-
             } else {
                 return {
                     success: false,
-                    problem: await response.text()
+                    problem: await response.json()
                 }
             }
 

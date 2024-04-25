@@ -34,13 +34,13 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
     if (!req.body.email || !req.body.password) {
         console.log("email and password are required");
-        return res.send("email and password are required").status(400);
+        return res.status(400).send({ message: "email and password are required" });
     }
     try {
         if ((yield prisma_1.default.users.findUnique({ where: { email: req.body.email } })) ||
             (yield prisma_1.default.users.findUnique({ where: { username: req.body.username } }))) {
             console.log("user already exists");
-            return res.send("user already exists").status(409);
+            return res.status(409).send({ message: "user already exists" });
         }
     }
     catch (err) {
@@ -51,16 +51,16 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(user);
         if (yield user) {
             console.log("user registered");
-            res.send("user registered").status(201);
+            res.status(201).send({ message: "user registered" });
         }
         else {
             console.log("user could not be registered");
-            res.send("user could not be registered").status(503);
+            res.status(503).send({ message: "user could not be registered" });
         }
     }
     catch (err) {
         console.log("user could not be registered");
-        res.send("user could not be registered").status(503);
+        res.status(503).send({ message: "user could not be registered" });
     }
 });
 exports.default = { post };

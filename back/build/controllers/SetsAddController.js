@@ -39,7 +39,6 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.send("something is missing").status(400);
     }
     const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization.toString());
-    console.log(verifiedUser.user.username);
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.send("user not found").status(404);
     }

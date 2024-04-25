@@ -16,18 +16,19 @@ const userAuthentication_1 = require("../services/userAuthentication");
 const prisma_1 = __importDefault(require("../config/prisma"));
 const userHash_1 = require("../services/userHash");
 const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     console.log(req.body);
     if (!req.body.email || !req.body.password) {
-        return res.send("email and password are required").status(400);
+        return res.status(400).send({ message: "something is missing" });
     }
     try {
         const user = yield prisma_1.default.users.findUnique({ where: { email: req.body.email } } || { where: { username: req.body.email } });
         console.log(user);
         if (!user) {
-            return res.send("user not found").status(404);
+            return res.status(404).send({ message: "User not found" });
         }
         if (!(yield (0, userHash_1.verifyPassword)(req.body.password, user.password))) {
-            return res.send("wrong password").status(401);
+            return res.status(401).send({ message: "wrong password" });
         }
         const userSession = (0, userAuthentication_1.createToken)(user.id.toString()).toString();
         console.log(userSession);
@@ -36,24 +37,24 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 where: { id: user.id },
                 data: {
                     sessions: {
-                        sessions: [...user.sessions.sessions, userSession]
+                        sessions: [...(_a = user === null || user === void 0 ? void 0 : user.sessions) === null || _a === void 0 ? void 0 : _a.sessions, userSession]
                     }
                 }
             });
-            res.send({
+            res.status(200).send({
                 session: userSession,
                 username: user.username,
                 email: user.email,
-            }).status(200);
+            });
         }
         catch (err) {
             console.log(err);
-            res.send("could not be authenticated").status(503);
+            res.status(503).send({ message: "could not be authenticated" });
         }
     }
     catch (err) {
         console.log(err);
-        res.send("could not be authenticated").status(503);
+        res.status(503).send({ message: "could not be authenticated" });
     }
 });
 exports.default = { post };

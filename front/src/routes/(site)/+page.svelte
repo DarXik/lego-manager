@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import { userInfo, userSets } from "$lib/store";
+    import { userInfo, userSets, isSearching } from "$lib/store";
     import { goto } from "$app/navigation";
 
     export let form;
@@ -8,11 +8,15 @@
 
     let searchQuery;
     let username = $userInfo.username;
-
-    
 </script>
 
-<section class="px-20">
+<!-- <style lang="postcss">
+    .is-searching {
+      @apply   backdrop-blur-lg transition-all duration-200;
+    }
+  </style> -->
+
+<section class="px-20" class:is-searching={$isSearching}>
     <h1 class="font-bold text-4xl mt-8 mb-20">
         <span class="text-gray-500 text-2xl">Welcome back</span>
         {username ? username : "--"}
@@ -29,7 +33,7 @@
                             <img
                                 src={set.imageThumbnail.imageThumbnail}
                                 alt={set.imageThumbnail.filename}
-                                class=" w-fit"
+                                class=" w-fit bg-gray-600"
                                 loading="lazy"
                             />
                         </div>
@@ -42,7 +46,7 @@
                                 <p class="text-sm text-gray-500 font-normal">
                                     name
                                 </p>
-                                <h3 class="text-2xl font-bold mb-14 truncate">
+                                <h3 class="text-2xl font-bold mb-14">
                                     {set.name}
                                 </h3>
                             </div>
