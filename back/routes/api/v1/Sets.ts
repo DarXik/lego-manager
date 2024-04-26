@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.get("/", controller.get)
 
-router.post("/", async (req: Request, res: Response) => {
-    res.send("sets new")
-})
+// router.post("/", async (req: Request, res: Response) => {
+//     res.send("sets new")
+// })
 
 export default router

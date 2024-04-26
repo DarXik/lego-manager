@@ -16,21 +16,21 @@ model images {
 }
 
 model sets {
-  id              String   @id @unique(map: "id") @db.Char(36)
-  setNumber       Int      @unique(map: "setNumber") @db.UnsignedInt
-  name            String   @unique(map: "set_name_unique") @db.VarChar(255)
-  description     String?  @db.Text
-  partsAmount     Int
-  themeId         Int
-  themeName       String   @db.Text
-  yearReleased    Int?
-  bought          Boolean?
-  yearBought      Int?
-  price           Int?
-  imageThumbnail  Int?
-  instructionsUrl String?  @db.Text
-  ownedBy         String   @db.Char(36)
-  addedOn         DateTime @db.DateTime(0)
+  id             String   @id @unique(map: "id") @db.Char(36)
+  setNumber      Int      @unique(map: "setNumber")
+  name           String   @unique(map: "set_name_unique") @db.VarChar(255)
+  description    String?  @db.Text
+  partsAmount    Int
+  themeId        Int
+  themeName      String   @db.Text
+  yearReleased   Int?
+  bought         Boolean?
+  yearBought     Int?
+  price          Int?
+  imageThumbnail String?  @db.VarChar(255)
+  ownedBy        String   @db.Char(36)
+  addedOn        DateTime @db.DateTime(0)
+  instructions   String?  @db.Text
 }
 
 model users {

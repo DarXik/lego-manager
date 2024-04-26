@@ -1,14 +1,17 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
     import { userSets } from "$lib/store";
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
 
     export let data;
 
-    let navbarHeight;
+    let navbarHeight: number;
+    let pdfViewer: any;
 
-    onMount(() => {
+    onMount(async () => {
         navbarHeight = document.getElementsByTagName("nav")[0].offsetHeight;
+        const module = await import("svelte-pdf");
+        pdfViewer = module.default;
     });
 
     console.log($userSets);
@@ -111,10 +114,16 @@
                 <img
                     loading="lazy"
                     class="h-full w-full object-cover"
-                    src={set.imageThumbnail.imageThumbnail}
-                    alt={set.imageThumbnail.filename}
+                    src="http://localhost:3000/api/v1/image/{set.imageThumbnail}"
+                    alt={set.imageThumbnail}
                 />
             </div>
+        </article>
+        <article>
+            <svelte:component
+                this={pdfViewer}
+                src="http://localhost:3000/api/v1/instructions/{set.instructions}"
+            ></svelte:component>
         </article>
     {/if}
 </section>

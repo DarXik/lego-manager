@@ -16,47 +16,78 @@ const userAuthentication_1 = require("../services/userAuthentication");
 const prisma_1 = __importDefault(require("../config/prisma"));
 const uniqid_1 = __importDefault(require("uniqid"));
 const uuid_1 = require("uuid");
-function saveImage(fileBuffer, user, fileType, originalName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const image = yield prisma_1.default.images.create({
-                data: {
-                    filename: originalName.split(".")[0] + "-" + (0, uniqid_1.default)(),
-                    mimetype: fileType,
-                    imageThumbnail: fileBuffer.toString("base64"),
-                    addedBy: user
-                }
-            });
-            return image;
-        }
-        catch (err) {
-            console.log(err);
-        }
-    });
-}
+const multer_1 = __importDefault(require("multer"));
+const upload = (0, multer_1.default)({ dest: "uploads/" });
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body || !req.headers.authorization) {
-        return res.send("something is missing").status(400);
+        return res.status(400).send({ message: "something is missing" });
     }
     const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization.toString());
     if (!verifiedUser.user || !verifiedUser.token) {
-        return res.send("user not found").status(404);
+        return res.status(404).send({ message: "user not found" });
     }
     const set = yield req.body;
-    const fileBuffer = yield req.file;
-    console.log("adding set: ", set);
-    console.log("file: ", {
-        name: fileBuffer === null || fileBuffer === void 0 ? void 0 : fileBuffer.originalname,
-        type: fileBuffer === null || fileBuffer === void 0 ? void 0 : fileBuffer.mimetype,
-        size: fileBuffer === null || fileBuffer === void 0 ? void 0 : fileBuffer.size
-    });
-    let newImage;
-    if (fileBuffer) {
+    let newFilename;
+    let newFilename2;
+    console.log(req.files);
+    if (req.files || req.file) {
         try {
-            newImage = yield saveImage(fileBuffer === null || fileBuffer === void 0 ? void 0 : fileBuffer.buffer, verifiedUser.user.id, fileBuffer === null || fileBuffer === void 0 ? void 0 : fileBuffer.mimetype, fileBuffer === null || fileBuffer === void 0 ? void 0 : fileBuffer.originalname);
+            const files = req.files || req.file;
+            const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.JPG', '.JPEG', '.PNG', '.GIF', '.WEBP', '.svg', '.SVG', '.pdf', '.PDF'];
+            if (files.length == 1) {
+                const ext = path_1.default.extname(files[0].originalname).toLowerCase();
+                if (!allowedExtensions.includes(ext)) {
+                    console.log("extension not allowed");
+                    return res.status(500).send({ message: "extension not allowed" });
+                }
+                try {
+                    newFilename = `${(0, uniqid_1.default)()}-${files[0].originalname.split(".")[0]}${ext}`;
+                    // const filePath = path.join(__dirname, `../../uploads/${verifiedUser.user.id}/${newFilename}`)
+                    const filePath = path_1.default.join(__dirname, ((ext == ".pdf" || ext == ".PDF") ? `../../uploads/instructions/${newFilename}` : `../../uploads/images/${newFilename}`));
+                    yield fs_1.default.promises.writeFile(filePath, files[0].buffer);
+                }
+                catch (err) {
+                    console.log(err);
+                    return res.status(500).send({ message: "file could not be saved" });
+                }
+            }
+            else {
+                for (const key in files) {
+                    const ext = path_1.default.extname(files[key].originalname).toLowerCase();
+                    if (!allowedExtensions.includes(ext)) {
+                        console.log("extension not allowed");
+                        return res.status(500).send({ message: "extension not allowed" });
+                    }
+                    if (ext == ".pdf" || ext == ".PDF" && files[key].mimetype == "application/pdf") {
+                        try {
+                            newFilename2 = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
+                            const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${newFilename2}`);
+                            yield fs_1.default.promises.writeFile(filePath, files[key].buffer);
+                        }
+                        catch (err) {
+                            console.log(err);
+                            return res.status(500).send({ message: "pdf could not be saved" });
+                        }
+                    }
+                    else {
+                        try {
+                            newFilename = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
+                            const filePath = path_1.default.join(__dirname, `../../uploads/images/${newFilename}`);
+                            yield fs_1.default.promises.writeFile(filePath, files[key].buffer);
+                        }
+                        catch (err) {
+                            console.log(err);
+                            return res.status(500).send({ message: "image could not be saved" });
+                        }
+                    }
+                }
+            }
         }
         catch (err) {
             console.log(err);
+            return res.status(500).send({ message: "image could not be saved" });
         }
     }
     try {
@@ -93,8 +124,8 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 bought: (set.isBought == "on" ? true : false) || null,
                 yearBought: parseInt(set.yearBought) || null,
                 price: parseInt(set.price) || null,
-                imageThumbnail: (newImage === null || newImage === void 0 ? void 0 : newImage.id) || null,
-                instructionsUrl: set.instructionsUrl || null,
+                imageThumbnail: ((newFilename === null || newFilename === void 0 ? void 0 : newFilename.split(".")[1]) === "pdf" || (newFilename === null || newFilename === void 0 ? void 0 : newFilename.split(".")[1]) === "PDF" ? null : newFilename) || null,
+                instructions: ((newFilename2 === null || newFilename2 === void 0 ? void 0 : newFilename2.split(".")[1]) !== "pdf" || (newFilename2 === null || newFilename2 === void 0 ? void 0 : newFilename2.split(".")[1]) !== "PDF" ? null : newFilename2) || null,
                 ownedBy: verifiedUser.user.id,
                 addedOn: new Date()
             }
@@ -112,24 +143,24 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         }
                     }
                 })) {
-                    res.send("set added").status(201);
+                    res.status(201).send({ message: "set added" });
                 }
                 else {
-                    res.send("set could not be added 1").status(503);
+                    res.status(503).send({ message: "set could not be added 1" });
                 }
             }
             else {
-                res.send("set could not be added 2").status(503);
+                res.status(503).send({ message: "set could not be added 2" });
             }
         }
         catch (err) {
             console.log(err);
-            res.send("set could not be added 3").status(503);
+            res.status(503).send({ message: "set could not be added 3" });
         }
     }
     catch (e) {
         console.log(e);
-        res.send("set could not be added 4").status(503);
+        res.status(503).send({ message: "set could not be added 4" });
     }
 });
 exports.default = { post };

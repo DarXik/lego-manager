@@ -15,8 +15,10 @@ export const load = (async ({ locals }) => {
                 "Authorization": locals.session || ""
             }
         })
+        
         const res1 = await response.json()
         console.log(res1)
+
         return {
             session: locals.session,
             sets: res1

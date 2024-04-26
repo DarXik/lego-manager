@@ -8,25 +8,25 @@
   $: console.log(data.sets);
   onMount(() => {
     if (data.sets) {
-      let localSets = [];
+      // let localSets = [];
 
-      for (const key in data.sets) {
-        console.log(key);
-        const imageData = {
-          filename: data.sets[key].imageThumbnail.filename,
-          mimetype: data.sets[key].imageThumbnail.mimetype,
-          id: data.sets[key].imageThumbnail.id,
-          imageThumbnail: `data:${data.sets[key].imageThumbnail.mimetype};base64,${data.sets[key].imageThumbnail.imageThumbnail}`,
-          addedBy: data.sets[key].imageThumbnail.addedBy,
-        };
+      // for (const key in data.sets) {
+      //   console.log(key);
+      //   const imageData = {
+      //     filename: data.sets[key].imageThumbnail.filename,
+      //     mimetype: data.sets[key].imageThumbnail.mimetype,
+      //     id: data.sets[key].imageThumbnail.id,
+      //     imageThumbnail: `data:${data.sets[key].imageThumbnail.mimetype};base64,${data.sets[key].imageThumbnail.imageThumbnail}`,
+      //     addedBy: data.sets[key].imageThumbnail.addedBy,
+      //   };
 
-        localSets.push({
-          ...data.sets[key],
-          imageThumbnail: imageData,
-        });
-      }
+      //   localSets.push({
+      //     ...data.sets[key],
+      //     imageThumbnail: imageData,
+      //   });
+      // }
 
-      $userSets = localSets;
+      $userSets = data.sets;
     }
   });
 </script>

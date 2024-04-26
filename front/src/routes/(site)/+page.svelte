@@ -29,16 +29,22 @@
                     <div
                         class="flex flex-col h-full w-[20em] hover:scale-105 transition-all hover:cursor-pointer"
                     >
-                        <div class="">
+                        <div class="h-1/3">
+                            <!-- nefunguje -->
                             <img
-                                src={set.imageThumbnail.imageThumbnail}
-                                alt={set.imageThumbnail.filename}
-                                class=" w-fit bg-gray-600"
+                                src={set.imageThumbnail &&
+                                set.imageThumbnail !== ""
+                                    ? `http://localhost:3000/api/v1/image/${set.imageThumbnail}`
+                                    : "../../../placeholder.webp"}
+                                alt={set.imageThumbnail
+                                    ? set.imageThumbnail
+                                    : "no image"}
+                                class=" w-fit bg-gray-600 h-full object-cover"
                                 loading="lazy"
                             />
                         </div>
                         <div
-                            class="bg-no-repeat bg-cover bg-gradient-to-tl from-gray-950 to-gray-900 p-6 px-8 select-none flex flex-col justify-between items-start h-full"
+                            class="bg-no-repeat bg-cover bg-gradient-to-tl from-gray-950 to-gray-900 p-6 px-8 select-none flex flex-col justify-between items-start h-1/2"
                         >
                             <div
                                 class="flex flex-col justify-start items-start"

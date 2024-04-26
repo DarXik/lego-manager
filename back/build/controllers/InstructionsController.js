@@ -8,20 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const userAuthentication_1 = require("../services/userAuthentication");
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
 const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.headers.authorization) {
-        return res.status(400);
+    if (!req.params.filename) {
+        return res.status(400).send({ message: "something is missing" });
     }
-    const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization);
-    if (verifiedUser.user && verifiedUser.token) {
-        console.log("user verified: ", verifiedUser.user.username);
-        return res.status(200);
+    const filename = req.params.filename;
+    console.log(filename);
+    try {
+        const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${filename}`);
+        if (!fs_1.default.existsSync(filePath)) {
+            return res.status(404).send({ message: "image not found" });
+        }
+        res.status(200).sendFile(filePath);
     }
-    else {
-        console.log("user not verified");
-        return res.status(404);
+    catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: "image not found" });
     }
 });
 exports.default = { get };

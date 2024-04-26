@@ -11,18 +11,25 @@ const User_2 = __importDefault(require("./routes/user/register/User"));
 const Search_1 = __importDefault(require("./routes/api/v1/search/Search"));
 const Add_1 = __importDefault(require("./routes/api/v1/add/Add"));
 const User_3 = __importDefault(require("./routes/user/check/User"));
+const Image_1 = __importDefault(require("./routes/api/v1/image/Image"));
+const Instructions_1 = __importDefault(require("./routes/api/v1/instructions/Instructions"));
 const multer_1 = __importDefault(require("multer"));
-const uplaod = (0, multer_1.default)();
+// import fileupload from "express-fileupload"
+const upload = (0, multer_1.default)();
 const app = (0, express_1.default)();
 const PORT = 3000;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use("/api/v1/sets", Sets_1.default);
+// app.use(express.static("public"))
+// app.use(fileupload())
+app.use("/user/check", User_3.default);
 app.use("/user/login", User_1.default);
 app.use("/user/register", User_2.default);
+app.use("/api/v1/sets", Sets_1.default);
+app.use("/api/v1/sets/add", upload.any(), Add_1.default);
 app.use("/api/v1/sets/search", Search_1.default);
-app.use("/api/v1/sets/add", uplaod.single("imageThumbnail"), Add_1.default);
-app.use("/user/check", User_3.default);
+app.use("/api/v1/image", Image_1.default);
+app.use("/api/v1/instructions", Instructions_1.default);
 app.get("/", (req, res) => {
     res.send("Lego Manager API v1");
 });

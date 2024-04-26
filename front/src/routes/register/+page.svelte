@@ -17,8 +17,7 @@
         password = document.getElementById("password");
         confirm_password = document.getElementById("confirm_password");
     });
-
-    function submit() {}
+    
     $: if (password.length > 0 && confirm_password.length > 0) {
         passwordMatch = password !== confirm_password;
     } else if (password.length === 0 && confirm_password.length === 0) {
@@ -31,10 +30,16 @@
         console.log("success");
         goto("/login");
     }
+
+    // $: if (form?.problem) {
+    //     setTimeout(() => {
+    //         window.location.reload();
+    //     }, 15000);
+    // }
 </script>
 
 <section
-    class="flex items-center justify-center min-h-screen "
+    class="flex items-center justify-center min-h-screen"
     in:fade={{ delay: 50, duration: 300 }}
 >
     <div
@@ -124,7 +129,6 @@
             </div>
             <button
                 type="submit"
-                on:click={submit}
                 disabled={passwordMatch}
                 class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed mb-6"
             >
