@@ -2,30 +2,24 @@
     import { onMount } from "svelte";
     import { userSets } from "$lib/store";
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
+    import PdfViewer from "svelte-pdf";
 
     export let data;
-
     let navbarHeight: number;
-    let pdfViewer: any;
 
     onMount(async () => {
         navbarHeight = document.getElementsByTagName("nav")[0].offsetHeight;
-        const module = await import("svelte-pdf");
-        pdfViewer = module.default;
     });
 
-    console.log($userSets);
-    console.log(data.slug);
-    $: console.log(navbarHeight);
-
-    let set = $userSets.find((set) => set.id == data.slug);
+    // let set = $userSets.find((set) => set.id == data.slug);
+    let set = data.set
 </script>
 
 <section>
-    {#if navbarHeight}
+    {#if navbarHeight && set}
         <article class="h-[100vh] flex flex-row">
             <div
-                class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20 pb-10"
+                class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20"
             >
                 <div>
                     <p
@@ -114,16 +108,39 @@
                 <img
                     loading="lazy"
                     class="h-full w-full object-cover"
-                    src="http://localhost:3000/api/v1/image/{set.imageThumbnail}"
-                    alt={set.imageThumbnail}
+                    src={set.imageThumbnail
+                        ? `http://localhost:3000/api/v1/image/${set.imageThumbnail}`
+                        : "../../../placeholder.webp"}
+                    alt={set.imageThumbnail ? set.imageThumbnail : "no image"}
                 />
             </div>
         </article>
-        <article>
-            <svelte:component
-                this={pdfViewer}
-                src="http://localhost:3000/api/v1/instructions/{set.instructions}"
-            ></svelte:component>
-        </article>
+        {#if set.instructions}
+            <article
+                class="px-20 mb-16 w-1/2 mt-24 flex flex-col items-start justify-center h-[100vh]"
+            >
+                <div
+                    class="flex flex-col mb-16 border-b-2 border-zinc-300 pb-4 w-full"
+                >
+                    <h2 class="text-4xl font-bold mb-8">Instructions</h2>
+                    <button
+                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
+                        ><a
+                            href="http://localhost:3000/api/v1/instructions/{set.instructions}"
+                            target="_blank"
+                            
+                            >Open</a
+                        ></button
+                    >
+                </div>
+                <object
+                    title="instructions"
+                    class="w-full h-full"
+                    data="http://localhost:3000/api/v1/instructions/{set.instructions}"
+                    type="application/pdf"
+                ></object>
+                <!-- <PdfViewer url="http://localhost:3000/api/v1/instructions/{set.instructions}"></PdfViewer> -->
+            </article>
+        {/if}
     {/if}
 </section>

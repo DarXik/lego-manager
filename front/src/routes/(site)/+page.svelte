@@ -7,7 +7,6 @@
     export let data;
 
     let searchQuery;
-    let username = $userInfo.username;
 </script>
 
 <!-- <style lang="postcss">
@@ -16,21 +15,24 @@
     }
   </style> -->
 
-<section class="px-20" class:is-searching={$isSearching}>
-    <h1 class="font-bold text-4xl mt-8 mb-20">
-        <span class="text-gray-500 text-2xl">Welcome back</span>
-        {username ? username : "--"}
-    </h1>
+<section class="px-20 mb-16" class:is-searching={$isSearching}>
+    <div class="mt-8 mb-12">
+        <!-- <h1 class="font-bold text-4xl mb-16">
+            <span class="text-gray-500 text-2xl">Welcome back</span>
+            {username ? username : "--"}
+        </h1> -->
+        <p class="text-xl">Added LEGO sets:</p>
+    </div>
 
     <article class="flex flex-wrap gap-6 grow h-full">
         {#if $userSets.length > 0}
             {#each $userSets as set}
                 <button on:click={() => goto(`/set/${set.id}`)}>
                     <div
-                        class="flex flex-col h-full w-[20em] hover:scale-105 transition-all hover:cursor-pointer"
+                        class="flex flex-col w-[20em]  hover:scale-105 transition-all hover:cursor-pointer"
                     >
-                        <div class="h-1/3">
-                            <!-- nefunguje -->
+                        <!-- <div class="h-1/3">
+                            nefunguje
                             <img
                                 src={set.imageThumbnail &&
                                 set.imageThumbnail !== ""
@@ -41,10 +43,10 @@
                                     : "no image"}
                                 class=" w-fit bg-gray-600 h-full object-cover"
                                 loading="lazy"
-                            />
-                        </div>
+                            /> -->
+                        <!-- </div> -->
                         <div
-                            class="bg-no-repeat bg-cover bg-gradient-to-tl from-gray-950 to-gray-900 p-6 px-8 select-none flex flex-col justify-between items-start h-1/2"
+                            class="h-[20em] bg-no-repeat bg-cover bg-gradient-to-tl from-gray-950 to-gray-900 p-6 px-8 select-none flex flex-col justify-between items-start"
                         >
                             <div
                                 class="flex flex-col justify-start items-start"
@@ -52,7 +54,7 @@
                                 <p class="text-sm text-gray-500 font-normal">
                                     name
                                 </p>
-                                <h3 class="text-2xl font-bold mb-14">
+                                <h3 class="text-2xl font-bold">
                                     {set.name}
                                 </h3>
                             </div>
@@ -61,7 +63,7 @@
                             >
                                 <p class="text-lg">
                                     <span class="text-sm text-gray-500"
-                                        >no.
+                                        >set no.
                                     </span>{set.setNumber}
                                 </p>
                                 <p class="text-lg">
@@ -91,7 +93,7 @@
                 </button>
             {/each}
         {:else}
-            <p class="italic">No sets found</p>
+            <p class="italic text-gray-400 bg-red">No sets found</p>
         {/if}
     </article>
 

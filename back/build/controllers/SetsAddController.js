@@ -29,61 +29,44 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(404).send({ message: "user not found" });
     }
     const set = yield req.body;
-    let newFilename;
-    let newFilename2;
-    console.log(req.files);
+    console.log(set);
+    let newImageFilename;
+    let newPDFFilename;
     if (req.files || req.file) {
+        console.log(req.files);
         try {
             const files = req.files || req.file;
             const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.JPG', '.JPEG', '.PNG', '.GIF', '.WEBP', '.svg', '.SVG', '.pdf', '.PDF'];
-            if (files.length == 1) {
-                const ext = path_1.default.extname(files[0].originalname).toLowerCase();
+            for (const key in files) {
+                const ext = path_1.default.extname(files[key].originalname).toLowerCase();
                 if (!allowedExtensions.includes(ext)) {
                     console.log("extension not allowed");
                     return res.status(500).send({ message: "extension not allowed" });
                 }
-                try {
-                    newFilename = `${(0, uniqid_1.default)()}-${files[0].originalname.split(".")[0]}${ext}`;
-                    // const filePath = path.join(__dirname, `../../uploads/${verifiedUser.user.id}/${newFilename}`)
-                    const filePath = path_1.default.join(__dirname, ((ext == ".pdf" || ext == ".PDF") ? `../../uploads/instructions/${newFilename}` : `../../uploads/images/${newFilename}`));
-                    yield fs_1.default.promises.writeFile(filePath, files[0].buffer);
-                }
-                catch (err) {
-                    console.log(err);
-                    return res.status(500).send({ message: "file could not be saved" });
-                }
-            }
-            else {
-                for (const key in files) {
-                    const ext = path_1.default.extname(files[key].originalname).toLowerCase();
-                    if (!allowedExtensions.includes(ext)) {
-                        console.log("extension not allowed");
-                        return res.status(500).send({ message: "extension not allowed" });
+                if (ext == ".pdf" || ext == ".PDF" && files[key].mimetype == "application/pdf") {
+                    try {
+                        newPDFFilename = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
+                        const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${newPDFFilename}`);
+                        yield fs_1.default.promises.writeFile(filePath, files[key].buffer);
                     }
-                    if (ext == ".pdf" || ext == ".PDF" && files[key].mimetype == "application/pdf") {
-                        try {
-                            newFilename2 = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
-                            const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${newFilename2}`);
-                            yield fs_1.default.promises.writeFile(filePath, files[key].buffer);
-                        }
-                        catch (err) {
-                            console.log(err);
-                            return res.status(500).send({ message: "pdf could not be saved" });
-                        }
+                    catch (err) {
+                        console.log(err);
+                        return res.status(500).send({ message: "pdf could not be saved" });
                     }
-                    else {
-                        try {
-                            newFilename = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
-                            const filePath = path_1.default.join(__dirname, `../../uploads/images/${newFilename}`);
-                            yield fs_1.default.promises.writeFile(filePath, files[key].buffer);
-                        }
-                        catch (err) {
-                            console.log(err);
-                            return res.status(500).send({ message: "image could not be saved" });
-                        }
+                }
+                else {
+                    try {
+                        newImageFilename = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
+                        const filePath = path_1.default.join(__dirname, `../../uploads/images/${newImageFilename}`);
+                        yield fs_1.default.promises.writeFile(filePath, files[key].buffer);
+                    }
+                    catch (err) {
+                        console.log(err);
+                        return res.status(500).send({ message: "image could not be saved" });
                     }
                 }
             }
+            // }
         }
         catch (err) {
             console.log(err);
@@ -124,8 +107,8 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 bought: (set.isBought == "on" ? true : false) || null,
                 yearBought: parseInt(set.yearBought) || null,
                 price: parseInt(set.price) || null,
-                imageThumbnail: ((newFilename === null || newFilename === void 0 ? void 0 : newFilename.split(".")[1]) === "pdf" || (newFilename === null || newFilename === void 0 ? void 0 : newFilename.split(".")[1]) === "PDF" ? null : newFilename) || null,
-                instructions: ((newFilename2 === null || newFilename2 === void 0 ? void 0 : newFilename2.split(".")[1]) !== "pdf" || (newFilename2 === null || newFilename2 === void 0 ? void 0 : newFilename2.split(".")[1]) !== "PDF" ? null : newFilename2) || null,
+                imageThumbnail: newImageFilename || null,
+                instructions: newPDFFilename || null,
                 ownedBy: verifiedUser.user.id,
                 addedOn: new Date()
             }

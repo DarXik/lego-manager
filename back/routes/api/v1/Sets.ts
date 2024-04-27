@@ -5,9 +5,6 @@ import controller from "../../../controllers/SetsController"
 const router = express.Router()
 
 router.get("/", controller.get)
-
-// router.post("/", async (req: Request, res: Response) => {
-//     res.send("sets new")
-// })
+router.get("/:id", controller.get)
 
 export default router

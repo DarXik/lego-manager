@@ -8,25 +8,55 @@ const get = async (req: Request, res: Response) => {
     }
 
     const verifiedUser: any = await verifyUser(req.headers.authorization.toString())
-
-    console.log("sets for user: ", verifiedUser.user.username);
-
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.status(404).send({ message: "user not found" })
     }
 
-    try {
-        const sets = await prisma.sets.findMany({ where: { ownedBy: verifiedUser.user.id } })
+    if (!req.params.id) {
+        console.log("sets for user: ", verifiedUser.user.username);
 
-        if (!sets || sets.length == 0) {
-            return res.status(404).send({ message: "sets not found" })
+        try {
+            const sets = await prisma.sets.findMany({ where: { ownedBy: verifiedUser.user.id } })
+
+            if (!sets || sets.length == 0) {
+                return res.status(404).send({ message: "sets not found" })
+            }
+
+            const setsSmaller = sets.map(set => {
+                return {
+                    id: set.id,
+                    name: set.name,
+                    setNumber: set.setNumber,
+                    addedOn: set.addedOn,
+                    yearBought: set.yearBought,
+                    bought: set.bought,
+                    themeName: set.themeName,
+                }
+            })
+
+            return res.status(200).send(setsSmaller)
         }
-
-        return res.status(200).send(sets)
+        catch (err) {
+            console.log(err)
+            return res.status(500).send({ message: "sets could not be found" })
+        }
     }
-    catch (err) {
-        console.log(err)
-        return res.status(500).send({ message: "sets could not be found" })
+    else {
+        console.log("looking for set: ", req.params.id);
+
+        try {
+            const set = await prisma.sets.findUnique({ where: { id: req.params.id, ownedBy: verifiedUser.user.id } })
+
+            if (!set) {
+                return res.status(404).send({ message: "set not found" })
+            }
+
+            return res.status(200).send(set)
+        }
+        catch (err) {
+            console.log(err)
+            return res.status(500).send({ message: "set could not be found" })
+        }
     }
 }
 

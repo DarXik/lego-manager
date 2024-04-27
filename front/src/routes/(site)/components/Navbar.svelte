@@ -3,6 +3,7 @@
     import { page } from "$app/stores";
     import { onMount } from "svelte";
     import { isSearching } from "$lib/store";
+    import { userInfo } from "$lib/store";
 
     let isInSlug = false;
     let searchInput = "";
@@ -42,14 +43,17 @@
                     >Settings</a
                 ></button
             >
-        </div>
+            <div class="h-6 ml-4 pl-4 w-fit border-l-2 bg-transparent ">
+                <p class="text-gray-400 text-sm">user: <span class="text-lg font-bold text-zinc-100">{$userInfo.username}</span></p>
+            </div>
+        </div>        
         <div
-            class="w-1/2 flex flex-row justify-end lg:px-20 py-4"
+            class="w-1/2 flex flex-row justify-end px-20 py-4"
             class:bg-black={!isInSlug}
             class:is-searching={$isSearching}
         >
             <form
-                class="2xl:w-1/2 w-full"
+                class="w-10/12"
                 method="POST"
                 action="?/searchLegoSet"
                 use:enhance

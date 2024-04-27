@@ -18,7 +18,7 @@ export const dictionary = {
 		"/(site)/add-set": [~4,[2]],
 		"/login": [~6],
 		"/register": [~7],
-		"/(site)/set/[slug]": [5,[2]]
+		"/(site)/set/[slug]": [~5,[2]]
 	};
 
 export const hooks = {

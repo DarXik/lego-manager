@@ -5,7 +5,7 @@
   import { userSets, isSearching } from "$lib/store";
 
   export let data;
-  $: console.log(data.sets);
+  
   onMount(() => {
     if (data.sets) {
       // let localSets = [];

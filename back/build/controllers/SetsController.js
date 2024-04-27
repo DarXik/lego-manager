@@ -19,20 +19,47 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).send({ message: "something is missing" });
     }
     const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization.toString());
-    console.log("sets for user: ", verifiedUser.user.username);
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.status(404).send({ message: "user not found" });
     }
-    try {
-        const sets = yield prisma_1.default.sets.findMany({ where: { ownedBy: verifiedUser.user.id } });
-        if (!sets || sets.length == 0) {
-            return res.status(404).send({ message: "sets not found" });
+    if (!req.params.id) {
+        console.log("sets for user: ", verifiedUser.user.username);
+        try {
+            const sets = yield prisma_1.default.sets.findMany({ where: { ownedBy: verifiedUser.user.id } });
+            if (!sets || sets.length == 0) {
+                return res.status(404).send({ message: "sets not found" });
+            }
+            const setsSmaller = sets.map(set => {
+                return {
+                    id: set.id,
+                    name: set.name,
+                    setNumber: set.setNumber,
+                    addedOn: set.addedOn,
+                    yearBought: set.yearBought,
+                    bought: set.bought,
+                    themeName: set.themeName,
+                };
+            });
+            return res.status(200).send(setsSmaller);
         }
-        return res.status(200).send(sets);
+        catch (err) {
+            console.log(err);
+            return res.status(500).send({ message: "sets could not be found" });
+        }
     }
-    catch (err) {
-        console.log(err);
-        return res.status(500).send({ message: "sets could not be found" });
+    else {
+        console.log("looking for set: ", req.params.id);
+        try {
+            const set = yield prisma_1.default.sets.findUnique({ where: { id: req.params.id, ownedBy: verifiedUser.user.id } });
+            if (!set) {
+                return res.status(404).send({ message: "set not found" });
+            }
+            return res.status(200).send(set);
+        }
+        catch (err) {
+            console.log(err);
+            return res.status(500).send({ message: "set could not be found" });
+        }
     }
 });
 exports.default = { get };

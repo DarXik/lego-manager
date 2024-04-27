@@ -7,7 +7,5 @@ const express_1 = __importDefault(require("express"));
 const SetsController_1 = __importDefault(require("../../../controllers/SetsController"));
 const router = express_1.default.Router();
 router.get("/", SetsController_1.default.get);
-// router.post("/", async (req: Request, res: Response) => {
-//     res.send("sets new")
-// })
+router.get("/:id", SetsController_1.default.get);
 exports.default = router;
