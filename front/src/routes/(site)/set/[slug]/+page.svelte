@@ -1,30 +1,25 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { userSets } from "$lib/store";
+    import { navbarHeight } from "$lib/store";
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
-    import PdfViewer from "svelte-pdf";
 
     export let data;
-    let navbarHeight: number;
-
-    onMount(async () => {
-        navbarHeight = document.getElementsByTagName("nav")[0].offsetHeight;
-    });
+    
 
     // let set = $userSets.find((set) => set.id == data.slug);
-    let set = data.set
+    let set = data.set;
 </script>
 
 <section>
-    {#if navbarHeight && set}
-        <article class="h-[100vh] flex flex-row">
+    {#if set}
+        <article class="h-[100vh] flex flex-row ">
             <div
                 class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20"
             >
                 <div>
                     <p
-                        style="margin-top: {navbarHeight + 32}px"
-                        class="text-gray-500 text-xs break-normal mb-1"
+                        
+                        class="text-gray-500 text-xs break-normal mb-1"   style="padding-top: {$navbarHeight + 32}px;"
                     >
                         name
                     </p>
@@ -123,15 +118,23 @@
                     class="flex flex-col mb-16 border-b-2 border-zinc-300 pb-4 w-full"
                 >
                     <h2 class="text-4xl font-bold mb-8">Instructions</h2>
-                    <button
-                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        ><a
-                            href="http://localhost:3000/api/v1/instructions/{set.instructions}"
-                            target="_blank"
-                            
-                            >Open</a
-                        ></button
-                    >
+                    <di class="flex flex-row gap-6">
+                        <button
+                            class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            ><a
+                                href="http://localhost:3000/api/v1/instructions/{set.instructions}"
+                                target="_blank">Open</a
+                            ></button
+                        >
+                        <button
+                            class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            ><a
+                                href="http://localhost:3000/api/v1/instructions/download/{set.instructions}"
+                                target="_self"
+                                download>Download</a
+                            ></button
+                        >
+                    </di>
                 </div>
                 <object
                     title="instructions"

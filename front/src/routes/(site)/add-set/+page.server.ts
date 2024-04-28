@@ -11,7 +11,7 @@ export const actions = {
             url: "http://localhost:3000/api/v1/sets/add",
             method: "POST",
             headers: {
-                "Authorization": locals.session?.toString() || "",
+                "Authorization": locals.session || "",
                 'Content-Type': `multipart/form-data`,
             },
             timeout: 5000,
@@ -22,14 +22,39 @@ export const actions = {
 
         if (newSet.status == 201) {
             return {
-                success: true,
-                message: newSet.data
+                newSetAdded: newSet.data,
             }
         }
         else {
             return {
-                success: false,
-                message: newSet.data
+                newSetFailed: newSet.data
+            }
+        }
+
+    },
+    searchLegoSet: async ({ request, locals }) => {
+        const data = await request.formData();
+        const searchQuery = data.get("searchQuery");
+
+        console.log("search query: ", searchQuery)
+
+        let response = await fetch(`http://localhost:3000/api/v1/sets/search/${searchQuery}`, {
+            method: "GET",
+            headers: new Headers({
+                "Authorization": locals.session || ""
+            })
+        });
+
+        let res = await response.json();
+        console.log(res)
+        if (response.ok) {
+            return {
+                setsFound: res
+            }
+        }
+        else {
+            return {
+                setsFailed: res.message
             }
         }
 

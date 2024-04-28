@@ -1,23 +1,26 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { onMount } from "svelte";
+    import { navbarHeight } from "$lib/store";
 
     export let form;
     export let data;
 
-    let name: any;
-    let setNumber: any;
+    let name: any = "";
+    let setNumber: any = "";
     let yearReleased: any;
     let isBought: boolean = false;
     let yearBought: any = "";
-    let description: any;
+    let description: any = "";
     let price: any;
-    let partsAmount: any;
+    let partsAmount: any = "";
     let themeId: any;
     let imageThumbnail: any;
     let uploadedImage: string;
-
-    $: isBought = yearBought.length > 0;
+    let themeName: any = "";
+    let isSearching = false;
+    let searchQuery = "";
+    let fetchedSets: any = [];
 
     function handleImageUpload(e: Event) {
         const image = (e.target as HTMLInputElement)?.files?.[0];
@@ -27,7 +30,7 @@
     }
 
     $: {
-        if (form?.message) {
+        if (form?.newSetAdded) {
             uploadedImage = "";
             setTimeout(() => {
                 uploadedImage = "";
@@ -35,19 +38,107 @@
                 window.location.reload();
             }, 3000);
             imageThumbnail = "";
+            searchQuery = "";
+            isSearching = false;
         }
+
+        if (form?.setsFound) {
+            fetchedSets = form?.setsFound;
+        }
+
+        isBought = yearBought.length > 0;
+    }
+
+    function quickSetAdd(set: any) {
+        name = set.name;
+        setNumber = set.setNumber;
+        yearReleased = set.yearReleased;
+        partsAmount = set.numParts;
+        themeId = set.themeId;
     }
 </script>
 
-<section class="px-20 mb-10">
-    <h1 class="font-bold text-3xl mb-20 mt-8">Add new set</h1>
-
+<section class="px-20 mb-10" style="padding-top: {$navbarHeight + 32}px;">
+    <h1 class="font-bold text-3xl mb-8">Add new set</h1>
+    <div class="mb-12">
+        <p>Find yours:</p>
+        <form
+            class="lg:w-9/12 mt-2"
+            method="POST"
+            action="?/searchLegoSet"
+            on:focusin={() => (isSearching = true)}
+            on:focusout={() => (isSearching = false)}            
+            use:enhance
+        >
+            <div class="relative flex w-full">
+                <div
+                    class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                >
+                    <svg
+                        class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 20"
+                    >
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                        />
+                    </svg>
+                </div>
+                <input
+                    type="text"
+                    name="searchQuery"
+                    id="searchQuery"
+                    bind:value={searchQuery}
+                    class="block w-full p-2 ps-10 placeholder:text-gray-600 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
+                    placeholder="Atreides Royal..."
+                    required
+                    autocomplete="off"
+                />
+                <!-- rounded-s-lg -->
+                <!-- rounded-e-lg -->
+                <!-- není disabled po search setů, zůstane modré ač input je prázdný -->
+                <button
+                    type="submit"
+                    disabled={searchQuery.length == 0}
+                    class="end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium px-6 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300"
+                >
+                    Hledat
+                </button>
+            </div>
+        </form>
+        <div class="mt-4">
+            {#if form?.setsFound && fetchedSets.length > 0}
+                <p class="mb-2">Click to quickly add:</p>
+                <div class="flex flex-wrap gap-2">
+                    {#each fetchedSets as set}
+                        <button
+                            on:click={() => quickSetAdd(set)}
+                            class="w-fit px-4 py-2 border-2 transition-all border-zinc-300 hover:border-zinc-300 hover:bg-zinc-300 hover:text-black focus:bg-zinc-300 focus:text-black active:border-zinc-400 active:bg-zinc-400"
+                            class:setChosen={set.setNumber == setNumber}
+                            >{set.name}</button
+                        >
+                    {/each}
+                </div>
+            {:else if form?.setsFailed}
+                <p class="border-2 border-red-600 w-fit text-red-600 px-4 py-2">
+                    {form?.setsFailed}
+                </p>
+            {/if}
+        </div>
+    </div>
     <form
         method="POST"
         action="?/addSet"
         enctype="multipart/form-data"
         use:enhance
-        class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col gap-4 lg:w-9/12"
+        class:opacity-50={isSearching}
+        class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col gap-4 lg:w-9/12 transition-all"
     >
         <div class="one-cell row-start-1 col-start-1 col-end-1">
             <label for="name">Name <span class="text-red-600">*</span></label>
@@ -97,14 +188,15 @@
             />
         </div>
         <div class="one-cell row-start-2 row-end-4 col-start-1 col-end-3">
-            <label for="description">Description (max 256)</label>
+            <label for="description"
+                >Description (max {256 - description.length})</label
+            >
             <textarea
                 name="description"
                 id="description"
                 bind:value={description}
                 autocomplete="off"
-                rows="3"
-                class="placeholder:italic w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
+                class="placeholder:italic w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all h-full"
                 maxlength="256"
                 placeholder="Authentic replica of the Atreides Royal Ornithopter from Dune..."
             ></textarea>
@@ -124,6 +216,19 @@
                 maxlength="30"
                 class="my-input"
                 placeholder="721"
+            />
+        </div>
+        <div class="one-cell row-start-3 row-end-3 col-start-3 col-end-3">
+            <label for="themeName">Theme name (custom/official)</label>
+            <input
+                type="text"
+                name="themeName"
+                id="themeName"
+                bind:value={themeName}
+                autocomplete="off"
+                maxlength="30"
+                class="my-input"
+                placeholder="Icons"
             />
         </div>
         <div class="one-cell row-start-4 row-end-4 col-start-1 col-end-1">
@@ -171,7 +276,7 @@
             />
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-1 col-end-2">
-            <label for="imageThumbnail">Image URL</label>
+            <label for="imageThumbnail">Set image</label>
             <div class="my-input">
                 <input
                     type="file"
@@ -191,7 +296,7 @@
             </div>
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-2 col-end-3">
-            <label for="instructions">PDF Manual</label>
+            <label for="instructions">Instructions PDF</label>
             <div class="my-input">
                 <input
                     type="file"
@@ -220,22 +325,32 @@
                 htmlFor="isBought"
                 class="w-fit text-white cursor-pointer"
                 for="isBought"
-                >{isBought ? "I own this set" : "Do I own this set?"}</label
+                >{isBought ? "I own this set" : "Do you own this set?"}</label
             >
         </div>
 
-        <div class="one-cell row-start-7 row-end-7 col-start-1 col-end-1">
+        <div
+            class="one-cell row-start-7 row-end-7 col-start-1 col-end-1 flex flex-row gap-8"
+        >
             <button
-                class:set-added={form?.success}
+                class:set-added={form?.newSetAdded}
                 type="submit"
-                class="bg-zinc-800 border-2 border-transparent py-3 px-10 w-fit mt-10 text-white uppercase font-bold hover:bg-zinc-900 active:bg-zinc-950 transition-all"
-                disabled={form?.loading || form?.success}
-                >{form?.message.message
-                    ? form?.message.message
+                class="bg-blue-700 hover:bg-blue-800 active:bg-blue-900 border-2 border-transparent py-3 px-10 w-fit mt-10 text-white uppercase font-bold transition-all disabled:cursor-default disabled:opacity-75 disabled:bg-zinc-800 disabled:text-gray-300"
+                disabled={form?.newSetAdded &&
+                    !(
+                        name.length === 0 ||
+                        setNumber.length === 0 ||
+                        partsAmount.length === 0 ||
+                        themeName.length === 0
+                    )}
+                >{form?.newSetAdded
+                    ? form?.newSetAdded.message
                     : "Add set"}</button
             >
-            {#if !form?.success && form?.message}
-                <p class="text-red-500 font-bold pt-4">{form?.message}</p>
+            {#if form?.newSetFailed}
+                <p class="text-red-500 font-bold pt-4">
+                    {form?.newSetFailed.message}
+                </p>
             {/if}
         </div>
     </form>
@@ -243,12 +358,15 @@
 
 <style lang="postcss">
     .my-input {
-        @apply placeholder:italic  placeholder:text-gray-600 text-sm text-white w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all;
+        @apply placeholder:italic  placeholder:text-gray-600 text-sm text-zinc-100 w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all;
     }
     .one-cell {
         @apply flex flex-col gap-2 text-gray-500;
     }
     .set-added {
         @apply border-green-500 text-green-500 disabled:opacity-80 bg-transparent cursor-default;
+    }
+    .setChosen {
+        @apply border-zinc-300 bg-zinc-300 text-black;
     }
 </style>

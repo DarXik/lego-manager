@@ -1,11 +1,17 @@
-<script>
+<script lang="ts">
   import "../../app.css";
   import Navbar from "./components/Navbar.svelte";
   import { onMount } from "svelte";
-  import { userSets, isSearching } from "$lib/store";
+  import { userSets, navbarHeight } from "$lib/store";
 
   export let data;
-  
+
+  onMount(async () => {
+    $navbarHeight = document.getElementsByTagName("nav")[0].offsetHeight;
+  });
+
+
+
   onMount(() => {
     if (data.sets) {
       // let localSets = [];
@@ -33,6 +39,6 @@
 
 <Navbar />
 
-<main>
+<main class="relative z-0">
   <slot />
 </main>

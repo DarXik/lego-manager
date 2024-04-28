@@ -1,9 +1,7 @@
 import { redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "../../../.svelte-kit/types/src/routes/login/$types";
 
-export const load = (async ({ locals }) => {
-
-    console.log(locals);
+export const load = (async ({ locals }) => { 
 
     if (!locals.session && locals.user) {
         redirect(302, "/login");
@@ -17,7 +15,7 @@ export const load = (async ({ locals }) => {
         })
 
         const res1 = await response.json()
-        console.log(res1)
+        // console.log(res1)
 
         return {
             sets: res1

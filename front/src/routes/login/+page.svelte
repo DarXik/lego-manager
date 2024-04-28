@@ -38,7 +38,7 @@
         <h1 class="text-2xl font-semibold text-center">Log In</h1>
         {#if form?.problem}
             <p class="text-lg text-center font-semibold error text-red-500">
-                {form?.problem}
+                {form?.problem.message}
             </p>
         {/if}
         <form method="POST" class="space-y-4" use:enhance>

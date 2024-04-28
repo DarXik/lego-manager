@@ -3,6 +3,6 @@ import controller from "../../../../controllers/SetsSearchController"
 
 const router = express.Router()
 
-router.get("/", controller.get)
+router.get("/:query", controller.get)
 
 export default router

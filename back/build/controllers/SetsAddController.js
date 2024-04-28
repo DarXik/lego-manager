@@ -99,7 +99,7 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 id: (0, uuid_1.v4)(),
                 setNumber: parseInt(set.setNumber),
                 name: set.name,
-                description: set.description || null,
+                description: set.description || null, // failuje pro čj
                 partsAmount: parseInt(set.partsAmount),
                 themeId: parseInt(set.themeId),
                 themeName: resThemeName,

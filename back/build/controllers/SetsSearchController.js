@@ -11,17 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const userAuthentication_1 = require("../services/userAuthentication");
 const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.query.q || !req.headers.authorization) {
-        return res.send("something is missing").status(400);
+    if (!req.params.query || !req.headers.authorization) {
+        return res.status(400).send({ message: "something is missing" });
     }
     const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization.toString());
-    console.log(verifiedUser);
     if (!verifiedUser.user || !verifiedUser.token) {
-        return res.send({ message: "user not found" }).status(404);
+        return res.status(404).send({ message: "user not found" });
     }
-    const set = yield req.query.q;
-    console.log(set);
+    const set = req.params.query;
     try {
+        console.log("searching for: ", set);
         const headers = {
             'Accept': 'application/json',
             'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
@@ -32,19 +31,21 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         const resSetJSON = yield responseRebrickableSet.json();
         if (resSetJSON.count > 0) {
-            res.send(resSetJSON.results.map((set) => ({
+            res.status(200).send(resSetJSON.results.map((set) => ({
                 setNumber: set.set_num,
                 name: set.name,
                 yearReleased: set.year,
-            }))).status(200);
+                numParts: set.num_parts,
+                themeId: set.theme_id
+            })));
         }
         else {
-            res.send({ message: "set not found" }).status(404);
+            res.status(404).send({ message: "set not found" });
         }
     }
     catch (error) {
         console.log(error);
-        res.send({ message: "couldn't fetch from db" }).status(500);
+        res.status(500).send({ message: "couldn't fetch from db" });
     }
 });
 exports.default = { get };

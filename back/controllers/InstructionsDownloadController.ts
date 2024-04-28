@@ -9,7 +9,6 @@ const get = async (req: Request, res: Response) => {
 
     const filename = req.params.filename
 
-
     try {
         const filePath = path.join(__dirname, `../../uploads/instructions/${filename}`)
 
@@ -17,8 +16,8 @@ const get = async (req: Request, res: Response) => {
             return res.status(404).send({ message: "pdf not found" })
         }
 
-        console.log("read: ", filePath)
-        res.status(200).sendFile(filePath)
+        console.log("download: ", filePath)
+        res.download(filePath)
     }
     catch (err) {
         console.log(err)

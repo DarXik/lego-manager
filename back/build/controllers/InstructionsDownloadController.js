@@ -20,16 +20,16 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const filename = req.params.filename;
     try {
-        const filePath = path_1.default.join(__dirname, `../../uploads/images/${filename}`);
+        const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${filename}`);
         if (!fs_1.default.existsSync(filePath)) {
-            return res.status(404).send({ message: "image not found" });
+            return res.status(404).send({ message: "pdf not found" });
         }
-        console.log("display: ", filePath);
-        res.status(200).sendFile(filePath);
+        console.log("download: ", filePath);
+        res.download(filePath);
     }
     catch (err) {
         console.log(err);
-        return res.status(500).send({ message: "image not found" });
+        return res.status(500).send({ message: "pdf not found" });
     }
 });
 exports.default = { get };

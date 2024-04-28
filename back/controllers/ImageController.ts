@@ -8,8 +8,7 @@ const get = async (req: Request, res: Response) => {
         return res.status(400).send({ message: "something is missing" })
     }
 
-    const filename = req.params.filename
-    console.log(filename)
+    const filename = req.params.filename    
 
     try {
         const filePath = path.join(__dirname, `../../uploads/images/${filename}`)
@@ -18,6 +17,7 @@ const get = async (req: Request, res: Response) => {
             return res.status(404).send({ message: "image not found" })
         }
         
+        console.log("display: ", filePath)
         res.status(200).sendFile(filePath)
     }
     catch (err) {

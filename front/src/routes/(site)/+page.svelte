@@ -1,26 +1,14 @@
 <script>
     import { onMount } from "svelte";
-    import { userInfo, userSets, isSearching } from "$lib/store";
+    import { userSets, navbarHeight } from "$lib/store";
     import { goto } from "$app/navigation";
 
     export let form;
     export let data;
-
-    let searchQuery;
 </script>
 
-<!-- <style lang="postcss">
-    .is-searching {
-      @apply   backdrop-blur-lg transition-all duration-200;
-    }
-  </style> -->
-
-<section class="px-20 mb-16" class:is-searching={$isSearching}>
-    <div class="mt-8 mb-12">
-        <!-- <h1 class="font-bold text-4xl mb-16">
-            <span class="text-gray-500 text-2xl">Welcome back</span>
-            {username ? username : "--"}
-        </h1> -->
+<section class="px-20 mb-16 " >
+    <div class=" mb-12" style="padding-top: {$navbarHeight + 32}px;">
         <p class="text-xl">Added LEGO sets:</p>
     </div>
 
@@ -29,7 +17,7 @@
             {#each $userSets as set}
                 <button on:click={() => goto(`/set/${set.id}`)}>
                     <div
-                        class="flex flex-col w-[20em]  hover:scale-105 transition-all hover:cursor-pointer"
+                        class="flex flex-col w-[20em] hover:scale-105 transition-all hover:cursor-pointer"
                     >
                         <!-- <div class="h-1/3">
                             nefunguje
@@ -96,15 +84,4 @@
             <p class="italic text-gray-400 bg-red">No sets found</p>
         {/if}
     </article>
-
-    {#if form}
-        {#if form?.success}
-            {#each form.sets as set}
-                <p>{set.name}</p>
-                <p>{set.setNumber}</p>
-            {/each}
-        {:else}
-            <p>{form?.message}</p>
-        {/if}
-    {/if}
 </section>
