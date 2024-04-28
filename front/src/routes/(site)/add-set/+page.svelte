@@ -61,7 +61,7 @@
 <section class="px-20 mb-10" style="padding-top: {$navbarHeight + 32}px;">
     <h1 class="font-bold text-3xl mb-8">Add new set</h1>
     <div class="mb-12">
-        <p>Find yours:</p>
+        <p class="text-gray-600 transition-all" class:!text-zinc-100={isSearching}>Find yours:</p>
         <form
             class="lg:w-9/12 mt-2"
             method="POST"
@@ -156,7 +156,7 @@
         </div>
         <div class="one-cell row-start-1 col-start-2 col-end-2">
             <label for="setNumber"
-                >Set number (custom/official) <span class="text-red-600">*</span
+                >Set number <span class="text-sm">(custom/official)</span> <span class="text-red-600">*</span
                 ></label
             >
             <input
@@ -189,7 +189,7 @@
         </div>
         <div class="one-cell row-start-2 row-end-4 col-start-1 col-end-3">
             <label for="description"
-                >Description (max {256 - description.length})</label
+                >Description <span class="text-sm">(max {256 - description.length})</span></label
             >
             <textarea
                 name="description"
@@ -203,7 +203,7 @@
         </div>
         <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
             <label for="themeId"
-                >Theme ID (custom/official) <span class="text-red-600">*</span
+                >Theme ID <span class="text-sm">(custom/official)</span> <span class="text-red-600">*</span
                 ></label
             >
             <input
@@ -219,7 +219,7 @@
             />
         </div>
         <div class="one-cell row-start-3 row-end-3 col-start-3 col-end-3">
-            <label for="themeName">Theme name (custom/official)</label>
+            <label for="themeName">Theme name <span class="text-sm">(custom/official)</span></label>
             <input
                 type="text"
                 name="themeName"
@@ -276,7 +276,7 @@
             />
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-1 col-end-2">
-            <label for="imageThumbnail">Set image</label>
+            <label for="imageThumbnail">Set image <span class="text-sm">*portrait preferred</span></label>
             <div class="my-input">
                 <input
                     type="file"
@@ -296,7 +296,7 @@
             </div>
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-2 col-end-3">
-            <label for="instructions">Instructions PDF</label>
+            <label for="instructions">Instructions PDF <span class="text-sm">(max 3)</span></label>
             <div class="my-input">
                 <input
                     type="file"
