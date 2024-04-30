@@ -52,7 +52,22 @@ const get = async (req: Request, res: Response) => {
         try {
             const set = await prisma.sets.findUnique({ where: { id: req.params.id, usedBy: { some: { id: verifiedUser.user.id } } } })
             const attachment = await prisma.setAttachment.findFirst({ where: { setId: set?.id, addedById: verifiedUser.user.id } })
-            const instructions = await prisma.instructions.findMany({ where: { setId: set?.id, OR: [{ addedById: verifiedUser.user.id }, { addedById: set?.addedById }] } })
+            const myInstructions = await prisma.instructions.findMany({
+                where: {
+                    setId: set?.id,
+                    addedById: verifiedUser.user.id,
+                    set: { usedBy: { some: { id: verifiedUser.user.id } } }
+                }
+            })
+            const allInstructions = await prisma.instructions.findMany({
+                where: {
+                    setId: set?.id,
+                    addedById: { not: verifiedUser.user.id },
+                    set: { usedBy: { some: { id: verifiedUser.user.id } } }
+                }
+            })
+            console.log(myInstructions)
+            console.log(allInstructions)
 
             if (!set || !attachment) {
                 return res.status(404).send({ message: "set not found" })
@@ -60,12 +75,8 @@ const get = async (req: Request, res: Response) => {
 
             if (attachment && set) {
                 const { id, addedById, ...rest } = attachment
-                if(!instructions || instructions.length == 0){
-                    return res.status(200).send({ ...set, ...rest, attachmentId: id, attachmentAddedById: addedById })
-                }
-                else{
-                    return res.status(200).send({ ...set, ...rest, attachmentId: id, attachmentAddedById: addedById, allInstructions: instructions })
-                }
+
+                return res.status(200).send({ ...set, ...rest, attachmentId: id, attachmentAddedById: addedById, allInstructions: allInstructions, myInstructions: myInstructions })
             }
         }
         catch (err) {

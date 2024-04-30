@@ -77,72 +77,144 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     try {
-        // nalezení themeName podle id
-        // let resThemeName: string = "Custom" // dodělat od usera
-        // try {
-        //     const responseTheme = await fetch(`https://rebrickable.com/api/v3/lego/themes/${userSet.themeId}`, {
+        // let newThemeName;
+        // let newThemeId;
+        // if (userSet.themeId && !userSet.themeName) {
+        //     try {
+        //         const themeName = await fetch(`https://rebrickable.com/api/v3/lego/themes/${userSet.themeId}`, {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Accept': 'application/json',
+        //                 'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
+        //             }
+        //         })
+        //         if (themeName.ok) {
+        //             newThemeName = (await themeName.json()).name
+        //             newThemeId = userSet.themeId
+        //         }
+        //         else {
+        //             console.log("theme not found")
+        //             newThemeName = ""
+        //             newThemeId = userSet.themeId
+        //         }
+        //     }
+        //     catch (err) {
+        //         console.log(err)
+        //         newThemeName = ""
+        //         newThemeId = userSet.themeId
+        //     }
+        // }
+        // else if (!userSet.themeId && userSet.themeName) {
+        //     const themeId = await fetch('https://rebrickable.com/api/v3/lego/themes/?page=1&page_size=1000', {
         //         method: 'GET',
         //         headers: {
         //             'Accept': 'application/json',
         //             'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
         //         }
         //     })
-        //     if (responseTheme.ok) {
-        //         resThemeName = (await responseTheme.json()).name
+        //     if (themeId.ok) {
+        //         newThemeId = (await themeId.json()).results.find((theme: any) => theme.name == userSet.themeName).id ? (await themeId.json()).results.find((theme: any) => theme.name == userSet.themeName).id : 1000
+        //         newThemeName = userSet.themeName
         //     }
-        //     else {
-        //         console.log("theme not found")
-        //     }
-        // } catch (e) {
-        //     console.log(e)
+        // }
+        // else{
+        //     newThemeName = ""
+        //     newThemeId = 1000
         // }
         // uložení a vytvoření setu
-        let set = yield prisma_1.default.sets.findUnique({ where: { setNumber: parseInt(userSet.setNumber) } });
+        let set = yield prisma_1.default.sets.findUnique({ where: { setNumber: userSet.setNumber } });
         if (!set) {
-            let newSet = yield prisma_1.default.sets.create({
-                data: {
-                    setNumber: parseInt(userSet.setNumber),
-                    name: userSet.name,
-                    yearReleased: parseInt(userSet.yearReleased),
-                    partsAmount: parseInt(userSet.partsAmount),
-                    themeId: parseInt(userSet.themeId),
-                    themeName: userSet.themeName,
-                    addedBy: { connect: { id: verifiedUser.user.id } },
-                    usedBy: { connect: { id: verifiedUser.user.id } },
+            try {
+                let newSet = yield prisma_1.default.sets.create({
+                    data: {
+                        setNumber: userSet.setNumber,
+                        name: userSet.name,
+                        yearReleased: parseInt(userSet.yearReleased),
+                        partsAmount: parseInt(userSet.partsAmount),
+                        // themeId: parseInt(userSet.themeId),
+                        themeName: userSet.themeName,
+                        addedBy: { connect: { id: verifiedUser.user.id } },
+                        usedBy: { connect: { id: verifiedUser.user.id } },
+                    }
+                });
+                let newAttachment = yield prisma_1.default.setAttachment.create({
+                    data: {
+                        description: (userSet === null || userSet === void 0 ? void 0 : userSet.description) || null,
+                        yearBought: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.yearBought) || null,
+                        price: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.price) || null,
+                        image: newImageFilename || null,
+                        addedBy: { connect: { id: verifiedUser.user.id } },
+                        set: { connect: { id: newSet.id } }
+                    }
+                });
+                let newInstructions = yield prisma_1.default.instructions.createMany({
+                    data: newPDFFilenames.map((filename) => {
+                        return {
+                            instructions: filename,
+                            addedById: verifiedUser.user.id,
+                            setId: newSet.id,
+                            attachmentId: newAttachment.id
+                        };
+                    })
+                });
+                if (newSet && newAttachment && newInstructions) {
+                    res.status(201).send({ message: "set added" });
                 }
-            });
-            let newAttachment = yield prisma_1.default.setAttachment.create({
-                data: {
-                    description: (userSet === null || userSet === void 0 ? void 0 : userSet.description) || null,
-                    yearBought: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.yearBought) || null,
-                    price: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.price) || null,
-                    image: newImageFilename || null,
-                    addedBy: { connect: { id: verifiedUser.user.id } },
-                    set: { connect: { id: newSet.id } }
+                else {
+                    res.status(503).send({ message: "set could not be added" });
                 }
-            });
-            let newInstructions = yield prisma_1.default.instructions.createMany({
-                data: newPDFFilenames.map((filename) => {
-                    return {
-                        instructions: filename,
-                        addedById: verifiedUser.user.id,
-                        setId: newSet.id,
-                        attachmentId: newAttachment.id
-                    };
-                })
-            });
-            // závěrečná odpověď a update usera
-            if (newSet) {
-                res.status(201).send({ message: "userSet added" });
             }
-            else {
-                res.status(503).send({ message: "userSet could not be added 2" });
+            catch (err) {
+                console.log(err);
+                return res.status(500).send({ message: "set could not be saved" });
+            }
+        }
+        else {
+            try {
+                let newSet = yield prisma_1.default.sets.update({
+                    where: { id: set.id },
+                    data: {
+                        usedBy: { connect: { id: verifiedUser.user.id } },
+                    }
+                });
+                let newAttachment = yield prisma_1.default.setAttachment.create({
+                    data: {
+                        description: (userSet === null || userSet === void 0 ? void 0 : userSet.description) || null,
+                        yearBought: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.yearBought) || null,
+                        price: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.price) || null,
+                        image: newImageFilename || null,
+                        addedBy: { connect: { id: verifiedUser.user.id } },
+                        set: { connect: { id: set.id } }
+                    }
+                });
+                if (newPDFFilenames.length > 0) {
+                    let newInstructions = yield prisma_1.default.instructions.createMany({
+                        data: newPDFFilenames.map((filename) => {
+                            return {
+                                instructions: filename,
+                                addedById: verifiedUser.user.id,
+                                setId: set.id,
+                                attachmentId: newAttachment.id
+                            };
+                        })
+                    });
+                }
+                if (newSet && newAttachment) {
+                    res.status(201).send({ message: "set added" });
+                }
+                else {
+                    res.status(503).send({ message: "set could not be added" });
+                }
+            }
+            catch (err) {
+                console.log(err);
+                return res.status(500).send({ message: "set could not be saved" });
             }
         }
     }
     catch (e) {
         console.log(e);
-        res.status(503).send({ message: "userSet could not be added 4" });
+        res.status(503).send({ message: "set could not be added" });
     }
 });
 exports.default = { post };

@@ -68,11 +68,11 @@
                             text={set.yearBought}
                         />
 
-                        <InfoCardwIcon
+                        <!-- <InfoCardwIcon
                             title="Theme ID"
                             path="number-icon.svg"
                             text={set.themeId}
-                        />
+                        /> -->
 
                         <InfoCardwIcon
                             title="Theme name"
@@ -109,41 +109,61 @@
                 />
             </div>
         </article>
-        {#if set.allInstructions}
+        {#if set.allInstructions.length > 0 || set.myInstructions.length > 0}
             <article
-                class="px-20 mb-16 w-1/2 mt-24 flex flex-col items-start justify-center h-[100vh]"
+                class="px-20 mb-16 w-1/2 mt-20 flex flex-col items-start justify-center"
             >
-                <div
-                    class="flex flex-col mb-16 border-b-2 border-zinc-300 pb-4 w-full"
-                >
-                    <h2 class="text-4xl font-bold mb-8">Instructions</h2>
-                    <di class="flex flex-row gap-6">
-                        <button
-                            class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
-                            ><a
-                                href="http://localhost:3000/api/v1/instructions/{set
-                                    .allInstructions[0].instructions}"
-                                target="_blank">Open</a
-                            ></button
-                        >
-                        <button
-                            class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
-                            ><a
-                                href="http://localhost:3000/api/v1/instructions/download/{set
-                                    .allInstructions[0].instructions}"
-                                target="_self"
-                                download>Download</a
-                            ></button
-                        >
-                    </di>
+                <div class="mb-12">
+                    <h2 class="text-4xl font-bold mb-4">Choose instructions</h2>
+                    <button
+                    
+                        class="text-white mr-3 end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                        >Your instructions</button
+                    >
+                    <button
+                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                        >Public instructions</button
+                    >
                 </div>
-                <object
-                    title="instructions"
-                    class="w-full h-full"
-                    data="http://localhost:3000/api/v1/instructions/{set
-                        .allInstructions[0].instructions}"
-                    type="application/pdf"
-                ></object>
+                <div class="flex flex-col mb-16 pb-4 w-full">
+                    <h3 class="text-3xl font-bold mb-8">
+                        Your instructions ({set.myInstructions.length})
+                    </h3>
+                    <!-- <div class="flex flex-row gap-6"> -->
+                    {#each set.myInstructions as instruction, i}
+                        <div
+                            class="flex flex-row gap-4 mb-8 border-b-2 border-l-2 border-zinc-300 py-4"
+                        >
+                            <p class="text-2xl font-bold p-2 px-4">
+                                &bull; {i + 1}
+                            </p>
+
+                            <button
+                                class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                ><a
+                                    href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
+                                    target="_blank">Open</a
+                                ></button
+                            >
+                            <button
+                                class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                ><a
+                                    href="http://localhost:3000/api/v1/instructions/download/{instruction.instructions}"
+                                    target="_self"
+                                    download>Download</a
+                                ></button
+                            >
+                        </div>
+                    {/each}
+                </div>
+                <!-- {#if set.allInstructions.length == 1 || set.myInstructions.length == 1}
+                    <object
+                        title="instructions"
+                        class="w-full h-full"
+                        data="http://localhost:3000/api/v1/instructions/{set.allInstructions?[0].instructions || set.myInstructions?[0].instructions}"
+                        type="application/pdf"
+                    ></object>
+                {/if} -->
             </article>
         {/if}
     {/if}

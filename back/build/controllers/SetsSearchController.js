@@ -20,6 +20,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const set = req.params.query;
     try {
+        // poslat i theme name
         console.log("searching for: ", set);
         const headers = {
             'Accept': 'application/json',

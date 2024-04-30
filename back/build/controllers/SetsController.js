@@ -68,18 +68,28 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const set = yield prisma_1.default.sets.findUnique({ where: { id: req.params.id, usedBy: { some: { id: verifiedUser.user.id } } } });
             const attachment = yield prisma_1.default.setAttachment.findFirst({ where: { setId: set === null || set === void 0 ? void 0 : set.id, addedById: verifiedUser.user.id } });
-            const instructions = yield prisma_1.default.instructions.findMany({ where: { setId: set === null || set === void 0 ? void 0 : set.id, OR: [{ addedById: verifiedUser.user.id }, { addedById: set === null || set === void 0 ? void 0 : set.addedById }] } });
+            const myInstructions = yield prisma_1.default.instructions.findMany({
+                where: {
+                    setId: set === null || set === void 0 ? void 0 : set.id,
+                    addedById: verifiedUser.user.id,
+                    set: { usedBy: { some: { id: verifiedUser.user.id } } }
+                }
+            });
+            const allInstructions = yield prisma_1.default.instructions.findMany({
+                where: {
+                    setId: set === null || set === void 0 ? void 0 : set.id,
+                    addedById: { not: verifiedUser.user.id },
+                    set: { usedBy: { some: { id: verifiedUser.user.id } } }
+                }
+            });
+            console.log(myInstructions);
+            console.log(allInstructions);
             if (!set || !attachment) {
                 return res.status(404).send({ message: "set not found" });
             }
             if (attachment && set) {
                 const { id, addedById } = attachment, rest = __rest(attachment, ["id", "addedById"]);
-                if (!instructions || instructions.length == 0) {
-                    return res.status(200).send(Object.assign(Object.assign(Object.assign({}, set), rest), { attachmentId: id, attachmentAddedById: addedById }));
-                }
-                else {
-                    return res.status(200).send(Object.assign(Object.assign(Object.assign({}, set), rest), { attachmentId: id, attachmentAddedById: addedById, allInstructions: instructions }));
-                }
+                return res.status(200).send(Object.assign(Object.assign(Object.assign({}, set), rest), { attachmentId: id, attachmentAddedById: addedById, allInstructions: allInstructions, myInstructions: myInstructions }));
             }
         }
         catch (err) {

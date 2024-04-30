@@ -41,6 +41,7 @@
             imageThumbnail = "";
             searchQuery = "";
             isSearching = false;
+            files = null;
         }
 
         if (form?.setsFound) {
@@ -204,12 +205,13 @@
                 id="description"
                 bind:value={description}
                 autocomplete="off"
+                rows="4"
                 class="placeholder:italic w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all h-full"
                 maxlength="256"
                 placeholder="Authentic replica of the Atreides Royal Ornithopter from Dune..."
             ></textarea>
         </div>
-        <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
+        <!-- <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
             <label for="themeId"
                 >Theme ID <span class="text-sm">(custom/official)</span>
                 <span class="text-red-600">*</span></label
@@ -225,10 +227,10 @@
                 class="my-input"
                 placeholder="721"
             />
-        </div>
-        <div class="one-cell row-start-3 row-end-3 col-start-3 col-end-3">
+        </div> -->
+        <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
             <label for="themeName"
-                >Theme name <span class="text-sm">(custom/official)</span
+                >Theme/Collection <span class="text-sm">(custom/official) <span class="text-red-600">*</span></span
                 ></label
             >
             <input
@@ -297,6 +299,7 @@
                     id="imageThumbnail"
                     name="imageThumbnail"
                     accept="image/*"
+                    disabled={isSearching}
                     on:change={handleImageUpload}
                     bind:value={imageThumbnail}
                 />
@@ -318,6 +321,7 @@
                     name="instructions"
                     accept="application/pdf"
                     multiple
+                    disabled={isSearching}
                     bind:files
                 />
                 {#if files}
@@ -357,14 +361,16 @@
                 class:set-added={form?.newSetAdded}
                 type="submit"
                 class="bg-blue-700 hover:bg-blue-800 active:bg-blue-900 border-2 border-transparent py-3 px-10 w-fit mt-10 text-white uppercase font-bold transition-all disabled:cursor-default disabled:opacity-75 disabled:bg-zinc-800 disabled:text-gray-300"
+                class:!cursor-default={isSearching}
                 disabled={form?.newSetAdded &&
                     !(
                         name.length === 0 ||
                         setNumber.length === 0 ||
                         partsAmount.length === 0 ||
                         themeName.length === 0
-                    )}
-                >{form?.newSetAdded
+                    ) || isSearching}
+                >
+                {form?.newSetAdded
                     ? form?.newSetAdded.message
                     : "Add set"}</button
             >

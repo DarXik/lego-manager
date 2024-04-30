@@ -16,6 +16,7 @@ const get = async (req: Request, res: Response) => {
     const set = req.params.query
 
     try {
+        // poslat i theme name
         console.log("searching for: ", set)
         const headers = {
             'Accept': 'application/json',
