@@ -12,9 +12,9 @@ const get = async (req: Request, res: Response) => {
 
     try {
         const filePath = path.join(__dirname, `../../uploads/instructions/${filename}`)
-
+        console.log(filePath)
         if (!fs.existsSync(filePath)) {
-            return res.status(404).send({ message: "pdf not found" })
+            return res.status(404).send({ message: "pdf not found 1" })
         }
 
         console.log("read: ", filePath)
@@ -22,7 +22,7 @@ const get = async (req: Request, res: Response) => {
     }
     catch (err) {
         console.log(err)
-        return res.status(500).send({ message: "pdf not found" })
+        return res.status(500).send({ message: "pdf not found 2" })
     }
 }
 

@@ -7,12 +7,20 @@ export const actions = {
 
         const email = data.get("email");
         const password = data.get("password");
+        const confirm_password = data.get("confirm_password");
         const username = data.get("username");
 
         if (!email || !password) {
             return {
                 email,
                 problem: "Missing email or password"
+            };
+        }
+
+        if(confirm_password !== password) {
+            return {
+                email,
+                problem: "Passwords do not match"
             };
         }
 

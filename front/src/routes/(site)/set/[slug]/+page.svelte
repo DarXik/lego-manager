@@ -4,7 +4,6 @@
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
 
     export let data;
-    
 
     // let set = $userSets.find((set) => set.id == data.slug);
     let set = data.set;
@@ -12,14 +11,14 @@
 
 <section>
     {#if set}
-        <article class="h-[100vh] flex flex-row ">
+        <article class="h-[100vh] flex flex-row">
             <div
                 class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20"
             >
                 <div>
                     <p
-                        
-                        class="text-gray-500 text-xs break-normal mb-1"   style="padding-top: {$navbarHeight + 32}px;"
+                        class="text-gray-500 text-xs break-normal mb-1"
+                        style="padding-top: {$navbarHeight + 32}px;"
                     >
                         name
                     </p>
@@ -103,14 +102,14 @@
                 <img
                     loading="lazy"
                     class="h-full w-full object-cover"
-                    src={set.imageThumbnail
-                        ? `http://localhost:3000/api/v1/image/${set.imageThumbnail}`
+                    src={set.image
+                        ? `http://localhost:3000/api/v1/image/${set.image}`
                         : "../../../placeholder.webp"}
-                    alt={set.imageThumbnail ? set.imageThumbnail : "no image"}
+                    alt={set.image ? "image" : "no image"}
                 />
             </div>
         </article>
-        {#if set.instructions}
+        {#if set.allInstructions}
             <article
                 class="px-20 mb-16 w-1/2 mt-24 flex flex-col items-start justify-center h-[100vh]"
             >
@@ -122,14 +121,16 @@
                         <button
                             class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
                             ><a
-                                href="http://localhost:3000/api/v1/instructions/{set.instructions}"
+                                href="http://localhost:3000/api/v1/instructions/{set
+                                    .allInstructions[0].instructions}"
                                 target="_blank">Open</a
                             ></button
                         >
                         <button
                             class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700"
                             ><a
-                                href="http://localhost:3000/api/v1/instructions/download/{set.instructions}"
+                                href="http://localhost:3000/api/v1/instructions/download/{set
+                                    .allInstructions[0].instructions}"
                                 target="_self"
                                 download>Download</a
                             ></button
@@ -139,10 +140,10 @@
                 <object
                     title="instructions"
                     class="w-full h-full"
-                    data="http://localhost:3000/api/v1/instructions/{set.instructions}"
+                    data="http://localhost:3000/api/v1/instructions/{set
+                        .allInstructions[0].instructions}"
                     type="application/pdf"
                 ></object>
-                <!-- <PdfViewer url="http://localhost:3000/api/v1/instructions/{set.instructions}"></PdfViewer> -->
             </article>
         {/if}
     {/if}

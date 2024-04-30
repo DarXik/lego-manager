@@ -9,24 +9,27 @@ import path from "path"
 import fs from 'fs'
 
 const post = async (req: Request, res: Response) => {
+
+    // počáteční kontrola
     if (!req.body || !req.headers.authorization) {
         return res.status(400).send({ message: "something is missing" })
     }
-
     const verifiedUser: any = await verifyUser(req.headers.authorization.toString())
-
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.status(404).send({ message: "user not found" })
     }
 
-    const set: any = await req.body
-    console.log(set)
-    let newImageFilename;
-    let newPDFFilename;
 
+    const userSet: any = await req.body
+    console.log(userSet)
+    let newImageFilename;
+    let newPDFFilenames: string[] = [];
+
+    // pokud nahrál image/manual
     if (req.files || req.file) {
         console.log(req.files)
 
+        // kontrola a uložení souboru
         try {
             const files: any = req.files || req.file
 
@@ -43,9 +46,10 @@ const post = async (req: Request, res: Response) => {
 
                 if (ext == ".pdf" || ext == ".PDF" && files[key].mimetype == "application/pdf") {
                     try {
-                        newPDFFilename = `${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`;
+                        const filename =`${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`
+                        newPDFFilenames.push(filename);
 
-                        const filePath = path.join(__dirname, `../../uploads/instructions/${newPDFFilename}`)
+                        const filePath = path.join(__dirname, `../../uploads/instructions/${filename}`)
                         await fs.promises.writeFile(filePath, files[key].buffer)
                     }
                     catch (err) {
@@ -67,9 +71,6 @@ const post = async (req: Request, res: Response) => {
                 }
             }
             // }
-
-
-
         }
         catch (err) {
             console.log(err)
@@ -77,84 +78,85 @@ const post = async (req: Request, res: Response) => {
         }
     }
 
-
     try {
-        let resThemeName: string = "Custom" // dodělat od usera
-        const headers = {
-            'Accept': 'application/json',
-            'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
-        };
+        // nalezení themeName podle id
+        // let resThemeName: string = "Custom" // dodělat od usera
 
-        try {
-            const responseTheme = await fetch(`https://rebrickable.com/api/v3/lego/themes/${set.themeId}`, {
-                method: 'GET',
-                headers: headers
+        // try {
+        //     const responseTheme = await fetch(`https://rebrickable.com/api/v3/lego/themes/${userSet.themeId}`, {
+        //         method: 'GET',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //             'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
+        //         }
+        //     })
+
+        //     if (responseTheme.ok) {
+        //         resThemeName = (await responseTheme.json()).name
+        //     }
+        //     else {
+        //         console.log("theme not found")
+        //     }
+
+        // } catch (e) {
+        //     console.log(e)
+        // }
+
+        // uložení a vytvoření setu
+
+        let set: any = await prisma.sets.findUnique({ where: { setNumber: parseInt(userSet.setNumber) } })
+
+        if (!set) {
+
+            let newSet = await prisma.sets.create({
+                data: {
+                    setNumber: parseInt(userSet.setNumber),
+                    name: userSet.name,
+                    yearReleased: parseInt(userSet.yearReleased),
+                    partsAmount: parseInt(userSet.partsAmount),
+                    themeId: parseInt(userSet.themeId),
+                    themeName: userSet.themeName,
+                    addedBy: { connect: { id: verifiedUser.user.id } },
+                    usedBy: { connect: { id: verifiedUser.user.id } },
+                }
             })
 
-            if (responseTheme.ok) {
-                resThemeName = (await responseTheme.json()).name
-            }
-            else {
-                console.log("theme not found")
-            }
+            let newAttachment = await prisma.setAttachment.create({
+                data: {
+                    description: userSet?.description || null,
+                    yearBought: parseInt(userSet?.yearBought) || null,
+                    price: parseInt(userSet?.price) || null,
+                    image: newImageFilename || null,
+                    addedBy: { connect: { id: verifiedUser.user.id } },
+                    set: { connect: { id: newSet.id } }
+                }
 
-        } catch (e) {
-            console.log(e)
-        }
+            })
 
-        const newSet = await prisma.sets.create({
-            data: {
-                id: uuidv4(),
-                setNumber: parseInt(set.setNumber),
-                name: set.name,
-                description: set.description || null, // failuje pro čj
-                partsAmount: parseInt(set.partsAmount),
-                themeId: parseInt(set.themeId),
-                themeName: resThemeName,
-                yearReleased: parseInt(set.yearReleased) || null,
-                bought: (set.isBought == "on" ? true : false) || null,
-                yearBought: parseInt(set.yearBought) || null,
-                price: parseInt(set.price) || null,
-                imageThumbnail: newImageFilename || null,
-                instructions: newPDFFilename || null,
-                ownedBy: verifiedUser.user.id,
-                addedOn: new Date()
-            }
-        })
-        console.log("new set: ", newSet)
-
-        try {
-            if (newSet) {
-                if (await prisma.users.update({
-                    where: {
-                        id: verifiedUser.user.id
-                    },
-                    data: {
-                        sets: {
-                            sets: [...verifiedUser.user.sets.sets, newSet.id]
-                        }
+            let newInstructions = await prisma.instructions.createMany({
+                data: newPDFFilenames.map((filename) => {
+                    return {
+                        instructions: filename,
+                        addedById: verifiedUser.user.id,
+                        setId: newSet.id,
+                        attachmentId: newAttachment.id
                     }
-                })) {
-                    res.status(201).send({ message: "set added" })
-                }
-                else {
-                    res.status(503).send({ message: "set could not be added 1" })
-                }
+                })
+
+            })
+
+
+            // závěrečná odpověď a update usera
+            if (newSet) {
+                res.status(201).send({ message: "userSet added" })
 
             } else {
-                res.status(503).send({ message: "set could not be added 2" })
+                res.status(503).send({ message: "userSet could not be added 2" })
             }
-
-        } catch (err) {
-            console.log(err);
-
-            res.status(503).send({ message: "set could not be added 3" })
         }
-
     } catch (e) {
         console.log(e)
-
-        res.status(503).send({ message: "set could not be added 4" })
+        res.status(503).send({ message: "userSet could not be added 4" })
     }
 }
 

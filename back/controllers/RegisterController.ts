@@ -4,19 +4,14 @@ import { PrismaClient } from "@prisma/client"
 import { v4 as uuidv4 } from 'uuid'
 import { hashPassword } from "../services/userHash"
 import prisma from "../config/prisma"
-import path from "path"
-import fs from "fs"
 
 
-async function createUser(email: string, username: string, password: string, id: string) {
+async function createUser(email: string, username: string, password: string) {
     const user = await prisma.users.create({
         data: {
-            id: id,
             email: email,
             username: username,
             password: await hashPassword(password),
-            sessions: { sessions: [] },
-            sets: { sets: [] }
         },
     });
     return user;
@@ -32,9 +27,7 @@ const post = async (req: Request, res: Response) => {
     }
 
     try {
-        if (await prisma.users.findUnique({ where: { email: req.body.email } }) ||
-            await prisma.users.findUnique({ where: { username: req.body.username } })) {
-
+        if (await prisma.users.findFirst({ where: { email: req.body.email } }) || await prisma.users.findFirst({ where: { username: req.body.username } })) {
             console.log("user already exists")
             return res.status(409).send({ message: "user already exists" })
         }
@@ -44,24 +37,7 @@ const post = async (req: Request, res: Response) => {
     }
 
     try {
-        // try {
-
-        //     // fs.mkdir(path.join(__dirname, `../../uploads/${id}`), { recursive: true }, (err) => {
-        //     //     if (err) {
-        //     //         res.status(503).send({ message: "user could not be registered due to the folder creation" })
-        //     //     }
-        //     //     else{
-        //     //         console.log("folder created")
-        //     //     }
-        //     // })
-
-        // }
-        // catch (err) {
-        //     console.log(err)
-        //     res.status(503).send({ message: "user could not be registered due to the server error" })
-        // }
-        const id = uuidv4();
-        const user = await createUser(req.body.email, req.body.username ? req.body.username : req.body.email, req.body.password, id)
+        const user = await createUser(req.body.email, req.body.username ? req.body.username : req.body.email, req.body.password)
         console.log(user)
 
         if (user) {

@@ -108,7 +108,7 @@
                     <input
                         type={showPassword ? "text" : "password"}
                         id="confirm_password"
-                        name="password"
+                        name="confirm_password"
                         required
                         autocomplete="off"
                         class="w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"

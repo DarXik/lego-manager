@@ -9,7 +9,7 @@ const hashPassword = async (userPassword: string) => {
 
 const verifyPassword = async (userPassword: string, hashedPassword: string) => {
     const isValid = await compare(userPassword, hashedPassword)
-    console.log("password: ",isValid)
+    console.log("password match: ",isValid)
     return isValid
 }
 

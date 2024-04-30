@@ -7,37 +7,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model images {
-  id             Int    @id @default(autoincrement())
-  filename       String @db.VarChar(255)
-  mimetype       String @db.VarChar(255)
-  imageThumbnail String @db.LongText
-  addedBy        String @db.Char(36)
+model Sets {
+  id           String          @id @default(uuid()) @db.Char(36)
+  setNumber    Int             @unique @db.Int
+  name         String          @db.VarChar(255)
+  partsAmount  Int             @db.Int
+  themeId      Int             @db.Int
+  themeName    String          @db.Text
+  yearReleased Int             @db.SmallInt
+  addedBy      Users           @relation(fields: [addedById], references: [id])
+  addedById    String          @db.Char(36)
+  attachments  SetAttachment[]
+  instructions Instructions[]
+  usedBy       Users[]         @relation("usedBy")
 }
 
-model sets {
-  id             String   @id @unique(map: "id") @db.Char(36)
-  setNumber      Int      @unique(map: "setNumber")
-  name           String   @unique(map: "set_name_unique") @db.VarChar(255)
-  description    String?  @db.Text
-  partsAmount    Int
-  themeId        Int
-  themeName      String   @db.Text
-  yearReleased   Int?
-  bought         Boolean?
-  yearBought     Int?
-  price          Int?
-  imageThumbnail String?  @db.VarChar(255)
-  ownedBy        String   @db.Char(36)
-  addedOn        DateTime @db.DateTime(0)
-  instructions   String?  @db.Text
+model SetAttachment {
+  id           String         @id @default(uuid()) @db.Char(36)
+  addedOn      DateTime       @default(now())
+  lastModified DateTime       @updatedAt
+  description  String?        @db.VarChar(255) 
+  yearBought   Int?           @db.SmallInt
+  price        Int?
+  image        String?        @db.VarChar(255)
+  instructions Instructions[]
+  addedById    String         @db.Char(36) 
+  addedBy      Users          @relation(fields: [addedById], references: [id])
+  set          Sets           @relation(fields: [setId], references: [id])
+  setId        String         @db.Char(36)
 }
 
-model users {
-  id       String  @id @unique(map: "id") @db.Char(36)
-  username String? @db.VarChar(255)
-  email    String  @unique(map: "email") @db.VarChar(255)
-  password String  @db.VarChar(255)
-  sessions Json?
-  sets     Json?
+model Instructions {
+  id           String        @id @default(uuid()) @db.Char(36)
+  instructions String        @db.VarChar(255)
+  addedById    String        @db.Char(36)
+  addedBy      Users         @relation(fields: [addedById], references: [id])
+  attachment   SetAttachment @relation(fields: [attachmentId], references: [id])
+  attachmentId String        @db.Char(36)
+  set          Sets          @relation(fields: [setId], references: [id])
+  setId        String        @db.Char(36)
+}
+
+model Users {
+  id             String          @id @default(uuid()) @db.Char(36)
+  username       String?         @db.VarChar(255)
+  email          String          @unique @db.VarChar(255)
+  password       String          @db.VarChar(255)
+  sessions       Sessions[]
+  usedSets       Sets[]          @relation("usedBy")
+  setAttachments SetAttachment[]
+  Instructions   Instructions[]
+  ownedSets      Sets[]
+}
+
+model Sessions {
+  id     String @id @default(uuid()) @db.Char(36)
+  token  String @db.VarChar(255)
+  userId String @db.Char(36)
+  user   Users  @relation(fields: [userId], references: [id])
 }

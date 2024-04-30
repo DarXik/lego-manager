@@ -12,19 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const uuid_1 = require("uuid");
 const userHash_1 = require("../services/userHash");
 const prisma_1 = __importDefault(require("../config/prisma"));
-function createUser(email, username, password, id) {
+function createUser(email, username, password) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = yield prisma_1.default.users.create({
             data: {
-                id: id,
                 email: email,
                 username: username,
                 password: yield (0, userHash_1.hashPassword)(password),
-                sessions: { sessions: [] },
-                sets: { sets: [] }
             },
         });
         return user;
@@ -37,8 +33,7 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(400).send({ message: "email and password are required" });
     }
     try {
-        if ((yield prisma_1.default.users.findUnique({ where: { email: req.body.email } })) ||
-            (yield prisma_1.default.users.findUnique({ where: { username: req.body.username } }))) {
+        if ((yield prisma_1.default.users.findFirst({ where: { email: req.body.email } })) || (yield prisma_1.default.users.findFirst({ where: { username: req.body.username } }))) {
             console.log("user already exists");
             return res.status(409).send({ message: "user already exists" });
         }
@@ -47,22 +42,7 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(err);
     }
     try {
-        // try {
-        //     // fs.mkdir(path.join(__dirname, `../../uploads/${id}`), { recursive: true }, (err) => {
-        //     //     if (err) {
-        //     //         res.status(503).send({ message: "user could not be registered due to the folder creation" })
-        //     //     }
-        //     //     else{
-        //     //         console.log("folder created")
-        //     //     }
-        //     // })
-        // }
-        // catch (err) {
-        //     console.log(err)
-        //     res.status(503).send({ message: "user could not be registered due to the server error" })
-        // }
-        const id = (0, uuid_1.v4)();
-        const user = yield createUser(req.body.email, req.body.username ? req.body.username : req.body.email, req.body.password, id);
+        const user = yield createUser(req.body.email, req.body.username ? req.body.username : req.body.email, req.body.password);
         console.log(user);
         if (user) {
             console.log("user registered");

@@ -15,12 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const userAuthentication_1 = require("../services/userAuthentication");
 const prisma_1 = __importDefault(require("../config/prisma"));
 const uniqid_1 = __importDefault(require("uniqid"));
-const uuid_1 = require("uuid");
 const multer_1 = __importDefault(require("multer"));
 const upload = (0, multer_1.default)({ dest: "uploads/" });
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // počáteční kontrola
     if (!req.body || !req.headers.authorization) {
         return res.status(400).send({ message: "something is missing" });
     }
@@ -28,12 +28,14 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.status(404).send({ message: "user not found" });
     }
-    const set = yield req.body;
-    console.log(set);
+    const userSet = yield req.body;
+    console.log(userSet);
     let newImageFilename;
-    let newPDFFilename;
+    let newPDFFilenames = [];
+    // pokud nahrál image/manual
     if (req.files || req.file) {
         console.log(req.files);
+        // kontrola a uložení souboru
         try {
             const files = req.files || req.file;
             const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.JPG', '.JPEG', '.PNG', '.GIF', '.WEBP', '.svg', '.SVG', '.pdf', '.PDF'];
@@ -45,8 +47,9 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 }
                 if (ext == ".pdf" || ext == ".PDF" && files[key].mimetype == "application/pdf") {
                     try {
-                        newPDFFilename = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
-                        const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${newPDFFilename}`);
+                        const filename = `${(0, uniqid_1.default)()}-${files[key].originalname.split(".")[0]}${ext}`;
+                        newPDFFilenames.push(filename);
+                        const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${filename}`);
                         yield fs_1.default.promises.writeFile(filePath, files[key].buffer);
                     }
                     catch (err) {
@@ -74,76 +77,72 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     try {
-        let resThemeName = "Custom"; // dodělat od usera
-        const headers = {
-            'Accept': 'application/json',
-            'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
-        };
-        try {
-            const responseTheme = yield fetch(`https://rebrickable.com/api/v3/lego/themes/${set.themeId}`, {
-                method: 'GET',
-                headers: headers
+        // nalezení themeName podle id
+        // let resThemeName: string = "Custom" // dodělat od usera
+        // try {
+        //     const responseTheme = await fetch(`https://rebrickable.com/api/v3/lego/themes/${userSet.themeId}`, {
+        //         method: 'GET',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //             'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
+        //         }
+        //     })
+        //     if (responseTheme.ok) {
+        //         resThemeName = (await responseTheme.json()).name
+        //     }
+        //     else {
+        //         console.log("theme not found")
+        //     }
+        // } catch (e) {
+        //     console.log(e)
+        // }
+        // uložení a vytvoření setu
+        let set = yield prisma_1.default.sets.findUnique({ where: { setNumber: parseInt(userSet.setNumber) } });
+        if (!set) {
+            let newSet = yield prisma_1.default.sets.create({
+                data: {
+                    setNumber: parseInt(userSet.setNumber),
+                    name: userSet.name,
+                    yearReleased: parseInt(userSet.yearReleased),
+                    partsAmount: parseInt(userSet.partsAmount),
+                    themeId: parseInt(userSet.themeId),
+                    themeName: userSet.themeName,
+                    addedBy: { connect: { id: verifiedUser.user.id } },
+                    usedBy: { connect: { id: verifiedUser.user.id } },
+                }
             });
-            if (responseTheme.ok) {
-                resThemeName = (yield responseTheme.json()).name;
-            }
-            else {
-                console.log("theme not found");
-            }
-        }
-        catch (e) {
-            console.log(e);
-        }
-        const newSet = yield prisma_1.default.sets.create({
-            data: {
-                id: (0, uuid_1.v4)(),
-                setNumber: parseInt(set.setNumber),
-                name: set.name,
-                description: set.description || null, // failuje pro čj
-                partsAmount: parseInt(set.partsAmount),
-                themeId: parseInt(set.themeId),
-                themeName: resThemeName,
-                yearReleased: parseInt(set.yearReleased) || null,
-                bought: (set.isBought == "on" ? true : false) || null,
-                yearBought: parseInt(set.yearBought) || null,
-                price: parseInt(set.price) || null,
-                imageThumbnail: newImageFilename || null,
-                instructions: newPDFFilename || null,
-                ownedBy: verifiedUser.user.id,
-                addedOn: new Date()
-            }
-        });
-        console.log("new set: ", newSet);
-        try {
+            let newAttachment = yield prisma_1.default.setAttachment.create({
+                data: {
+                    description: (userSet === null || userSet === void 0 ? void 0 : userSet.description) || null,
+                    yearBought: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.yearBought) || null,
+                    price: parseInt(userSet === null || userSet === void 0 ? void 0 : userSet.price) || null,
+                    image: newImageFilename || null,
+                    addedBy: { connect: { id: verifiedUser.user.id } },
+                    set: { connect: { id: newSet.id } }
+                }
+            });
+            let newInstructions = yield prisma_1.default.instructions.createMany({
+                data: newPDFFilenames.map((filename) => {
+                    return {
+                        instructions: filename,
+                        addedById: verifiedUser.user.id,
+                        setId: newSet.id,
+                        attachmentId: newAttachment.id
+                    };
+                })
+            });
+            // závěrečná odpověď a update usera
             if (newSet) {
-                if (yield prisma_1.default.users.update({
-                    where: {
-                        id: verifiedUser.user.id
-                    },
-                    data: {
-                        sets: {
-                            sets: [...verifiedUser.user.sets.sets, newSet.id]
-                        }
-                    }
-                })) {
-                    res.status(201).send({ message: "set added" });
-                }
-                else {
-                    res.status(503).send({ message: "set could not be added 1" });
-                }
+                res.status(201).send({ message: "userSet added" });
             }
             else {
-                res.status(503).send({ message: "set could not be added 2" });
+                res.status(503).send({ message: "userSet could not be added 2" });
             }
-        }
-        catch (err) {
-            console.log(err);
-            res.status(503).send({ message: "set could not be added 3" });
         }
     }
     catch (e) {
         console.log(e);
-        res.status(503).send({ message: "set could not be added 4" });
+        res.status(503).send({ message: "userSet could not be added 4" });
     }
 });
 exports.default = { post };

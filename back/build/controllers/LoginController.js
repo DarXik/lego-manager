@@ -16,14 +16,13 @@ const userAuthentication_1 = require("../services/userAuthentication");
 const prisma_1 = __importDefault(require("../config/prisma"));
 const userHash_1 = require("../services/userHash");
 const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     console.log(req.body);
-    if (!req.body.email || !req.body.password) {
+    if ((!req.body.email && !req.body.username) || !req.body.password) {
         return res.status(400).send({ message: "something is missing" });
     }
     try {
         const user = yield prisma_1.default.users.findUnique({ where: { email: req.body.email } } || { where: { username: req.body.email } });
-        console.log(user);
+        console.log("logging in: ", user);
         if (!user) {
             return res.status(404).send({ message: "User not found" });
         }
@@ -31,16 +30,16 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(401).send({ message: "wrong password" });
         }
         const userSession = (0, userAuthentication_1.createToken)(user.id.toString()).toString();
-        console.log(userSession);
         try {
             yield prisma_1.default.users.update({
                 where: { id: user.id },
                 data: {
                     sessions: {
-                        sessions: [...(_a = user === null || user === void 0 ? void 0 : user.sessions) === null || _a === void 0 ? void 0 : _a.sessions, userSession]
+                        create: [{ token: userSession }]
                     }
                 }
             });
+            console.log("user logged in");
             res.status(200).send({
                 session: userSession,
                 username: user.username,

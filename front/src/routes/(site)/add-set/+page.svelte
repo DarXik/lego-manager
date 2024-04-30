@@ -21,6 +21,7 @@
     let isSearching = false;
     let searchQuery = "";
     let fetchedSets: any = [];
+    let files: any;
 
     function handleImageUpload(e: Event) {
         const image = (e.target as HTMLInputElement)?.files?.[0];
@@ -61,13 +62,18 @@
 <section class="px-20 mb-10" style="padding-top: {$navbarHeight + 32}px;">
     <h1 class="font-bold text-3xl mb-8">Add new set</h1>
     <div class="mb-12">
-        <p class="text-gray-600 transition-all" class:!text-zinc-100={isSearching}>Find yours:</p>
+        <p
+            class="text-gray-600 transition-all"
+            class:!text-zinc-100={isSearching}
+        >
+            Find yours:
+        </p>
         <form
             class="lg:w-9/12 mt-2"
             method="POST"
             action="?/searchLegoSet"
             on:focusin={() => (isSearching = true)}
-            on:focusout={() => (isSearching = false)}            
+            on:focusout={() => (isSearching = false)}
             use:enhance
         >
             <div class="relative flex w-full">
@@ -108,7 +114,7 @@
                     disabled={searchQuery.length == 0}
                     class="end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium px-6 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300"
                 >
-                    Hledat
+                    Search
                 </button>
             </div>
         </form>
@@ -156,8 +162,8 @@
         </div>
         <div class="one-cell row-start-1 col-start-2 col-end-2">
             <label for="setNumber"
-                >Set number <span class="text-sm">(custom/official)</span> <span class="text-red-600">*</span
-                ></label
+                >Set number <span class="text-sm">(custom/official)</span>
+                <span class="text-red-600">*</span></label
             >
             <input
                 type="text"
@@ -189,7 +195,9 @@
         </div>
         <div class="one-cell row-start-2 row-end-4 col-start-1 col-end-3">
             <label for="description"
-                >Description <span class="text-sm">(max {256 - description.length})</span></label
+                >Description <span class="text-sm"
+                    >(max {256 - description.length})</span
+                ></label
             >
             <textarea
                 name="description"
@@ -203,8 +211,8 @@
         </div>
         <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
             <label for="themeId"
-                >Theme ID <span class="text-sm">(custom/official)</span> <span class="text-red-600">*</span
-                ></label
+                >Theme ID <span class="text-sm">(custom/official)</span>
+                <span class="text-red-600">*</span></label
             >
             <input
                 type="text"
@@ -219,7 +227,10 @@
             />
         </div>
         <div class="one-cell row-start-3 row-end-3 col-start-3 col-end-3">
-            <label for="themeName">Theme name <span class="text-sm">(custom/official)</span></label>
+            <label for="themeName"
+                >Theme name <span class="text-sm">(custom/official)</span
+                ></label
+            >
             <input
                 type="text"
                 name="themeName"
@@ -276,7 +287,10 @@
             />
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-1 col-end-2">
-            <label for="imageThumbnail">Set image <span class="text-sm">*portrait preferred</span></label>
+            <label for="imageThumbnail"
+                >Set image <span class="text-sm">*portrait preferred</span
+                ></label
+            >
             <div class="my-input">
                 <input
                     type="file"
@@ -296,17 +310,24 @@
             </div>
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-2 col-end-3">
-            <label for="instructions">Instructions PDF <span class="text-sm">(max 3)</span></label>
+            <label for="instructions">Instructions PDF</label>
             <div class="my-input">
                 <input
                     type="file"
                     id="instructions"
                     name="instructions"
                     accept="application/pdf"
+                    multiple
+                    bind:files
                 />
+                {#if files}
+                    {#each Array.from(files) as file}
+                        <p class="text-sm pt-2">{file.name} ({file.size} bytes)</p>
+                    {/each}
+                {/if}
             </div>
         </div>
-        <div
+        <!-- <div
             htmlFor="isBought"
             class:bg-zinc-900={isBought}
             class="cursor-pointer select-none flex flex-row items-center gap-3 hover:bg-zinc-900 w-fit px-3 py-2 text-gray-500 row-start-6 row-end-6 col-start-1 col-end-1 transition-all"
@@ -327,7 +348,7 @@
                 for="isBought"
                 >{isBought ? "I own this set" : "Do you own this set?"}</label
             >
-        </div>
+        </div> -->
 
         <div
             class="one-cell row-start-7 row-end-7 col-start-1 col-end-1 flex flex-row gap-8"
