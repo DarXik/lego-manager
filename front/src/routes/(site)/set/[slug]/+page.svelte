@@ -7,6 +7,15 @@
 
     // let set = $userSets.find((set) => set.id == data.slug);
     let set = data.set;
+    let currentInstructions: any = [];
+    let instructiosPref = "";
+
+    onMount(() => {
+        if (set) {
+            currentInstructions = set.myInstructions;
+            instructiosPref = "Your";
+        }
+    });
 </script>
 
 <section>
@@ -89,11 +98,9 @@
                         <InfoCardwIcon
                             title="Added on"
                             path="collection-icon.svg"
-                            text={new Date(set.addedOn)
-                                .toLocaleString({
-                                    timeZone: "Europe/Paris",
-                                })
-                                .split(",")[0]}
+                            text={new Date(set.addedOn).toLocaleDateString(
+                                "cz-CZ",
+                            )}
                         />
                     </div>
                 </div>
@@ -111,59 +118,74 @@
         </article>
         {#if set.allInstructions.length > 0 || set.myInstructions.length > 0}
             <article
-                class="px-20 mb-16 w-1/2 mt-20 flex flex-col items-start justify-center"
+                class="px-20 mb-16 mt-20 flex flex-col items-start justify-center"
             >
                 <div class="mb-12">
-                    <h2 class="text-4xl font-bold mb-4">Choose instructions</h2>
-                    <button
-                    
-                        class="text-white mr-3 end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        >Your instructions</button
-                    >
-                    <button
-                        class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                        >Public instructions</button
-                    >
+                    <h2 class="text-4xl font-bold mb-4">
+                        Choose instructions:
+                    </h2>
+                    <div class="flex flex-row gap-4">
+                        <button
+                            on:click={() =>
+                                (currentInstructions = set.myInstructions)}
+                            on:click={() => (instructiosPref = "Your")}
+                            class:!border-white={instructiosPref == "Your"}
+                            class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            >Your instructions</button
+                        >
+                        <button
+                            on:click={() =>
+                                (currentInstructions = set.allInstructions)}
+                            on:click={() => (instructiosPref = "Public")}
+                            class:!border-white={instructiosPref == "Public"}
+                            class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            >Public instructions</button
+                        >
+                    </div>
                 </div>
                 <div class="flex flex-col mb-16 pb-4 w-full">
                     <h3 class="text-3xl font-bold mb-8">
-                        Your instructions ({set.myInstructions.length})
+                        {instructiosPref} instructions ({currentInstructions.length})
                     </h3>
                     <!-- <div class="flex flex-row gap-6"> -->
-                    {#each set.myInstructions as instruction, i}
+                    {#each currentInstructions as instruction, i}
                         <div
-                            class="flex flex-row gap-4 mb-8 border-b-2 border-l-2 border-zinc-300 py-4"
+                            class="flex flex-col gap-4 mb-8 border-b-2 border-l-2 border-zinc-300 p-4"
                         >
-                            <p class="text-2xl font-bold p-2 px-4">
-                                &bull; {i + 1}
-                            </p>
+                            <div class="flex flex-row items-center gap-4">
+                                <p class="text-2xl font-bold">
+                                    &bull; {i + 1}
+                                </p>
 
-                            <button
-                                class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                                ><a
-                                    href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
-                                    target="_blank">Open</a
-                                ></button
-                            >
-                            <button
-                                class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                                ><a
-                                    href="http://localhost:3000/api/v1/instructions/download/{instruction.instructions}"
-                                    target="_self"
-                                    download>Download</a
-                                ></button
-                            >
+                                <button
+                                    class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                    ><a
+                                        href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
+                                        target="_blank">Open</a
+                                    ></button
+                                >
+                                <button
+                                    class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                    ><a
+                                        href="http://localhost:3000/api/v1/instructions/download/{instruction.instructions}"
+                                        target="_self"
+                                        download>Download</a
+                                    ></button
+                                >
+                            </div>
+
+                            {#if currentInstructions.length == 1}
+                                <object
+                                    title="instructions"
+                                    class="w-full 2xl:max-w-[50%] h-[50em] p-8"
+                                    data="http://localhost:3000/api/v1/instructions/{currentInstructions[0]
+                                        .instructions}"
+                                    type="application/pdf"
+                                ></object>
+                            {/if}
                         </div>
                     {/each}
                 </div>
-                <!-- {#if set.allInstructions.length == 1 || set.myInstructions.length == 1}
-                    <object
-                        title="instructions"
-                        class="w-full h-full"
-                        data="http://localhost:3000/api/v1/instructions/{set.allInstructions?[0].instructions || set.myInstructions?[0].instructions}"
-                        type="application/pdf"
-                    ></object>
-                {/if} -->
             </article>
         {/if}
     {/if}

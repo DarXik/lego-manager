@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import { verifyUser } from "../services/userAuthentication";
+import prisma from "../config/prisma";
 
 const get = async (req: Request, res: Response) => {
 
@@ -28,19 +29,29 @@ const get = async (req: Request, res: Response) => {
             headers: headers
         })
 
+        const mySets = await prisma.sets.findMany({ where: {} })
         const resSetJSON: any = await responseRebrickableSet.json()
-
-        if (resSetJSON.count > 0) {
-            res.status(200).send(resSetJSON.results.map((set: any) => ({
+        console.log("mySets: ", mySets)
+        let finalSets = [
+            ...mySets.map((set: any) => ({
+                setNumber: set.setNumber,
+                name: set.name,
+                yearReleased: set.yearReleased,
+                numParts: set.numParts,
+                themeName: set.themeName,
+            })),
+            ...resSetJSON.results.map((set: any) => ({
                 setNumber: set.set_num,
                 name: set.name,
                 yearReleased: set.year,
                 numParts: set.num_parts,
-                themeId: set.theme_id
-            })));
+            }))]
+
+        if (finalSets.length > 0) {
+            res.status(200).send(finalSets);
 
         } else {
-            res.status(404).send({ message: "set not found" })
+            res.status(404).send({ message: "sets not found" })
         }
 
     } catch (error) {

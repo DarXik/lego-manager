@@ -60,10 +60,10 @@ const verifyUser = (token) => __awaiter(void 0, void 0, void 0, function* () {
                     ]
                 }
             });
-            console.log("found user: ", foundUser);
-            console.log("decoded: ", decoded);
+            // console.log("found user: ", foundUser);
+            // console.log("decoded: ", decoded);
             if (foundUser) {
-                console.log("authenticated user: ", foundUser === null || foundUser === void 0 ? void 0 : foundUser.username);
+                // console.log("authenticated user: ", foundUser?.username);
                 return {
                     user: foundUser,
                     token: decoded.user

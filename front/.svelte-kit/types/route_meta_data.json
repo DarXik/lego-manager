@@ -5,6 +5,9 @@
 		"src/routes/(site)/+layout.server.ts"
 	],
 	"/": [],
+	"/(site)/account": [
+		"src/routes/(site)/+layout.server.ts"
+	],
 	"/(site)/add-set": [
 		"src/routes/(site)/add-set/+page.server.ts",
 		"src/routes/(site)/+layout.server.ts"
@@ -17,6 +20,9 @@
 	],
 	"/register": [
 		"src/routes/register/+page.server.js"
+	],
+	"/(site)/settings": [
+		"src/routes/(site)/+layout.server.ts"
 	],
 	"/(site)/set/[slug]": [
 		"src/routes/(site)/set/[slug]/+page.js",

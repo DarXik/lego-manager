@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const userAuthentication_1 = require("../services/userAuthentication");
+const prisma_1 = __importDefault(require("../config/prisma"));
 const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.params.query || !req.headers.authorization) {
         return res.status(400).send({ message: "something is missing" });
@@ -30,18 +34,29 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             method: 'GET',
             headers: headers
         });
+        const mySets = yield prisma_1.default.sets.findMany({ where: {} });
         const resSetJSON = yield responseRebrickableSet.json();
-        if (resSetJSON.count > 0) {
-            res.status(200).send(resSetJSON.results.map((set) => ({
+        console.log("mySets: ", mySets);
+        let finalSets = [
+            ...mySets.map((set) => ({
+                setNumber: set.setNumber,
+                name: set.name,
+                yearReleased: set.yearReleased,
+                numParts: set.numParts,
+                themeName: set.themeName,
+            })),
+            ...resSetJSON.results.map((set) => ({
                 setNumber: set.set_num,
                 name: set.name,
                 yearReleased: set.year,
                 numParts: set.num_parts,
-                themeId: set.theme_id
-            })));
+            }))
+        ];
+        if (finalSets.length > 0) {
+            res.status(200).send(finalSets);
         }
         else {
-            res.status(404).send({ message: "set not found" });
+            res.status(404).send({ message: "sets not found" });
         }
     }
     catch (error) {
