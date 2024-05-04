@@ -5,8 +5,14 @@ export const actions = {
     addSet: async ({ request, cookies, locals }) => {
         const formData = await request.formData();
 
+        
+        if (!formData.get("name") || !formData.get("partsAmount") || !formData.get("setNumber") || !formData.get("themeName")) {
+            return {
+                problem: "Missing required fields"
+            }
+        }
+        
         console.log("form data: ", formData)
-
         const newSet = await axios({
             url: "http://localhost:3000/api/v1/sets/add",
             method: "POST",
@@ -47,6 +53,7 @@ export const actions = {
 
         let res = await response.json();
         console.log(res)
+
         if (response.ok) {
             return {
                 setsFound: res

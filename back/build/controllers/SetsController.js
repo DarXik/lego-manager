@@ -36,7 +36,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     // všechny sety
     if (!req.params.id) {
-        console.log("sets for user: ", verifiedUser.user.username);
+        // console.log("sets for user: ", verifiedUser.user.username);
         try {
             const sets = yield prisma_1.default.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } });
             const attachment = yield prisma_1.default.setAttachment.findMany({ where: { setId: { in: sets.map(set => set.id) }, addedById: verifiedUser.user.id } });
@@ -64,7 +64,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     // jeden specifický set
     else {
-        console.log("looking for set: ", req.params.id);
+        // console.log("looking for set: ", req.params.id);
         try {
             const set = yield prisma_1.default.sets.findUnique({ where: { id: req.params.id, usedBy: { some: { id: verifiedUser.user.id } } } });
             const attachment = yield prisma_1.default.setAttachment.findFirst({ where: { setId: set === null || set === void 0 ? void 0 : set.id, addedById: verifiedUser.user.id } });

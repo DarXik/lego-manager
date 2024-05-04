@@ -15,7 +15,7 @@ const get = async (req: Request, res: Response) => {
 
     // všechny sety
     if (!req.params.id) {
-        console.log("sets for user: ", verifiedUser.user.username);
+        // console.log("sets for user: ", verifiedUser.user.username);
 
         try {
             const sets = await prisma.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } })
@@ -47,7 +47,7 @@ const get = async (req: Request, res: Response) => {
     }
     // jeden specifický set
     else {
-        console.log("looking for set: ", req.params.id);
+        // console.log("looking for set: ", req.params.id);
 
         try {
             const set = await prisma.sets.findUnique({ where: { id: req.params.id, usedBy: { some: { id: verifiedUser.user.id } } } })

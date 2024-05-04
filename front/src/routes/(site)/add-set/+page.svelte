@@ -14,7 +14,6 @@
     let description: any = "";
     let price: any;
     let partsAmount: any = "";
-    let themeId: any;
     let imageThumbnail: any;
     let uploadedImage: string;
     let themeName: any = "";
@@ -56,7 +55,8 @@
         setNumber = set.setNumber;
         yearReleased = set.yearReleased;
         partsAmount = set.numParts;
-        themeId = set.themeId;
+        // themeId = set.themeId;
+        themeName = set.themeName;
     }
 </script>
 
@@ -113,7 +113,7 @@
                 <button
                     type="submit"
                     disabled={searchQuery.length == 0}
-                    class="end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium px-6 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300"
+                    class="end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium px-6 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none"
                 >
                     Search
                 </button>
@@ -126,10 +126,14 @@
                     {#each fetchedSets as set}
                         <button
                             on:click={() => quickSetAdd(set)}
-                            class="w-fit px-4 py-2 border-2 transition-all border-zinc-300 hover:border-zinc-300 hover:bg-zinc-300 hover:text-black focus:bg-zinc-300 focus:text-black active:border-zinc-400 active:bg-zinc-400"
-                            class:setChosen={set.setNumber == setNumber}
-                            >{set.name}</button
-                        >
+                            class="w-fit px-4 py-2 border-2 transition-all border-zinc-300 hover:border-zinc-300 hover:bg-zinc-300/90 hover:text-black focus:bg-zinc-300/90 focus:text-black active:border-zinc-400 active:bg-zinc-300/90 select-none"
+                            class:setChosen={set.setNumber == setNumber &&
+                                set.themeName == themeName}
+                            >{set.name} <br /><span
+                                class="text-xs text-gray-300"
+                                >{set.addedBy ? "by user" : ""}</span
+                            >
+                        </button>
                     {/each}
                 </div>
             {:else if form?.setsFailed}
@@ -148,24 +152,24 @@
         class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col gap-4 lg:w-9/12 transition-all"
     >
         <div class="one-cell row-start-1 col-start-1 col-end-1">
-            <label for="name">Name <span class="text-red-600">*</span></label>
             <input
                 type="text"
                 name="name"
                 id="name"
                 bind:value={name}
-                required
                 autocomplete="off"
                 maxlength="100"
-                class="my-input"
+                class="my-input peer"
                 placeholder="Atreides Royal..."
+                required
             />
+            <label
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                for="name"
+                >Name <span class="text-red-600">*</span>
+            </label>
         </div>
         <div class="one-cell row-start-1 col-start-2 col-end-2">
-            <label for="setNumber"
-                >Set number <span class="text-sm">(custom/official)</span>
-                <span class="text-red-600">*</span></label
-            >
             <input
                 type="text"
                 name="setNumber"
@@ -174,14 +178,17 @@
                 required
                 autocomplete="off"
                 maxlength="30"
-                class="my-input"
+                class="my-input peer"
                 placeholder="10327"
             />
+            <label
+                for="setNumber"
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                >Set number <span class="text-sm">(custom/official)</span>
+                <span class="text-red-600">*</span></label
+            >
         </div>
         <div class="one-cell row-start-1 col-start-3 col-end-3">
-            <label for="partsAmount"
-                >Number of bricks <span class="text-red-600">*</span></label
-            >
             <input
                 type="text"
                 name="partsAmount"
@@ -190,26 +197,53 @@
                 required
                 autocomplete="off"
                 maxlength="30"
-                class="my-input"
+                class="my-input peer"
                 placeholder="1369"
             />
+            <label
+                for="partsAmount"
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                >Number of bricks <span class="text-red-600">*</span></label
+            >
+        </div>
+        <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
+            <input
+                type="text"
+                name="themeName"
+                id="themeName"
+                bind:value={themeName}
+                autocomplete="off"
+                maxlength="30"
+                class="my-input peer"
+                placeholder="Icons"
+                required
+            />
+            <label
+                for="themeName"
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                >Theme/Collection <span class="text-sm"
+                    >(custom/official) <span class="text-red-600">*</span></span
+                >
+            </label>
         </div>
         <div class="one-cell row-start-2 row-end-4 col-start-1 col-end-3">
-            <label for="description"
-                >Description <span class="text-sm"
-                    >(max {256 - description.length})</span
-                ></label
-            >
             <textarea
                 name="description"
                 id="description"
                 bind:value={description}
                 autocomplete="off"
                 rows="4"
-                class="placeholder:italic w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all h-full"
+                class="placeholder:italic w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all h-full peer"
                 maxlength="256"
                 placeholder="Authentic replica of the Atreides Royal Ornithopter from Dune..."
             ></textarea>
+            <label
+                for="description"
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                >Description <span class="text-sm"
+                    >(max {256 - description.length})</span
+                ></label
+            >
         </div>
         <!-- <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
             <label for="themeId"
@@ -228,24 +262,8 @@
                 placeholder="721"
             />
         </div> -->
-        <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
-            <label for="themeName"
-                >Theme/Collection <span class="text-sm">(custom/official) <span class="text-red-600">*</span></span
-                ></label
-            >
-            <input
-                type="text"
-                name="themeName"
-                id="themeName"
-                bind:value={themeName}
-                autocomplete="off"
-                maxlength="30"
-                class="my-input"
-                placeholder="Icons"
-            />
-        </div>
+
         <div class="one-cell row-start-4 row-end-4 col-start-1 col-end-1">
-            <label for="yearReleased">Year of release</label>
             <input
                 type="text"
                 name="yearReleased"
@@ -253,16 +271,16 @@
                 bind:value={yearReleased}
                 autocomplete="off"
                 maxlength="4"
-                class="my-input"
+                class="my-input peer"
                 placeholder="2024"
             />
+            <label
+                for="yearReleased"
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                >Year of release</label
+            >
         </div>
         <div class="one-cell row-start-4 row-end-4 col-start-2 col-end-2">
-            <label for="yearBought"
-                >Year of purchase {@html isBought
-                    ? `<span class="text-red-600">*</span>`
-                    : ""}</label
-            >
             <input
                 bind:value={yearBought}
                 type="text"
@@ -270,13 +288,19 @@
                 id="yearBought"
                 autocomplete="off"
                 maxlength="4"
-                class="my-input"
+                class="my-input peer"
                 placeholder="2024"
                 required={isBought}
             />
+            <label
+                for="yearBought"
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                >Year of purchase {@html isBought
+                    ? `<span class="text-red-600">*</span>`
+                    : ""}</label
+            >
         </div>
         <div class="one-cell row-start-4 row-end-4 col-start-3 col-end-3">
-            <label for="price">Price</label>
             <input
                 type="text"
                 name="price"
@@ -284,9 +308,14 @@
                 bind:value={price}
                 autocomplete="off"
                 maxlength="30"
-                class="my-input"
+                class="my-input peer"
                 placeholder="149.99"
             />
+            <label
+                for="price"
+                class="peer-focus:text-white -order-last transition-all duration-200"
+                >Price</label
+            >
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-1 col-end-2">
             <label for="imageThumbnail"
@@ -326,7 +355,9 @@
                 />
                 {#if files}
                     {#each Array.from(files) as file}
-                        <p class="text-sm pt-2">{file.name} ({file.size} bytes)</p>
+                        <p class="text-sm pt-2">
+                            {file.name} ({file.size} bytes)
+                        </p>
                     {/each}
                 {/if}
             </div>
@@ -362,21 +393,25 @@
                 type="submit"
                 class="bg-blue-700 hover:bg-blue-800 active:bg-blue-900 border-2 border-transparent py-3 px-10 w-fit mt-10 text-white uppercase font-bold transition-all disabled:cursor-default disabled:opacity-75 disabled:bg-zinc-800 disabled:text-gray-300"
                 class:!cursor-default={isSearching}
-                disabled={form?.newSetAdded &&
+                disabled={(form?.newSetAdded &&
                     !(
                         name.length === 0 ||
                         setNumber.length === 0 ||
                         partsAmount.length === 0 ||
                         themeName.length === 0
-                    ) || isSearching}
-                >
-                {form?.newSetAdded
-                    ? form?.newSetAdded.message
-                    : "Add set"}</button
+                    )) ||
+                    isSearching}
             >
+                {form?.newSetAdded ? form?.newSetAdded.message : "Add set"}
+            </button>
             {#if form?.newSetFailed}
                 <p class="text-red-500 font-bold pt-4">
                     {form?.newSetFailed.message}
+                </p>
+            {/if}
+            {#if form?.problem}
+                <p class="text-red-500 font-bold pt-4">
+                    {form?.problem}
                 </p>
             {/if}
         </div>
@@ -394,6 +429,13 @@
         @apply border-green-500 text-green-500 disabled:opacity-80 bg-transparent cursor-default;
     }
     .setChosen {
-        @apply border-zinc-300 bg-zinc-300 text-black;
+        @apply border-zinc-300/70 bg-zinc-300/40 text-white;
     }
+    /* .publicSet {
+        @apply border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black;
+    }
+
+    .publicSetChosen {
+        @apply border-blue-400 text-blue-400 bg-blue-400 hover:bg-blue-400 hover:text-black;
+    } */
 </style>
