@@ -126,13 +126,13 @@
                     {#each fetchedSets as set}
                         <button
                             on:click={() => quickSetAdd(set)}
-                            class="w-fit px-4 py-2 border-2 transition-all border-zinc-300 hover:border-zinc-300 hover:bg-zinc-300/90 hover:text-black focus:bg-zinc-300/90 focus:text-black active:border-zinc-400 active:bg-zinc-300/90 select-none"
+                            class="w-fit border-2 transition-all border-zinc-300 hover:border-zinc-300 hover:bg-zinc-300/90 hover:text-black focus:bg-zinc-300/90 focus:text-black active:border-zinc-400 active:bg-zinc-300/90 select-none group"
                             class:setChosen={set.setNumber == setNumber &&
                                 set.themeName == themeName}
-                            >{set.name} <br /><span
-                                class="text-xs text-gray-300"
-                                >{set.addedBy ? "by user" : ""}</span
-                            >
+                            ><div class="  px-4 py-2">
+                                <p>{set.name}</p>
+                                <p class="text-xs">{set.addedBy? "by user": ""}</p>
+                            </div>
                         </button>
                     {/each}
                 </div>

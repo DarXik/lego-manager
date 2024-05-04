@@ -27,6 +27,7 @@ app.use("/user/login", User_1.default);
 app.use("/user/register", User_2.default);
 app.use("/api/v1/sets", Sets_1.default);
 app.use("/api/v1/sets/add", upload.any(), Add_1.default);
+app.use("api/v1/sets/delete", Add_1.default);
 app.use("/api/v1/sets/search", Search_1.default);
 app.use("/api/v1/image", Image_1.default);
 app.use("/api/v1/instructions", Instructions_1.default);

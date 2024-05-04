@@ -25,6 +25,7 @@ app.use("/user/login", loginRoute);
 app.use("/user/register", registerRoute);
 app.use("/api/v1/sets", setsRoute);
 app.use("/api/v1/sets/add", upload.any(), setsAddRoute);
+app.use("api/v1/sets/delete", setsAddRoute);
 app.use("/api/v1/sets/search", setsSearchRoute);
 app.use("/api/v1/image", imageRoute)
 app.use("/api/v1/instructions", instructionsRoute);

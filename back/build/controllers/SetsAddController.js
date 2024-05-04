@@ -217,4 +217,46 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(503).send({ message: "set could not be added" });
     }
 });
-exports.default = { post };
+const deleteSet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // počáteční kontrola
+    if (!req.params.id || !req.headers.authorization) {
+        return res.status(400).send({ message: "something is missing" });
+    }
+    const verifiedUser = yield (0, userAuthentication_1.verifyUser)(req.headers.authorization.toString());
+    if (!verifiedUser.user || !verifiedUser.token) {
+        return res.status(404).send({ message: "user not found" });
+    }
+    let setId = req.params.id;
+    try {
+        let set = yield prisma_1.default.sets.update({
+            where: { id: setId },
+            data: {
+                usedBy: { disconnect: { id: verifiedUser.user.id } },
+            }
+        });
+        let setAttachment = yield prisma_1.default.setAttachment.deleteMany({
+            where: { set: { id: set.id }, addedBy: { id: verifiedUser.user.id } }
+        });
+        let instructions = yield prisma_1.default.instructions.deleteMany({
+            where: { set: { id: set.id }, addedBy: { id: verifiedUser.user.id } }
+        });
+        // let user = await prisma.users.update({
+        //     where: { id: verifiedUser.user.id },
+        //     data: {
+        //         usedSets: { disconnect: { id: set.id } },
+        //         setAttachments: { disconnect: { id: setAttachment.id } },
+        //     }
+        // })
+        if (set && setAttachment && instructions) {
+            res.status(200).send({ message: "set deleted" });
+        }
+        else {
+            res.status(503).send({ message: "set could not be deleted" });
+        }
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: "set could not be deleted" });
+    }
+});
+exports.default = { post, deleteSet };

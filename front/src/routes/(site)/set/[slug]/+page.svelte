@@ -9,6 +9,7 @@
     let set = data.set;
     let currentInstructions: any = [];
     let instructiosPref = "";
+    let deletingSet = false;
 
     onMount(() => {
         if (set) {
@@ -16,13 +17,19 @@
             instructiosPref = "Your";
         }
     });
+
+    function editSet() {}
+
+    function deleteSet() {
+        deletingSet = true;
+    }
 </script>
 
-<section>
+<section class="relative z-0">
     {#if set}
         <article class="h-[100vh] flex flex-row">
             <div
-                class="w-1/2 h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20"
+                class="w-full h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20"
             >
                 <div>
                     <p
@@ -102,10 +109,26 @@
                                 "cz-CZ",
                             )}
                         />
+                        <div class="flex flex-row gap-4">
+                            <button
+                                on:click={editSet}
+                                class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            >
+                                Edit set
+                            </button>
+                            <button
+                                on:click={deleteSet}
+                                class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            >
+                                Delete set
+                            </button>
+                        </div>
                     </div>
+                    
                 </div>
+                
             </div>
-            <div class="w-1/2 h-full bg-no-repeat bg-cover bg-center bg-black">
+            <!-- <div class="w-1/2 h-full bg-no-repeat bg-cover bg-center bg-black">
                 <img
                     loading="lazy"
                     class="h-full w-full object-cover"
@@ -114,11 +137,11 @@
                         : "../../../placeholder.webp"}
                     alt={set.image ? "image" : "no image"}
                 />
-            </div>
+            </div> -->
         </article>
         {#if set.allInstructions.length > 0 || set.myInstructions.length > 0}
             <article
-                class="px-20 mb-16 mt-20 flex flex-col items-start justify-center"
+                class="px-20 pb-16 pt-20 flex flex-col items-start justify-center bg-gradient-to-t from-black from-30% to-red-950"
             >
                 <div class="mb-12">
                     <h2 class="text-4xl font-bold mb-4">
@@ -186,7 +209,19 @@
                         </div>
                     {/each}
                 </div>
+                
             </article>
         {/if}
     {/if}
 </section>
+
+{#if deletingSet}
+    <div class="w-full h-full absolute top-0 left-0 opacity-50"></div>
+    <div class="absolute top-0 left-0 z-40 h-full w-full bg-black text-zinc-300">
+        <p>Are you sure?</p>
+        <p>
+            You are about to delete this set and all its data from your account.
+        </p>
+        <p>If your set is public, others will retain it.</p>
+    </div>
+{/if}

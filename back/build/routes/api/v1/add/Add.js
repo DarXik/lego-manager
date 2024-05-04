@@ -7,4 +7,5 @@ const express_1 = __importDefault(require("express"));
 const SetsAddController_1 = __importDefault(require("../../../../controllers/SetsAddController"));
 const router = express_1.default.Router();
 router.post("/", SetsAddController_1.default.post);
+router.delete("/:id", SetsAddController_1.default.deleteSet);
 exports.default = router;
