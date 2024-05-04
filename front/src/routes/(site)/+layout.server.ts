@@ -18,7 +18,8 @@ export const load = (async ({ locals }) => {
         // console.log(res1)
 
         return {
-            sets: res1
+            sets: res1,
+            sessionId: locals.session
         }
     }
 

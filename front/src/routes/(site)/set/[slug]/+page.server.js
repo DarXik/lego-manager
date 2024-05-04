@@ -9,6 +9,7 @@ export const load = async ({ params, locals }) => {
     })
     let res1 = await response.json()
     console.log(res1)
+    
     if (response.ok) {
         return {
             set:  res1

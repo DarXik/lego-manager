@@ -6,11 +6,11 @@
 
   export let data;
 
-  onMount(async () => {
-    $navbarHeight = document.getElementsByTagName("nav")[0].offsetHeight;
-  });
+  // onMount(async () => {
+  //   $navbarHeight = document.getElementsByTagName("nav")[0].offsetHeight;
+  // });
 
-
+  $: console.log(data);
 
   onMount(() => {
     if (data.sets) {  

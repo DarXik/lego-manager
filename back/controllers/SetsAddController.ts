@@ -235,53 +235,6 @@ const post = async (req: Request, res: Response) => {
     }
 }
 
-const deleteSet = async (req: Request, res: Response) => {
-    // počáteční kontrola
-    if (!req.params.id || !req.headers.authorization) {
-        return res.status(400).send({ message: "something is missing" })
-    }
-    const verifiedUser: any = await verifyUser(req.headers.authorization.toString())
-    if (!verifiedUser.user || !verifiedUser.token) {
-        return res.status(404).send({ message: "user not found" })
-    }
 
-    let setId = req.params.id;
 
-    try {
-
-        let set = await prisma.sets.update({
-            where: { id: setId },
-            data: {
-                usedBy: { disconnect: { id: verifiedUser.user.id } },
-            }
-        })
-
-        let setAttachment = await prisma.setAttachment.deleteMany({
-            where: { set: { id: set.id }, addedBy: { id: verifiedUser.user.id } }
-        })
-
-        let instructions = await prisma.instructions.deleteMany({
-            where: { set: { id: set.id }, addedBy: { id: verifiedUser.user.id } }
-        })
-
-        // let user = await prisma.users.update({
-        //     where: { id: verifiedUser.user.id },
-        //     data: {
-        //         usedSets: { disconnect: { id: set.id } },
-        //         setAttachments: { disconnect: { id: setAttachment.id } },
-        //     }
-        // })
-        if (set && setAttachment && instructions) {
-            res.status(200).send({ message: "set deleted" })
-        } else {
-            res.status(503).send({ message: "set could not be deleted" })
-        }
-
-    }
-    catch (err) {
-        console.log(err)
-        return res.status(500).send({ message: "set could not be deleted" })
-    }
-}
-
-export default { post, deleteSet }
+export default { post }

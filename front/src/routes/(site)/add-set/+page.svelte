@@ -60,7 +60,7 @@
     }
 </script>
 
-<section class="px-20 mb-10" style="padding-top: {$navbarHeight + 32}px;">
+<section class="px-20 mb-10 pt-32">
     <h1 class="font-bold text-3xl mb-8">Add new set</h1>
     <div class="mb-12">
         <p

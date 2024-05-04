@@ -10,6 +10,7 @@
     let currentInstructions: any = [];
     let instructiosPref = "";
     let deletingSet = false;
+    let deletingResponse: any;
 
     onMount(() => {
         if (set) {
@@ -20,8 +21,18 @@
 
     function editSet() {}
 
-    function deleteSet() {
+    async function deleteSet() {
         deletingSet = true;
+        const request = await fetch("/api/deleteSet", {
+            method: "POST",
+            body: JSON.stringify({
+                id: data.slug,
+            }),
+        });
+
+        if (request.ok) {
+            console.log((await request.json()).message);
+        }
     }
 </script>
 
@@ -33,8 +44,8 @@
             >
                 <div>
                     <p
-                        class="text-gray-500 text-xs break-normal mb-1"
-                        style="padding-top: {$navbarHeight + 32}px;"
+                        class="text-gray-500 text-xs break-normal mb-1 mt-32"
+                        
                     >
                         name
                     </p>
@@ -58,7 +69,7 @@
                 </div>
                 <div class="">
                     <div
-                        class="flex flex-wrap gap-6 gap-x-8 mb-12 border-t-2 pt-4 border-zinc-300"
+                        class="flex flex-wrap gap-6 gap-x-8  border-t-2 pt-4 border-zinc-300"
                     >
                         <InfoCardwIcon
                             title="Set number"
@@ -109,24 +120,23 @@
                                 "cz-CZ",
                             )}
                         />
-                        <div class="flex flex-row gap-4">
-                            <button
-                                on:click={editSet}
-                                class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                            >
-                                Edit set
-                            </button>
-                            <button
-                                on:click={deleteSet}
-                                class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                            >
-                                Delete set
-                            </button>
-                        </div>
                     </div>
-                    
+                    <div class="flex flex-row gap-4 mb-12 mt-12">
+                        <button
+                            on:click={editSet}
+                            class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                        >
+                            Edit set
+                        </button>
+                        <button
+                            on:click={deleteSet}
+                            bind:this={deletingResponse}
+                            class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                        >
+                            Delete set
+                        </button>
+                    </div>
                 </div>
-                
             </div>
             <!-- <div class="w-1/2 h-full bg-no-repeat bg-cover bg-center bg-black">
                 <img
@@ -209,13 +219,12 @@
                         </div>
                     {/each}
                 </div>
-                
             </article>
         {/if}
     {/if}
 </section>
 
-{#if deletingSet}
+<!-- {#if deletingSet}
     <div class="w-full h-full absolute top-0 left-0 opacity-50"></div>
     <div class="absolute top-0 left-0 z-40 h-full w-full bg-black text-zinc-300">
         <p>Are you sure?</p>
@@ -224,4 +233,4 @@
         </p>
         <p>If your set is public, others will retain it.</p>
     </div>
-{/if}
+{/if} -->

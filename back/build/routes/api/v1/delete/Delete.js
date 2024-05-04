@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const SetsAddController_1 = __importDefault(require("../../../../controllers/SetsAddController"));
+const SetsDeleteController_1 = __importDefault(require("../../../../controllers/SetsDeleteController"));
 const router = express_1.default.Router();
-router.post("/", SetsAddController_1.default.post);
+router.delete("/:id", SetsDeleteController_1.default.deleteSet);
 exports.default = router;

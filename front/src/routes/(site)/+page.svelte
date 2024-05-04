@@ -7,9 +7,9 @@
     export let data;
 </script>
 
-<section class="px-20 mb-16 " >
-    <div class=" mb-12" style="padding-top: {$navbarHeight + 32}px;">
-        <p class="text-xl">Added LEGO sets:</p>
+<section class="px-20 mb-16 pt-32" >
+    <div class=" mb-12">
+        <h1 class="font-bold text-3xl mb-8">Added sets:</h1>
     </div>
 
     <article class="flex flex-wrap gap-6 grow h-full">
