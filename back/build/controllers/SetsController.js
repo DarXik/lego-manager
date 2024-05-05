@@ -40,7 +40,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const sets = yield prisma_1.default.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } });
             const attachment = yield prisma_1.default.setAttachment.findMany({ where: { setId: { in: sets.map(set => set.id) }, addedById: verifiedUser.user.id } });
-            console.log(attachment);
+            // console.log(attachment)
             if (!sets || sets.length == 0) {
                 return res.status(404).send({ message: "sets not found" });
             }
@@ -82,8 +82,8 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     set: { usedBy: { some: { id: verifiedUser.user.id } } }
                 }
             });
-            console.log(myInstructions);
-            console.log(allInstructions);
+            // console.log(myInstructions)
+            // console.log(allInstructions)
             if (!set || !attachment) {
                 return res.status(404).send({ message: "set not found" });
             }

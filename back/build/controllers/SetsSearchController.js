@@ -39,7 +39,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             || set.setNumber.toLowerCase().includes(query.toLowerCase())
             || set.themeName.toLowerCase().includes(query.toLowerCase()));
         const resSetJSON = yield responseRebrickableSet.json();
-        console.log("mySets: ", matchedSeats);
+        // console.log("mySets: ", matchedSeats)
         let finalSets = [
             ...matchedSeats.map((set) => ({
                 setNumber: set.setNumber,

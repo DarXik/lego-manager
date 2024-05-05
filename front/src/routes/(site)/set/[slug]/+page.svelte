@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { navbarHeight } from "$lib/store";
+    import Modal from "./components/Modal.svelte";
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
+    import { enhance } from '$app/forms';
 
     export let data;
 
@@ -10,7 +11,10 @@
     let currentInstructions: any = [];
     let instructiosPref = "";
     let deletingSet = false;
-    let deletingResponse: any;
+    let editingSet = false;
+    let descriptionEdit = "";
+    let yearBoughtEdit = "";
+    let priceEdit = "";
 
     onMount(() => {
         if (set) {
@@ -19,10 +23,14 @@
         }
     });
 
-    function editSet() {}
+    function editSet() {
+        editingSet = true;
+        descriptionEdit = set?.description;
+        yearBoughtEdit = set?.yearBought;
+        priceEdit = set?.price;
+    }
 
     async function deleteSet() {
-        deletingSet = true;
         const request = await fetch("/api/deleteSet", {
             method: "POST",
             body: JSON.stringify({
@@ -36,6 +44,64 @@
     }
 </script>
 
+<Modal showModal={deletingSet}>
+    <h2 class="text-2xl font-bold uppercase mb-4">Are you sure?</h2>
+    <p>
+        Set will be deleted only from your account, those already added by
+        others will not be deleted.
+    </p>
+    <button
+        on:click={deleteSet}
+        class="p-2 px-4 border-2 border-green-400"
+        slot="button">I am sure</button
+    >
+</Modal>
+
+<Modal showModal={editingSet}>
+    <h2 class="uppercase mb-6">
+        You are editing set: <br />
+        <span class="text-2xl font-bold">{set.name} | {set.setNumber}</span>
+    </h2>
+    <form method="POST" action="?/updateSet" class="flex flex-col gap-4" use:enhance>
+        <input type="text" class="hidden w-0 h-0" name="setId" bind:value={set.id}>
+        {#if descriptionEdit}
+            <textarea
+                name="descriptionEdit"
+                id="descriptionEdit"
+                bind:value={descriptionEdit}
+                autocomplete="off"
+                rows="4"
+                maxlength="256"
+                placeholder="..."
+                class="resize-none"
+            ></textarea>
+        {/if}
+        {#if set.yearBought}
+            <input
+                type="text"
+                name="yearBoughtEdit"
+                id="yearBoughtEdit"
+                bind:value={yearBoughtEdit}
+                autocomplete="off"
+                maxlength="4"
+                placeholder="..."
+            />
+        {/if}
+        {#if set.price}
+            <input
+                type="text"
+                name="priceEdit"
+                id="priceEdit"
+                bind:value={priceEdit}
+                autocomplete="off"
+                maxlength="30"
+                placeholder="..."
+            />
+        {/if}
+        <button class="p-2 px-4 border-2 border-green-400">Update</button>
+    </form>
+</Modal>
+
 <section class="relative z-0">
     {#if set}
         <article class="h-[100vh] flex flex-row">
@@ -43,10 +109,7 @@
                 class="w-full h-full flex flex-col justify-between bg-gradient-to-br from-black from-50% to-red-950 px-20"
             >
                 <div>
-                    <p
-                        class="text-gray-500 text-xs break-normal mb-1 mt-32"
-                        
-                    >
+                    <p class="text-gray-500 text-xs break-normal mb-1 mt-32">
                         name
                     </p>
                     <h1
@@ -57,7 +120,7 @@
                     <p class="text-gray-500 text-xs break-normal mb-1">
                         description
                     </p>
-                    <p class="font-semibold text-xl mb-16 lg:w-10/12">
+                    <p class="font-normal text-xl mb-16 lg:w-10/12">
                         {#if set.description}
                             {set.description}
                         {:else}
@@ -69,7 +132,7 @@
                 </div>
                 <div class="">
                     <div
-                        class="flex flex-wrap gap-6 gap-x-8  border-t-2 pt-4 border-zinc-300"
+                        class="flex flex-wrap gap-6 gap-x-8 border-t-2 pt-4 border-zinc-300"
                     >
                         <InfoCardwIcon
                             title="Set number"
@@ -129,8 +192,7 @@
                             Edit set
                         </button>
                         <button
-                            on:click={deleteSet}
-                            bind:this={deletingResponse}
+                            on:click={() => (deletingSet = true)}
                             class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
                         >
                             Delete set

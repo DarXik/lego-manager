@@ -14,6 +14,7 @@ const User_3 = __importDefault(require("./routes/user/check/User"));
 const Image_1 = __importDefault(require("./routes/api/v1/image/Image"));
 const Instructions_1 = __importDefault(require("./routes/api/v1/instructions/Instructions"));
 const Delete_1 = __importDefault(require("./routes/api/v1/delete/Delete"));
+const Edit_1 = __importDefault(require("./routes/api/v1/edit/Edit"));
 const multer_1 = __importDefault(require("multer"));
 // import fileupload from "express-fileupload"
 const upload = (0, multer_1.default)();
@@ -30,6 +31,7 @@ app.use("/api/v1/sets", Sets_1.default);
 app.use("/api/v1/sets/add", upload.any(), Add_1.default);
 app.use("/api/v1/sets/delete", Delete_1.default);
 app.use("/api/v1/sets/search", Search_1.default);
+app.use("/api/v1/sets/edit", upload.any(), Edit_1.default);
 app.use("/api/v1/image", Image_1.default);
 app.use("/api/v1/instructions", Instructions_1.default);
 app.get("/", (req, res) => {

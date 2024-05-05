@@ -77,50 +77,6 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     try {
-        // let newThemeName;
-        // let newThemeId;
-        // if (userSet.themeId && !userSet.themeName) {
-        //     try {
-        //         const themeName = await fetch(`https://rebrickable.com/api/v3/lego/themes/${userSet.themeId}`, {
-        //             method: 'GET',
-        //             headers: {
-        //                 'Accept': 'application/json',
-        //                 'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
-        //             }
-        //         })
-        //         if (themeName.ok) {
-        //             newThemeName = (await themeName.json()).name
-        //             newThemeId = userSet.themeId
-        //         }
-        //         else {
-        //             console.log("theme not found")
-        //             newThemeName = ""
-        //             newThemeId = userSet.themeId
-        //         }
-        //     }
-        //     catch (err) {
-        //         console.log(err)
-        //         newThemeName = ""
-        //         newThemeId = userSet.themeId
-        //     }
-        // }
-        // else if (!userSet.themeId && userSet.themeName) {
-        //     const themeId = await fetch('https://rebrickable.com/api/v3/lego/themes/?page=1&page_size=1000', {
-        //         method: 'GET',
-        //         headers: {
-        //             'Accept': 'application/json',
-        //             'Authorization': 'key fea25735873965685e52dfba8ad25aa8'
-        //         }
-        //     })
-        //     if (themeId.ok) {
-        //         newThemeId = (await themeId.json()).results.find((theme: any) => theme.name == userSet.themeName).id ? (await themeId.json()).results.find((theme: any) => theme.name == userSet.themeName).id : 1000
-        //         newThemeName = userSet.themeName
-        //     }
-        // }
-        // else{
-        //     newThemeName = ""
-        //     newThemeId = 1000
-        // }
         // uložení a vytvoření setu
         let set = yield prisma_1.default.sets.findUnique({ where: { setNumber: userSet.setNumber } });
         if (!set) {

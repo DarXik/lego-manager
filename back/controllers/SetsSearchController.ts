@@ -36,7 +36,7 @@ const get = async (req: Request, res: Response) => {
             || set.themeName.toLowerCase().includes(query.toLowerCase()))
 
         const resSetJSON: any = await responseRebrickableSet.json()
-        console.log("mySets: ", matchedSeats)
+        // console.log("mySets: ", matchedSeats)
 
         let finalSets = [
             ...matchedSeats.map((set: any) => ({
