@@ -42,6 +42,8 @@ const post = async (req: Request, res: Response) => {
                 session: userSession,
                 username: user.username,
                 email: user.email,
+                preferredCurrency: user.preferredCurrency,
+                preferredLanguage: user.preferredLanguage
 
             })
 

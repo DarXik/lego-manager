@@ -1,8 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import Modal from "./components/Modal.svelte";
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
-    import { enhance } from '$app/forms';
+    import { enhance } from "$app/forms";
 
     export let data;
 
@@ -42,65 +41,118 @@
             console.log((await request.json()).message);
         }
     }
+
+    let modalDelete: any;
+    let modalEdit: any;
+
+    $: if (modalDelete && deletingSet && !editingSet) modalDelete.showModal();
+    $: if (modalEdit && editingSet && !deletingSet) modalEdit.showModal();
 </script>
 
-<Modal showModal={deletingSet}>
-    <h2 class="text-2xl font-bold uppercase mb-4">Are you sure?</h2>
-    <p>
-        Set will be deleted only from your account, those already added by
-        others will not be deleted.
-    </p>
-    <button
-        on:click={deleteSet}
-        class="p-2 px-4 border-2 border-green-400"
-        slot="button">I am sure</button
-    >
-</Modal>
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+<dialog
+    class="border-2 border-zinc-600 bg-gradient-to-tl bg-black from-black from-10% to-purple-950/50 to-90%
+     text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm min-w-[25%] w-fit p-2"
+    bind:this={modalDelete}
+    on:close={() => (deletingSet = false)}
+    on:click|self={() => modalDelete.close()}
+>
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div on:click|stopPropagation>
+        <!-- <slot name="header" /> -->
+        <h2 class="text-2xl font-bold uppercase mb-4">Are you sure?</h2>
+        <p>
+            Set will be deleted only from your account, those already added by
+            others will not be deleted.
+        </p>
 
-<Modal showModal={editingSet}>
-    <h2 class="uppercase mb-6">
-        You are editing set: <br />
-        <span class="text-2xl font-bold">{set.name} | {set.setNumber}</span>
-    </h2>
-    <form method="POST" action="?/updateSet" class="flex flex-col gap-4" use:enhance>
-        <input type="text" class="hidden w-0 h-0" name="setId" bind:value={set.id}>
-        {#if descriptionEdit}
-            <textarea
-                name="descriptionEdit"
-                id="descriptionEdit"
-                bind:value={descriptionEdit}
-                autocomplete="off"
-                rows="4"
-                maxlength="256"
-                placeholder="..."
-                class="resize-none"
-            ></textarea>
-        {/if}
-        {#if set.yearBought}
+        <!-- svelte-ignore a11y-autofocus -->
+        <div class="flex flex-row justify-between mt-12">
+            <button
+                on:click={deleteSet}
+                class="p-2 px-4 border-2 border-green-400">I am sure</button
+            >
+            <button
+                class="border-2 border-red-400 p-2 px-4"
+                on:click={() => modalDelete.close()}>Go back</button
+            >
+        </div>
+    </div>
+</dialog>
+
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+<dialog
+    class="border-2 border-zinc-600 bg-gradient-to-tl bg-black from-black from-10% to-purple-950/50 to-90%
+     text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm min-w-[25%] w-fit p-2"
+    bind:this={modalEdit}
+    on:close={() => (editingSet = false)}
+    on:click|self={() => modalEdit.close()}
+>
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div on:click|stopPropagation>
+        <!-- <slot name="header" /> -->
+        <h2 class="uppercase mb-6">
+            You are editing set: <br />
+            <span class="text-2xl font-bold">{set.name} | {set.setNumber}</span>
+        </h2>
+        <form
+            method="POST"
+            action="?/updateSet"
+            class="flex flex-col gap-4"
+            use:enhance
+        >
             <input
                 type="text"
-                name="yearBoughtEdit"
-                id="yearBoughtEdit"
-                bind:value={yearBoughtEdit}
-                autocomplete="off"
-                maxlength="4"
-                placeholder="..."
+                class="hidden w-0 h-0"
+                name="setId"
+                bind:value={set.id}
             />
-        {/if}
-        {#if set.price}
-            <input
-                type="text"
-                name="priceEdit"
-                id="priceEdit"
-                bind:value={priceEdit}
-                autocomplete="off"
-                maxlength="30"
-                placeholder="..."
-            />
-        {/if}
-        <button class="p-2 px-4 border-2 border-green-400">Update</button>
-    </form>
-</Modal>
+            {#if set.description}
+                <textarea
+                    name="descriptionEdit"
+                    id="descriptionEdit"
+                    bind:value={descriptionEdit}
+                    autocomplete="off"
+                    rows="4"
+                    maxlength="256"
+                    placeholder="..."
+                    class="resize-none"
+                ></textarea>
+            {/if}
+            {#if set.yearBought}
+                <input
+                    type="text"
+                    name="yearBoughtEdit"
+                    id="yearBoughtEdit"
+                    bind:value={yearBoughtEdit}
+                    autocomplete="off"
+                    maxlength="4"
+                    placeholder="..."
+                />
+            {/if}
+            {#if set.price}
+                <input
+                    type="text"
+                    name="priceEdit"
+                    id="priceEdit"
+                    bind:value={priceEdit}
+                    autocomplete="off"
+                    maxlength="30"
+                    placeholder="..."
+                />
+            {/if}
+            <button class="p-2 px-4 border-2 border-green-400">Update</button>
+        </form>
+        <!-- svelte-ignore a11y-autofocus -->
+        <div class="flex flex-row justify-between mt-12">
+            <slot name="button"></slot>
+            <button
+                class="border-2 border-red-400 p-2 px-4"
+                on:click={() => modalEdit.close()}>Go back</button
+            >
+        </div>
+    </div>
+</dialog>
 
 <section class="relative z-0">
     {#if set}
@@ -192,7 +244,7 @@
                             Edit set
                         </button>
                         <button
-                            on:click={() => (deletingSet = true)}
+                            on:click={() => (deletingSet = !deletingSet)}
                             class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
                         >
                             Delete set
@@ -296,3 +348,31 @@
         <p>If your set is public, others will retain it.</p>
     </div>
 {/if} -->
+
+<style>
+    dialog > div {
+        padding: 1em;
+    }
+    dialog[open] {
+        animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes zoom {
+        from {
+            transform: scale(0.95);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+    dialog[open]::backdrop {
+        animation: fade 0.2s ease-out;
+    }
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+</style>

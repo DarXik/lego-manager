@@ -44,6 +44,8 @@ const post = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 session: userSession,
                 username: user.username,
                 email: user.email,
+                preferredCurrency: user.preferredCurrency,
+                preferredLanguage: user.preferredLanguage
             });
         }
         catch (err) {

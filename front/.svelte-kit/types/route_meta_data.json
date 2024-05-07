@@ -15,6 +15,12 @@
 	"/api/deleteSet": [
 		"src/routes/api/deleteSet/+server.js"
 	],
+	"/api/logout": [
+		"src/routes/api/logout/+server.js"
+	],
+	"/api/updatePreference": [
+		"src/routes/api/updatePreference/+server.js"
+	],
 	"/login": [
 		"src/routes/login/+page.server.js"
 	],

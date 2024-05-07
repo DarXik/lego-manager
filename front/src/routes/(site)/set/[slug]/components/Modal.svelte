@@ -30,15 +30,6 @@
 </dialog>
 
 <style>
-    /* dialog {
-        max-width: 32em;
-        border-radius: 0.2em;
-        border: none;
-        padding: 0;
-    } */
-    /* dialog::backdrop {
-        background: rgba(0, 0, 0, 0.9);
-    } */
     dialog > div {
         padding: 1em;
     }

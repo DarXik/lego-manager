@@ -10,6 +10,8 @@ import imageRoute from "./routes/api/v1/image/Image"
 import instructionsRoute from "./routes/api/v1/instructions/Instructions"
 import setsDeleteRoute from "./routes/api/v1/delete/Delete"
 import setsEditRoute from "./routes/api/v1/edit/Edit"
+import logoutRoute from "./routes/user/logout/User"
+import updateRoute from "./routes/user/update/User"
 import multer from "multer";
 // import fileupload from "express-fileupload"
 
@@ -25,6 +27,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/user/check", userCheckRoute)
 app.use("/user/login", loginRoute);
 app.use("/user/register", registerRoute);
+app.use("/user/logout", logoutRoute)
+app.use("/user/update", updateRoute)
 app.use("/api/v1/sets", setsRoute);
 app.use("/api/v1/sets/add", upload.any(), setsAddRoute);
 app.use("/api/v1/sets/delete", setsDeleteRoute);

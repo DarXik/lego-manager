@@ -41,7 +41,9 @@ export const actions = {
                     success: true,
                     user:{
                         username: res1.username,
-                        email: res1.email
+                        email: res1.email,
+                        currency: res1.preferredLanguage,
+                        language: res1.preferredLanguage
                     }
                 }
 

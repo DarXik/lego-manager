@@ -26,12 +26,13 @@ model SetAttachment {
   id           String         @id @default(uuid()) @db.Char(36)
   addedOn      DateTime       @default(now())
   lastModified DateTime       @updatedAt
-  description  String?        @db.VarChar(255) 
+  description  String?        @db.VarChar(255)
   yearBought   Int?           @db.SmallInt
   price        Int?
+  currency     Int?           @db.Int
   image        String?        @db.VarChar(255)
   instructions Instructions[]
-  addedById    String         @db.Char(36) 
+  addedById    String         @db.Char(36)
   addedBy      Users          @relation(fields: [addedById], references: [id])
   set          Sets           @relation(fields: [setId], references: [id])
   setId        String         @db.Char(36)
@@ -49,15 +50,17 @@ model Instructions {
 }
 
 model Users {
-  id             String          @id @default(uuid()) @db.Char(36)
-  username       String?         @db.VarChar(255)
-  email          String          @unique @db.VarChar(255)
-  password       String          @db.VarChar(255)
-  sessions       Sessions[]
-  usedSets       Sets[]          @relation("usedBy")
-  setAttachments SetAttachment[]
-  Instructions   Instructions[]
-  ownedSets      Sets[]
+  id                String          @id @default(uuid()) @db.Char(36)
+  username          String?         @db.VarChar(255)
+  email             String          @unique @db.VarChar(255)
+  password          String          @db.VarChar(255)
+  preferredCurrency Int             @default(1) @db.Int
+  preferredLanguage Int             @default(1) @db.Int
+  sessions          Sessions[]
+  usedSets          Sets[]          @relation("usedBy")
+  setAttachments    SetAttachment[]
+  Instructions      Instructions[]
+  ownedSets         Sets[]
 }
 
 model Sessions {
