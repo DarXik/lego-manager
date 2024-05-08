@@ -12,6 +12,8 @@ async function createUser(email: string, username: string, password: string) {
             email: email,
             username: username,
             password: await hashPassword(password),
+            preferredCurrency: 1,
+            preferredLanguage: 1,
         },
     });
     return user;

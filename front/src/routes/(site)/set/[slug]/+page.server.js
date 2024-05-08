@@ -41,9 +41,7 @@ export const actions = {
             method: "PATCH",
             headers: {
                 "Authorization": locals.session || "",
-                // 'Content-Type': `multipart/form-data`,
             },
-            timeout: 5000,
             data: formData
         })
 

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { slide } from "svelte/transition";
     import { clickOutside } from "../../../utils/clickOutside";
+    import { userInfo } from "$lib/store";
 
     // $: isInSlug = $page.url.pathname.includes("/set/");
 
@@ -24,7 +25,11 @@
 </script>
 
 <nav class="w-full fixed top-0 left-0 z-10 border-b-2 border-zinc-400">
-    <div class="flex justify-between items-center relative z-40 px-20">
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div
+        class="flex justify-between items-center relative z-40 px-20"
+        on:mouseleave={() => (isExpanded = false)}
+    >
         <div
             class=" flex flex-row items-center justify-start w-full gap-6 py-4"
         >
@@ -55,6 +60,7 @@
                     class="active:scale-90 transition-all select-none cursor-pointer w-9 h-9"
                     title="account"
                     on:click={clickHandler}
+                    on:mouseenter={() => (isExpanded = true)}
                 >
                     <!-- <a href="/account"
                         > -->
@@ -67,32 +73,36 @@
                 </button>
             </div>
             {#if isExpanded}
+                <!-- svelte-ignore a11y-no-static-element-interactions -->
                 <div
+                    on:mouseleave={() => (isExpanded = false)}
                     use:clickOutside={() => (isExpanded = isExpanded)}
-                    class="absolute z-0 bg-black top-full border-2 border-zinc-400 p-3 pr-14"
+                    class="absolute z-0 bg-black top-full border-2 border-zinc-400"
                 >
+                    <p class="text-zinc-100 p-3 pr-14">{$userInfo.email}</p>
+
                     <ul
-                        class="flex flex-col gap-y-2"
+                        class="flex flex-col gap-y-2 border-t-2 border-zinc-400 p-3 pr-14"
                         transition:slide={{ duration: 200, axis: "y" }}
                     >
                         <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
                         <li
                             on:click={clickHandler}
-                            class="hover:text-white transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
+                            class="hover:text-zinc-100 transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
                         >
                             <a href="/account">Account</a>
                         </li>
                         <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
                         <li
                             on:click={clickHandler}
-                            class="hover:text-white transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
+                            class="hover:text-zinc-100 transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
                         >
                             <a href="/settings">Settings</a>
                         </li>
                         <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
                         <li
                             on:click={clickHandler}
-                            class="hover:text-white transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
+                            class="hover:text-red-600 transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
                         >
                             <button on:click={logout}>Logout</button>
                         </li>

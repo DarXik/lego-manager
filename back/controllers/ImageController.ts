@@ -15,9 +15,8 @@ const get = async (req: Request, res: Response) => {
 
         if (!fs.existsSync(filePath)) {
             return res.status(404).send({ message: "image not found" })
-        }
+        }        
         
-        console.log("display: ", filePath)
         res.status(200).sendFile(filePath)
     }
     catch (err) {

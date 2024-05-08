@@ -54,8 +54,8 @@ model Users {
   username          String?         @db.VarChar(255)
   email             String          @unique @db.VarChar(255)
   password          String          @db.VarChar(255)
-  preferredCurrency Int             @default(1) @db.Int
-  preferredLanguage Int             @default(1) @db.Int
+  preferredCurrency Int             @db.Int
+  preferredLanguage Int             @db.Int
   sessions          Sessions[]
   usedSets          Sets[]          @relation("usedBy")
   setAttachments    SetAttachment[]

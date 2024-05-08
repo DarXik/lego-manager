@@ -21,6 +21,8 @@ function createUser(email, username, password) {
                 email: email,
                 username: username,
                 password: yield (0, userHash_1.hashPassword)(password),
+                preferredCurrency: 1,
+                preferredLanguage: 1,
             },
         });
         return user;

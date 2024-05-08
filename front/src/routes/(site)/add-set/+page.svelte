@@ -1,7 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { onMount } from "svelte";
-    import { navbarHeight } from "$lib/store";
+    import { navbarHeight, userInfo } from "$lib/store";
 
     export let form;
     export let data;
@@ -58,6 +58,8 @@
         // themeId = set.themeId;
         themeName = set.themeName;
     }
+
+    let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
 </script>
 
 <section class="px-20 mb-10 pt-32">
@@ -131,7 +133,9 @@
                                 set.themeName == themeName}
                             ><div class="  px-4 py-2">
                                 <p>{set.name}</p>
-                                <p class="text-xs">{set.addedBy? "by user": ""}</p>
+                                <p class="text-xs">
+                                    {set.addedBy ? "by user" : ""}
+                                </p>
                             </div>
                         </button>
                     {/each}
@@ -245,24 +249,6 @@
                 ></label
             >
         </div>
-        <!-- <div class="one-cell row-start-2 row-end-2 col-start-3 col-end-3">
-            <label for="themeId"
-                >Theme ID <span class="text-sm">(custom/official)</span>
-                <span class="text-red-600">*</span></label
-            >
-            <input
-                type="text"
-                name="themeId"
-                id="themeId"
-                bind:value={themeId}
-                required
-                autocomplete="off"
-                maxlength="30"
-                class="my-input"
-                placeholder="721"
-            />
-        </div> -->
-
         <div class="one-cell row-start-4 row-end-4 col-start-1 col-end-1">
             <input
                 type="text"
@@ -301,16 +287,30 @@
             >
         </div>
         <div class="one-cell row-start-4 row-end-4 col-start-3 col-end-3">
-            <input
-                type="text"
-                name="price"
-                id="price"
-                bind:value={price}
-                autocomplete="off"
-                maxlength="30"
-                class="my-input peer"
-                placeholder="149.99"
-            />
+            <div class="relative w-full flex">
+                <input
+                    type="text"
+                    name="price"
+                    id="price"
+                    bind:value={price}
+                    autocomplete="off"
+                    maxlength="30"
+                    class="my-input peer"
+                    placeholder="149.99"
+                />
+                <div
+                    class="absolute flex flex-col justify-center right-0 bottom-0 h-full pointer-events-none bg-zinc-500 opacity-70"
+                >
+                    <img
+                        src="../../../../currencies/{currencies[
+                            $userInfo.currency
+                        ]}"
+                        alt="currency"
+                        class="w-8 h-fit p-1.5"
+                    />
+                </div>
+            </div>
+
             <label
                 for="price"
                 class="peer-focus:text-white -order-last transition-all duration-200"
@@ -362,29 +362,6 @@
                 {/if}
             </div>
         </div>
-        <!-- <div
-            htmlFor="isBought"
-            class:bg-zinc-900={isBought}
-            class="cursor-pointer select-none flex flex-row items-center gap-3 hover:bg-zinc-900 w-fit px-3 py-2 text-gray-500 row-start-6 row-end-6 col-start-1 col-end-1 transition-all"
-        >
-            <input
-                type="checkbox"
-                name="isBought"
-                id="isBought"
-                bind:checked={isBought}
-                on:click={() => (isBought = !isBought)}
-                class="w-5 h-5 cursor-pointer checked:bg-red-900 bg-transparent"
-                autocomplete="off"
-                disabled={yearBought.length > 0}
-            />
-            <label
-                htmlFor="isBought"
-                class="w-fit text-white cursor-pointer"
-                for="isBought"
-                >{isBought ? "I own this set" : "Do you own this set?"}</label
-            >
-        </div> -->
-
         <div
             class="one-cell row-start-7 row-end-7 col-start-1 col-end-1 flex flex-row gap-8"
         >

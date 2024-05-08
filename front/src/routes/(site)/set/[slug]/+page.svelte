@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
     import { enhance } from "$app/forms";
+    import { userInfo } from "$lib/store";
 
     export let data;
 
@@ -47,6 +48,8 @@
 
     $: if (modalDelete && deletingSet && !editingSet) modalDelete.showModal();
     $: if (modalEdit && editingSet && !deletingSet) modalEdit.showModal();
+
+    let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -141,7 +144,9 @@
                     placeholder="..."
                 />
             {/if}
-            <button class="p-2 px-4 border-2 border-green-400">Update</button>
+            <button type="submit" class="p-2 px-4 border-2 border-green-400"
+                >Update</button
+            >
         </form>
         <!-- svelte-ignore a11y-autofocus -->
         <div class="flex flex-row justify-between mt-12">
@@ -188,49 +193,43 @@
                     >
                         <InfoCardwIcon
                             title="Set number"
-                            path="number-icon.svg"
+                            path="set/number-icon.svg"
                             text={set.setNumber}
                         />
 
                         <InfoCardwIcon
-                            title="bricks"
-                            path="bricks-icon.svg"
+                            title="Bricks"
+                            path="set/bricks-icon.svg"
                             text={set.partsAmount}
                         />
 
                         <InfoCardwIcon
-                            title="yr. of relased"
-                            path="year-released-icon.svg"
+                            title="Yr. of relased"
+                            path="set/year-released-icon.svg"
                             text={set.yearReleased}
                         />
 
                         <InfoCardwIcon
-                            title="yr. of purchase"
-                            path="year-bough-icon.svg"
+                            title="Yr. of purchase"
+                            path="set/year-bough-icon.svg"
                             text={set.yearBought}
                         />
 
-                        <!-- <InfoCardwIcon
-                            title="Theme ID"
-                            path="number-icon.svg"
-                            text={set.themeId}
-                        /> -->
-
                         <InfoCardwIcon
-                            title="Theme name"
-                            path="collection-icon.svg"
+                            title="Theme/Collection"
+                            path="set/collection-icon.svg"
                             text={set.themeName}
                         />
 
                         <InfoCardwIcon
                             title="Price"
-                            path="price-euro-icon.svg"
+                            path="currencies/{currencies[$userInfo.currency]}"
                             text={set.price}
                         />
 
                         <InfoCardwIcon
                             title="Added on"
-                            path="collection-icon.svg"
+                            path="set/collection-icon.svg"
                             text={new Date(set.addedOn).toLocaleDateString(
                                 "cz-CZ",
                             )}
@@ -252,16 +251,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="w-1/2 h-full bg-no-repeat bg-cover bg-center bg-black">
-                <img
-                    loading="lazy"
-                    class="h-full w-full object-cover"
-                    src={set.image
-                        ? `http://localhost:3000/api/v1/image/${set.image}`
-                        : "../../../placeholder.webp"}
-                    alt={set.image ? "image" : "no image"}
-                />
-            </div> -->
         </article>
         {#if set.allInstructions.length > 0 || set.myInstructions.length > 0}
             <article
