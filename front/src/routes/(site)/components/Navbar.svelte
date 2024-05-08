@@ -22,96 +22,63 @@
             window.location.href = "/login";
         }
     }
+
+    let accountHover: boolean = false;
+    let addHover: boolean = false;
+
 </script>
-
-<nav class="w-full fixed top-0 left-0 z-10 border-b-2 border-zinc-400">
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div
-        class="flex justify-between items-center relative z-40 px-20"
-        on:mouseleave={() => (isExpanded = false)}
-    >
-        <div
-            class=" flex flex-row items-center justify-start w-full gap-6 py-4"
-        >
-            <a href="/" class="active:scale-90 transition-all" title="go home"
-                ><img
-                    src="../../lego-logo.png"
-                    alt="lego"
-                    class="w-12 cursor-pointer"
-                /></a
-            >
-            <div class="w-[2px] h-6 bg-gray-400"></div>
-            <a
-                href="/add-set"
-                class="select-none cursor-pointer border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black transition-all"
-                >Add set</a
-            >
+<!-- <svelte:window bind:scrollY={y} /> -->
+<nav
+    class="h-screen fixed z-20 top-0 lg:w-24 bg-gray-950 border-r-[3px] border-zinc-600 flex flex-col justify-between py-6"
+>
+    <div>
+        <div class="pb-6 px-6 border-b-[3px] border-zinc-600">
+            <a href="/" title="home">
+                <img
+                    src="../../../../navbar/lego-logo.svg"
+                    alt="lego logo"
+                    class="w-12 h-12 grayscale hover:grayscale-0 transition-all active:scale-90"
+                />
+            </a>
         </div>
-        <div class="w-full flex items-center justify-end gap-3 h-full">
-            <!-- <button
-                class="border-2 border-gray-300 p-2 px-4 hover:bg-gray-300 hover:text-black focus:bg-gray-300 focus:text-black transition-all"
-                ><a href="/settings" class="select-none cursor-pointer"
-                    >Settings</a
-                ></button
-            > -->
-
-            <div class=" flex flex-col items-center justify-center">
-                <button
-                    class="active:scale-90 transition-all select-none cursor-pointer w-9 h-9"
-                    title="account"
-                    on:click={clickHandler}
-                    on:mouseenter={() => (isExpanded = true)}
-                >
-                    <!-- <a href="/account"
-                        > -->
-                    <img
-                        class=" fill-black bg-[#ffd502d0] bg-yellow-[#ffd502] rounded-xl p-1"
-                        src="../../../../lego-head.svg"
-                        alt="account"
-                    />
-                    <!-- </a> -->
-                </button>
-            </div>
-            {#if isExpanded}
-                <!-- svelte-ignore a11y-no-static-element-interactions -->
-                <div
-                    on:mouseleave={() => (isExpanded = false)}
-                    use:clickOutside={() => (isExpanded = isExpanded)}
-                    class="absolute z-0 bg-black top-full border-2 border-zinc-400"
-                >
-                    <p class="text-zinc-100 p-3 pr-14">{$userInfo.email}</p>
-
-                    <ul
-                        class="flex flex-col gap-y-2 border-t-2 border-zinc-400 p-3 pr-14"
-                        transition:slide={{ duration: 200, axis: "y" }}
-                    >
-                        <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-                        <li
-                            on:click={clickHandler}
-                            class="hover:text-zinc-100 transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
-                        >
-                            <a href="/account">Account</a>
-                        </li>
-                        <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-                        <li
-                            on:click={clickHandler}
-                            class="hover:text-zinc-100 transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
-                        >
-                            <a href="/settings">Settings</a>
-                        </li>
-                        <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-                        <li
-                            on:click={clickHandler}
-                            class="hover:text-red-600 transition-all text-gray-400 hover:translate-x-2 cursor-pointer"
-                        >
-                            <button on:click={logout}>Logout</button>
-                        </li>
-                    </ul>
-                </div>
-            {/if}
+        <div class="flex flex-col items-center py-6 px-6 gap-y-6">
+            <a title="account" href="/account" class=" active:scale-90 transition-all" on:mouseenter={() => (accountHover = true)} on:mouseleave={() => (accountHover = false)}>                
+                <svg class="w-9 h-9 transition-all" width="800px" height="800px" viewBox="0 0 24 24" fill="none" 
+                xmlns="http://www.w3.org/2000/svg">
+                    <circle class="transition-all" cx="12" cy="9" r="3" stroke={accountHover ? '#1f53c2' : '#e4e4e7'} stroke-width="1.5" />
+                    <circle class="transition-all" cx="12" cy="12" r="10" stroke={accountHover ? '#1f53c2' : '#e4e4e7'} stroke-width="1.5" />
+                    <path class="transition-all" d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20"
+                        stroke={accountHover ? '#1f53c2' : '#e4e4e7'} stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </a>
+            <a title="add new set" href="/add-set" class=" active:scale-90 transition-all" on:mouseenter={() => (addHover = true)} on:mouseleave={() => (addHover = false)}>
+                <svg class="w-9 h-9 transition-all" width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                    class="transition-all"
+                        d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z"
+                        stroke={addHover ? '#37a314' : '#e4e4e7'} stroke-width="1.5" />
+                    <path class="transition-all" d="M15 12L12 12M12 12L9 12M12 12L12 9M12 12L12 15" stroke={addHover ? '#37a314' : '#e4e4e7'} stroke-width="1.5"
+                        stroke-linecap="round" />
+                </svg>
+            </a>
         </div>
     </div>
     <div
-        class="h-full w-full absolute top-0 left-0 z-20 backdrop-blur-lg bg-black/85 shadow-lg"
-    ></div>
+        class="flex flex-col gap-y-3 items-center border-t-[3px] border-zinc-600 pt-6"
+    >
+        <a title="settings" href="/settings">
+            <img
+                src="../../../../navbar/settings.svg"
+                alt="settings"
+                class="w-7 h-7 hover:rotate-45 transition-all  active:scale-90"
+            />
+        </a>
+        <button title="logout" on:click={logout}>
+            <img
+                src="../../../../navbar/logout.svg"
+                alt="logout"
+                class="w-8 h-8 hover:translate-x-1 transition-all  active:scale-90"
+            />
+        </button>
+    </div>
 </nav>

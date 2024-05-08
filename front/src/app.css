@@ -6,7 +6,7 @@
 
 @layer {
     body {
-        @apply text-zinc-100 bg-gradient-to-tl from-[#330707] from-15% to-black to-80% bg-no-repeat bg-cover min-h-screen;
+        @apply text-zinc-100 bg-gradient-to-tr from-black from-30% via-gray-950 via-60% to-[#1f0336] to-90% bg-no-repeat bg-cover min-h-screen;
         font: Saira;
         font-family: 'Saira', sans-serif;
     }
@@ -26,5 +26,11 @@
     pre {
         margin: 0;
         padding: 0;
+    }
+}
+
+@layer components {
+    .border-main {
+        @apply border-t-3 border-zinc-600;
     }
 }
