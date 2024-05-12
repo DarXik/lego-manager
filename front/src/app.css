@@ -37,4 +37,12 @@
     .my-input {
         @apply placeholder:italic placeholder:text-gray-700 text-sm text-zinc-100 w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-purple-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all;
     }
+
+    .my-button {
+        @apply text-white end-3 bottom-1.5 border-2 border-transparent hover:border-purple-600 active:border-purple-600  border-zinc-600 transition-all duration-300 font-medium w-fit text-lg px-5 py-2 bg-zinc-900
+    }
+
+    .my-button-2 {
+        @apply relative flex px-9 py-2 items-center justify-center overflow-hidden bg-none border-2 border-zinc-600 text-white shadow-2xl transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-purple-900/80 before:duration-300 before:ease-out hover:shadow-purple-900/80 hover:before:h-56 hover:before:w-56 lg:text-lg select-none;
+    }
 }

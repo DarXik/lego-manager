@@ -32,8 +32,6 @@
             return 0;
         });
     };
-
-    $: console.log(sets);
 </script>
 
 <section class="">
@@ -53,7 +51,7 @@
                     class="uppercase border-r-3 border-zinc-600 p-2 flex items-center gap-2"
                     ><p>name</p>
                     <svg
-                        class="w-3.5 h-3.5"
+                        class="w-3.5 h-3.5 transition-all"
                         class:rotate-180={ascending && currentKey === "name"}
                         width="800px"
                         height="800px"
@@ -76,7 +74,7 @@
                     class="uppercase border-r-3 border-zinc-600 p-2 flex items-center gap-2"
                     ><p>Theme</p>
                     <svg
-                        class="w-3.5 h-3.5"
+                        class="w-3.5 h-3.5 transition-all"
                         class:rotate-180={ascending &&
                             currentKey === "themeName"}
                         width="800px"
@@ -103,7 +101,7 @@
                     class="uppercase border-r-3 border-zinc-600 p-2 flex items-center gap-2"
                     ><p>Set number</p>
                     <svg
-                        class="w-3.5 h-3.5"
+                        class="w-3.5 h-3.5 transition-all"
                         class:rotate-180={ascending &&
                             currentKey === "setNumber"}
                         width="800px"

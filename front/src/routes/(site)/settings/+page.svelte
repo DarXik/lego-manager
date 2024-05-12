@@ -94,7 +94,7 @@
     }
 </script>
 
-<section class="">
+<section in:fade={{ delay: 50, duration: 300 }}>
     <h1
         class="font-bold text-3xl lg:text-5xl px-6 pr-32 py-8 border-r-3 border-zinc-600 w-fit"
     >
@@ -205,20 +205,20 @@
 
                         <button
                             on:click={handlePasswordChange}
-                            class="end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium px-6 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none"
+                            class="my-button-2 w-fit"
                         >
-                            Update
+                            <span class="relative z-10">Update</span>
                         </button>
                     </form>
                 </div>
             </div>
         </section>
-        <section class="border-main  border-b-3 w-1/3 px-4 py-8">
+        <section class="border-main border-b-3 w-1/3 px-4 py-8">
             <h3 class="text-2xl mb-3">Delete account:</h3>
             <button
-                class="px-4 py-2 text-red-500 border-2 border-red-500 cursor-pointer select-none transition-all hover:text-black hover:bg-red-500 active:scale-90 focus:bg-red-500 focus:text-black uppercase"
-                >Delete account</button
-            >
+                class="px-4 py-2  relative overflow-hidden border-2 border-red-600 bg-none text-red-600 transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:duration-300 after:absolute after:right-0 after:top-0 after:h-full after:w-0 after:duration-300 hover:text-zinc-100 hover:before:w-2/4 hover:before:bg-red-600 hover:after:w-2/4 hover:after:bg-red-600 select-none uppercase font-bold"
+                ><span class="relative z-10">Delete account</span>
+            </button>
         </section>
     </article>
 </section>

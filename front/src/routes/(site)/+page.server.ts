@@ -12,7 +12,7 @@ export const load = async ({ fetch, locals, data }) => {
     const res1 = await response.json()
 
     return {
-        ... data,
+        ...data,
         sets: res1
     }
 }

@@ -28,13 +28,9 @@ export const actions = {
     updateSet: async ({ request, locals }) => {
         const formData = await request.formData();
 
-        if (!formData.get("descriptionEdit") || !formData.get("yearBoughtEdit") || !formData.get("priceEdit") ) {
-            return {
-                problem: "Missing required fields"
-            }
-        }
-
-        console.log(formData)
+        // await new Promise(resolve => {
+        //     setTimeout(resolve, 2000);
+        //   });
 
         const newSet = await axios({
             url: "http://localhost:3000/api/v1/sets/edit",
@@ -45,6 +41,8 @@ export const actions = {
             data: formData
         })
 
-        console.log(newSet)
+        return {
+            status: newSet.status
+        }
     },
 }

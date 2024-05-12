@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { slide } from "svelte/transition";
-    import { clickOutside } from "../../../utils/clickOutside";
-    import { userInfo } from "$lib/store";
+    import { fade } from "svelte/transition"
 
     // $: isInSlug = $page.url.pathname.includes("/set/");
 
@@ -28,7 +26,7 @@
 
 </script>
 <!-- <svelte:window bind:scrollY={y} /> -->
-<nav
+<nav  in:fade={{ delay: 50, duration: 300 }}
     class="h-screen fixed z-20 top-0 lg:w-24 bg-gray-950 border-r-[3px] border-zinc-600 flex flex-col justify-between py-6"
 >
     <div>

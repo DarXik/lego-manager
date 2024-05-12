@@ -3,8 +3,10 @@
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
     import { enhance } from "$app/forms";
     import { userInfo } from "$lib/store";
+    import { fade } from "svelte/transition";
 
     export let data;
+    export let form;
 
     let set = data.set;
     let currentInstructions: any = [];
@@ -37,8 +39,14 @@
             }),
         });
 
+        updateStatus = await request;
+
         if (request.ok) {
-            console.log((await request.json()).message);
+            setTimeout(() => {
+                deletingSet = false;
+
+                window.location.reload();
+            }, 2500);
         }
     }
 
@@ -49,14 +57,19 @@
     $: if (modalEdit && editingSet && !deletingSet) modalEdit.showModal();
 
     let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
+    let loading = false;
 
-    console.log(set);
+    function handleSubmit() {
+        loading = true;
+    }
+
+    let updateStatus: any = "";
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog
-    class="border-2 border-zinc-600 bg-gradient-to-tl bg-black from-black from-10% to-purple-950/50 to-90%
-     text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm min-w-[25%] w-fit p-2"
+    class="border-3 border-zinc-600 bg-black
+        text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm w-[80%] md:w-[60%] lg:w-[45%] xl:w-[35%]"
     bind:this={modalDelete}
     on:close={() => (deletingSet = false)}
     on:click|self={() => modalDelete.close()}
@@ -64,20 +77,43 @@
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div on:click|stopPropagation>
         <!-- <slot name="header" /> -->
-        <h2 class="text-2xl font-bold uppercase mb-4">Are you sure?</h2>
-        <p>
-            Set will be deleted only from your account, those already added by
-            others will not be deleted.
-        </p>
+        <div class="border-b-3 border-zinc-600 p-2 pb-8 text-white">
+            <p class="mb-1">Delete:</p>
+            <p class="uppercase italic text-xl">{set.name}</p>
+            {#if updateStatus.status === 200}
+                <p
+                    transition:fade={{ duration: 200 }}
+                    class="pt-2 text-green-600"
+                >
+                    Successfully deleted
+                </p>
+            {:else if updateStatus.status !== 200 && updateStatus.status}
+                <p
+                    transition:fade={{ duration: 200 }}
+                    class="pt-2 text-red-600"
+                >
+                    Error deleting set <br />
+                    <span class="italic">→ {updateStatus.message}</span>
+                </p>
+            {/if}
+        </div>
+        <div class="p-2 text-lg">
+            <p>
+                &bull; Set will be deleted only from your account. <br />
+                &bull; Those already added by others will not be deleted. <br />
+                &bull; This action cannot be undone.
+            </p>
+        </div>
 
         <!-- svelte-ignore a11y-autofocus -->
-        <div class="flex flex-row justify-between mt-12">
+        <div class="flex flex-row justify-evenly mt-12 border-main">
             <button
                 on:click={deleteSet}
-                class="p-2 px-4 border-2 border-green-400">I am sure</button
+                class="w-full py-2 font-bold text-red-600 hover:text-black hover:bg-red-600 transition-all border-r-[1.5px] border-zinc-600"
+                >I am sure</button
             >
             <button
-                class="border-2 border-red-400 p-2 px-4"
+                class="w-full py-2 text-zinc-100 hover:text-black hover:bg-zinc-300 transition-all p-2 px-4 border-l-[1.5px] border-zinc-600"
                 on:click={() => modalDelete.close()}>Go back</button
             >
         </div>
@@ -86,23 +122,51 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog
-    class="border-3 border-zinc-600 bg-black/80
-     text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm min-w-[25%]"
+    class="border-3 border-zinc-600 bg-black
+     text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%]"
     bind:this={modalEdit}
     on:close={() => (editingSet = false)}
     on:click|self={() => modalEdit.close()}
 >
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div on:click|stopPropagation>
-        <div class="border-b-3 border-zinc-600 p-2">
-            <p class="mb-2">You are editing set:</p>
-            <p class="uppercase">{set.name}</p>
+        <div class="border-b-3 border-zinc-600 p-2 pb-8 text-white">
+            <p class="mb-1">Editing:</p>
+            <p class="uppercase italic text-xl">{set.name}</p>
+            {#if updateStatus.status === 200}
+                <p
+                    transition:fade={{ duration: 200 }}
+                    class="pt-2 text-green-600"
+                >
+                    Successfully updated
+                </p>
+            {:else if updateStatus.status !== 200 && updateStatus.status}
+                <p
+                    transition:fade={{ duration: 200 }}
+                    class="pt-2 text-red-600"
+                >
+                    Error deleting set <br />
+                    <span class="italic">→ {updateStatus.message}</span>
+                </p>
+            {/if}
         </div>
         <form
             method="POST"
             action="?/updateSet"
-            class="flex flex-col gap-4 p-2"
-            use:enhance
+            on:submit|preventDefault={handleSubmit}
+            use:enhance={() => {
+                return async ({ result }) => {
+                    if (result) {
+                        updateStatus = result;
+                        setTimeout(() => {
+                            editingSet = false;
+                            loading = false;
+
+                            window.location.reload();
+                        }, 2500);
+                    }
+                };
+            }}
         >
             <input
                 type="text"
@@ -110,7 +174,8 @@
                 name="setId"
                 bind:value={set.id}
             />
-            {#if set.description}
+
+            <div class="flex flex-col gap-6 p-2">
                 <div class="flex flex-col">
                     <textarea
                         name="descriptionEdit"
@@ -120,15 +185,14 @@
                         rows="4"
                         maxlength="256"
                         placeholder="Very secret description..."
-                        class="resize-none bg-transparent peer focus:outline-2 outline-white"
+                        class="my-input resize-none peer"
                     ></textarea>
                     <label
-                        class="-order-last text-gray-400 peer-focus:text-zinc-100 transition-all"
+                        class="text-gray-400 peer-focus:text-white -order-last transition-all duration-200 mb-1"
                         for="descriptionEdit">New description</label
                     >
                 </div>
-            {/if}
-            {#if set.yearBought}
+
                 <div class="flex flex-col">
                     <input
                         type="text"
@@ -138,13 +202,14 @@
                         autocomplete="off"
                         maxlength="4"
                         placeholder="2019"
+                        class="my-input peer"
                     />
-                    <label class="-order-last" for="yearBoughtEdit"
-                        >New year of purchase</label
+                    <label
+                        class="text-gray-400 peer-focus:text-white -order-last transition-all duration-200 mb-1"
+                        for="yearBoughtEdit">New year of purchase</label
                     >
                 </div>
-            {/if}
-            {#if set.price}
+
                 <div class="flex flex-col">
                     <input
                         type="text"
@@ -154,23 +219,31 @@
                         autocomplete="off"
                         maxlength="30"
                         placeholder="199"
+                        class="my-input peer"
                     />
-                    <label class="-order-last" for="priceEdit">New price</label>
+                    <label
+                        class="text-gray-400 peer-focus:text-white -order-last transition-all duration-200 mb-1"
+                        for="priceEdit">New price</label
+                    >
                 </div>
-            {/if}
+            </div>
+
+            <div class="flex flex-row justify-evenly mt-12 border-main">
+                <button
+                    type="submit"
+                    disabled={loading}
+                    class="w-full py-2 font-bold text-green-600 hover:text-black hover:bg-green-600 transition-all border-r-[1.5px] border-zinc-600 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                    >Update
+                </button>
+                <button
+                    class="w-full py-2 text-zinc-100 hover:text-black hover:bg-zinc-300 transition-all p-2 px-4 border-l-[1.5px] border-zinc-600 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                    on:click={() => modalEdit.close()}
+                    disabled={loading}
+                    >Go back
+                </button>
+            </div>
         </form>
         <!-- svelte-ignore a11y-autofocus -->
-        <div class="flex flex-row justify-evenly mt-12 border-main">
-            <button
-                type="submit"
-                class="w-full py-2 text-green-600 hover:text-black hover:bg-green-600 transition-all border-r-[1.5px] border-zinc-600"
-                >Update</button
-            >
-            <button
-                class="w-full py-2 text-zinc-100 hover:text-black hover:bg-zinc-300 transition-all p-2 px-4 border-l-[1.5px] border-zinc-600"
-                on:click={() => modalEdit.close()}>Go back</button
-            >
-        </div>
     </div>
 </dialog>
 
@@ -193,16 +266,14 @@
                     {/if}
                 </p>
             </div>
-            <!-- <div class="mt-20 flex w-fit gap-12 border-main border-r-3 p-4">
-            </div> -->
         </div>
 
         <div class="lg:w-[40%] h-fit border-b-3 border-zinc-600">
-                <img
-                    src="http://localhost:3000/api/v1/image/{set.image}"
-                    alt=""
-                    class="h-[480px] object-cover"
-                />
+            <img
+                src="http://localhost:3000/api/v1/image/{set?.image}"
+                alt=""
+                class="h-[480px] object-cover"
+            />
         </div>
     </div>
     <div class="w-full border-b-3 border-zinc-600">
@@ -236,7 +307,7 @@
             ></InfoCardwIcon>
             <InfoCardwIcon
                 path="set/year-bought-icon.svg"
-                text={set.year}
+                text={set.yearBought}
                 title="Year bought"
             ></InfoCardwIcon>
             <InfoCardwIcon
@@ -257,7 +328,7 @@
                 class="lg:w-1/2 border-r-3 border-zinc-600"
                 class:border-b-3={currentInstructions == 0}
             >
-                <div class="px-4 py-4">
+                <div class="px-4 py-4 mb-4">
                     <h2 class="text-3xl font-bold mb-12">
                         Available instructions:
                     </h2>
@@ -266,8 +337,9 @@
                             on:click={() =>
                                 (currentInstructions = set.myInstructions)}
                             on:click={() => (instructiosPref = "Your")}
-                            class:!border-white={instructiosPref == "Your"}
-                            class="text-white end-3 bottom-1.5 border-2 uppercase border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            class:!border-purple-600={instructiosPref == "Your"}
+                            class:!text-purple-500={instructiosPref == "Your"}
+                            class="my-button"
                             >Your instructions ({set.myInstructions
                                 .length})</button
                         >
@@ -275,8 +347,9 @@
                             on:click={() =>
                                 (currentInstructions = set.allInstructions)}
                             on:click={() => (instructiosPref = "Public")}
-                            class:!border-white={instructiosPref == "Public"}
-                            class="text-white end-3 bottom-1.5 border-2 uppercase border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                            class:!border-purple-600={instructiosPref == "Public"}
+                            class:!text-purple-500={instructiosPref == "Public"}
+                            class="my-button"
                             >Public instructions ({set.allInstructions
                                 .length})</button
                         >
@@ -291,14 +364,14 @@
                         </p>
                         <div class="ml-4 flex gap-4">
                             <a
-                                class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
-                                target="_blank">Open</a
+                                target="_blank"><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/open.svg" alt="open icon" class="w-5 h-5"/>Open</span></a
                             ><a
-                                class="text-white end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
+                                class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/download/{instruction.instructions}"
                                 target="_self"
-                                download>Download</a
+                                download><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/download.svg" alt="open icon" class="w-5 h-5"/>Download</span></a
                             >
                         </div>
                     </div>
@@ -318,17 +391,11 @@
         {/if}
         <div>
             <div class="flex flex-row gap-4 p-4">
-                <button
-                    on:click={editSet}
-                    class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                >
-                    Edit set
+                <button on:click={editSet} class="my-button-2">
+                    <span class="relative z-10">Edit set</span>
                 </button>
-                <button
-                    on:click={() => (deletingSet = !deletingSet)}
-                    class="text-white end-3 bottom-1.5 border-2 border-transparent bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium w-fit text-lg px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700"
-                >
-                    Delete set
+                <button on:click={() => (deletingSet = !deletingSet)} on:click={editSet} class="my-button-2">
+                    <span class="relative z-10">Delete set</span>
                 </button>
             </div>
         </div>
@@ -336,9 +403,6 @@
 </section>
 
 <style>
-    dialog > div {
-        /* padding: 1em; */
-    }
     dialog[open] {
         animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }

@@ -52,8 +52,8 @@
                 {form?.problem.message}
             </p>
         {/if}
-        <form method="POST" class="space-y-4" use:enhance>
-            <div class="flex flex-col space-y-1 b-4">
+        <form method="POST" class="" use:enhance>
+            <div class="flex flex-col space-y-1 mb-4">
                 <label for="email" class="text-sm font-medium">Username</label>
                 <input
                     type="text"
@@ -64,7 +64,7 @@
                     class="my-input"
                 />
             </div>
-            <div class="flex flex-col space-y-1 b-4">
+            <div class="flex flex-col space-y-1 mb-4">
                 <label for="email" class="text-sm font-medium">Email</label>
                 <input
                     type="text"
@@ -76,7 +76,7 @@
                     class="my-input"
                 />
             </div>
-            <div class="flex flex-col space-y-1">
+            <div class="flex flex-col space-y-1 mb-4">
                 <label for="password" class="text-sm font-medium"
                     >Password</label
                 >
@@ -100,7 +100,7 @@
                     />
                 </div>
             </div>
-            <div class="flex flex-col space-y-1">
+            <div class="flex flex-col space-y-1 mb-8">
                 <label for="password" class="text-sm font-medium"
                     >Confirm Password
                 </label>
@@ -130,15 +130,15 @@
             <button
                 type="submit"
                 disabled={passwordMatch}
-                class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed mb-6"
+                class="text-base my-button-2 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed mb-8"
             >
-                Sign Up
+                <span class="relative z-10">Register</span>
             </button>
         </form>
         <p class="text-sm text-center pt-4">
             Already have an account? <a
                 href="/login"
-                class="text-blue-600 hover:underline select-none">Log In</a
+                class="text-purple-500 hover:underline select-none">Log In</a
             >
         </p>
     </div>

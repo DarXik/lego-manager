@@ -89,7 +89,7 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
             if (attachment && set) {
                 const { id, addedById } = attachment, rest = __rest(attachment, ["id", "addedById"]);
-                return res.status(200).send(Object.assign(Object.assign(Object.assign({}, set), rest), { attachmentId: id, attachmentAddedById: addedById, allInstructions: allInstructions, myInstructions: myInstructions }));
+                return res.status(200).send(Object.assign(Object.assign(Object.assign({}, set), rest), { attachmentId: id, attachmentAddedById: addedById, allInstructions: allInstructions, myInstructions: myInstructions, version: "1.0.0" }));
             }
         }
         catch (err) {
