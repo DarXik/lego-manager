@@ -10,7 +10,7 @@ export async function PATCH({ request, locals, cookies }) {
             })
         })
 
-        if (response.ok) {
+        if (response) {
             cookies.delete("session", { path: "/" });
 
             return new Response(JSON.stringify(await response.json()), { status: 200 })

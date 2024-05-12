@@ -163,7 +163,7 @@
                             >Your current password</label
                         >
                         <input
-                            class="mb-3"
+                            class="mb-3 my-input"
                             type="text"
                             bind:value={currentPassword}
                             id="currentPassword"
@@ -172,7 +172,7 @@
                         <div class="flex flex-col mb-6">
                             <label for="newPassword">New password</label>
                             <input
-                                class="mb-1"
+                                class="mb-1 my-input"
                                 type="password"
                                 bind:value={newPassword}
                                 id="newPassword"
@@ -183,6 +183,7 @@
                             >
                             <input
                                 type="password"
+                                class="my-input"
                                 bind:value={newPasswordRepeat}
                                 id="newPasswordRepeat"
                                 placeholder="repeat new password"
@@ -221,9 +222,3 @@
         </section>
     </article>
 </section>
-
-<style lang="postcss">
-    input {
-        @apply placeholder:italic  placeholder:text-gray-600 text-sm text-zinc-100 w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all;
-    }
-</style>

@@ -33,4 +33,8 @@
     .border-main {
         @apply border-t-3 border-zinc-600;
     }
+
+    .my-input {
+        @apply placeholder:italic placeholder:text-gray-700 text-sm text-zinc-100 w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-purple-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all;
+    }
 }

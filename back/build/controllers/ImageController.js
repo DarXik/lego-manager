@@ -24,7 +24,6 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!fs_1.default.existsSync(filePath)) {
             return res.status(404).send({ message: "image not found" });
         }
-        console.log("display: ", filePath);
         res.status(200).sendFile(filePath);
     }
     catch (err) {

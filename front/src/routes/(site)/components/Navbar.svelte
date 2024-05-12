@@ -18,7 +18,7 @@
             method: "PATCH",
         });
         console.log(request.status);
-        if (request.ok) {
+        if (request) {
             window.location.href = "/login";
         }
     }
@@ -37,7 +37,7 @@
                 <img
                     src="../../../../navbar/lego-logo.svg"
                     alt="lego logo"
-                    class="w-12 h-12 grayscale hover:grayscale-0 transition-all active:scale-90"
+                    class="w-12 h-12 transition-all active:scale-90"
                 />
             </a>
         </div>

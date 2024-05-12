@@ -4,10 +4,15 @@
     import { onMount } from "svelte";
 
     // export let form;
-    // export let data;
+    export let data;
     let sets: any = [];
 
-    $: if ($userSets) sets = $userSets;
+    $: if (data && sets.length == 0) {
+        sets = data.sets.slice().sort((a, b) => a.name > b.name);
+        for (const key in sets) {
+            sets[key].localId = parseInt(key);
+        }
+    }
 
     let ascending: boolean = true;
     let currentKey: string = "name";
@@ -28,7 +33,7 @@
         });
     };
 
-    $: console.log(currentKey);
+    $: console.log(sets);
 </script>
 
 <section class="">
@@ -72,7 +77,8 @@
                     ><p>Theme</p>
                     <svg
                         class="w-3.5 h-3.5"
-                        class:rotate-180={ascending && currentKey === "themeName"}
+                        class:rotate-180={ascending &&
+                            currentKey === "themeName"}
                         width="800px"
                         height="800px"
                         viewBox="0 0 24 24"
@@ -98,7 +104,8 @@
                     ><p>Set number</p>
                     <svg
                         class="w-3.5 h-3.5"
-                        class:rotate-180={ascending && currentKey === "setNumber"}
+                        class:rotate-180={ascending &&
+                            currentKey === "setNumber"}
                         width="800px"
                         height="800px"
                         viewBox="0 0 24 24"
@@ -135,7 +142,7 @@
                             <div
                                 class="border-b border-gray-600/50 group-hover:border-zinc-100 transition-all py-2 px-4 h-[15%]"
                             >
-                                <p class="text-start">{index + 1}</p>
+                                <p class="text-start">{set.localId + 1}</p>
                             </div>
                             <div
                                 class="flex flex-col justify-between py-2 px-4 h-[85%]"

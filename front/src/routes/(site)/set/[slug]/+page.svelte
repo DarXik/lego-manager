@@ -10,7 +10,7 @@
     let currentInstructions: any = [];
     let instructiosPref = "";
     let deletingSet = false;
-    let editingSet = true;
+    let editingSet = false;
     let descriptionEdit = "";
     let yearBoughtEdit = "";
     let priceEdit = "";
@@ -122,8 +122,9 @@
                         placeholder="Very secret description..."
                         class="resize-none bg-transparent peer focus:outline-2 outline-white"
                     ></textarea>
-                    <label class="-order-last text-gray-400 peer-focus:text-zinc-100 transition-all" for="descriptionEdit"
-                        >New description</label
+                    <label
+                        class="-order-last text-gray-400 peer-focus:text-zinc-100 transition-all"
+                        for="descriptionEdit">New description</label
                     >
                 </div>
             {/if}
@@ -195,19 +196,18 @@
             <!-- <div class="mt-20 flex w-fit gap-12 border-main border-r-3 p-4">
             </div> -->
         </div>
-        {#if set.image}
-            <div class="lg:w-[40%] h-fit border-b-3 border-zinc-600">
+
+        <div class="lg:w-[40%] h-fit border-b-3 border-zinc-600">
                 <img
                     src="http://localhost:3000/api/v1/image/{set.image}"
-                    alt="set"
+                    alt=""
                     class="h-[480px] object-cover"
                 />
-            </div>
-        {/if}
+        </div>
     </div>
     <div class="w-full border-b-3 border-zinc-600">
         <div
-            class="border-zinc-600 border-r-3 border-l-3 w-fit mx-auto flex justify-center flex-wrap gap-x-14 gap-y-7 p-4"
+            class="border-zinc-600 border-r-3 w-fit mx-auto flex justify-center flex-wrap gap-x-14 gap-y-7 p-4"
         >
             <InfoCardwIcon
                 path="set/number-icon.svg"

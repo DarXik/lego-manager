@@ -2,6 +2,7 @@
     import { enhance } from "$app/forms";
     import { onMount } from "svelte";
     import { navbarHeight, userInfo } from "$lib/store";
+    import { fade } from "svelte/transition";
 
     export let form;
     export let data;
@@ -60,26 +61,28 @@
     }
 
     let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
+    let currentItems = 8;
 </script>
 
-<section class="px-20 mb-10 pt-32">
-    <h1 class="font-bold text-3xl mb-8">Add new set</h1>
-    <div class="mb-12">
-        <p
-            class="text-gray-600 transition-all"
-            class:!text-zinc-100={isSearching}
-        >
-            Find yours:
+<section class="">
+    <div class="border-b-3 boder-zinc-600">
+        <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl p-6">
+            Add new set
+        </h1>
+    </div>
+    <div class="border-b-3 border-zinc-600 p-6">
+        <p class="text-zinc-100 transition-all text-2xl">
+            Find yours in our database:
         </p>
         <form
-            class="lg:w-9/12 mt-2"
+            class="lg:pr-32"
             method="POST"
             action="?/searchLegoSet"
             on:focusin={() => (isSearching = true)}
             on:focusout={() => (isSearching = false)}
             use:enhance
         >
-            <div class="relative flex w-full">
+            <div class="relative flex w-full mt-4">
                 <div
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                 >
@@ -104,7 +107,7 @@
                     name="searchQuery"
                     id="searchQuery"
                     bind:value={searchQuery}
-                    class="block w-full p-2 ps-10 placeholder:text-gray-600 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
+                    class="my-input block w-full ps-10 p-3"
                     placeholder="Atreides Royal..."
                     required
                     autocomplete="off"
@@ -124,9 +127,11 @@
         <div class="mt-4">
             {#if form?.setsFound && fetchedSets.length > 0}
                 <p class="mb-2">Click to quickly add:</p>
-                <div class="flex flex-wrap gap-2">
-                    {#each fetchedSets as set}
+                <div class="flex flex-wrap gap-3">
+                    {#each fetchedSets.slice(0, currentItems) as set}
                         <button
+                            type="button"
+                            transition:fade={{ duration: 200 }}
                             on:click={() => quickSetAdd(set)}
                             class="w-fit border-2 transition-all border-zinc-300 hover:border-zinc-300 hover:bg-zinc-300/90 hover:text-black focus:bg-zinc-300/90 focus:text-black active:border-zinc-400 active:bg-zinc-300/90 select-none group"
                             class:setChosen={set.setNumber == setNumber &&
@@ -140,6 +145,18 @@
                         </button>
                     {/each}
                 </div>
+                {#if currentItems < fetchedSets.length}
+                    <div class="w-full flex justify-center mt-8">
+                        <button
+                            on:click={() => (currentItems = currentItems + 5)}
+                            id="loadmore"
+                            type="button"
+                            class="border-2 border-green-600 px-4 py-2"
+                        >
+                            Show more
+                        </button>
+                    </div>
+                {/if}
             {:else if form?.setsFailed}
                 <p class="border-2 border-red-600 w-fit text-red-600 px-4 py-2">
                     {form?.setsFailed}
@@ -237,7 +254,7 @@
                 bind:value={description}
                 autocomplete="off"
                 rows="4"
-                class="placeholder:italic w-full text-zinc-100 resize-none placeholder:text-gray-600 text-sm px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all h-full peer"
+                class="my-input resize-none peer"
                 maxlength="256"
                 placeholder="Authentic replica of the Atreides Royal Ornithopter from Dune..."
             ></textarea>
@@ -396,9 +413,6 @@
 </section>
 
 <style lang="postcss">
-    .my-input {
-        @apply placeholder:italic  placeholder:text-gray-600 text-sm text-zinc-100 w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none  transition-all;
-    }
     .one-cell {
         @apply flex flex-col gap-2 text-gray-500;
     }

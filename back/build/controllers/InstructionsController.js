@@ -21,11 +21,9 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filename = req.params.filename;
     try {
         const filePath = path_1.default.join(__dirname, `../../uploads/instructions/${filename}`);
-        console.log(filePath);
         if (!fs_1.default.existsSync(filePath)) {
             return res.status(404).send({ message: "pdf not found 1" });
         }
-        console.log("read: ", filePath);
         res.status(200).sendFile(filePath);
     }
     catch (err) {

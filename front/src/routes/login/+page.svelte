@@ -53,11 +53,11 @@
                     value={form?.email ?? ""}
                     required
                     autocomplete="off"
-                    class="px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
+                    class="my-input"
                 />
             </div>
             <div class="flex flex-col space-y-1">
-                <label for="password" class="text-sm font-medium"
+                <label for="password" class="text-sm font-medium peer-focus:text-white -order-last transition-all duration-200"
                     >Password</label
                 >
                 <div class="w-full h-fit relative">
@@ -67,7 +67,7 @@
                         name="password"
                         required
                         autocomplete="off"
-                        class="w-full px-3 py-2 bg-zinc-900 border-2 border-transparent focus:border-red-950 ring-0 focus:ring-0 outline-none focus:outline-none transition-all"
+                        class="my-input"
                     />
                     <input
                         type="checkbox"
