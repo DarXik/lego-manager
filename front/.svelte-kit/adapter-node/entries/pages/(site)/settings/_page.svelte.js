@@ -1,0 +1,19 @@
+import { c as create_ssr_component, a as subscribe, d as each, b as add_attribute, e as escape } from "../../../../chunks/ssr.js";
+import "../../../../chunks/client.js";
+import { a as userInfo } from "../../../../chunks/store.js";
+const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $userInfo, $$unsubscribe_userInfo;
+  $$unsubscribe_userInfo = subscribe(userInfo, (value) => $userInfo = value);
+  let currencies = ["CZK", "EUR", "USD", "GBP"];
+  let languages = ["Čeština", "English", "Deutsch"];
+  let newPassword, newPasswordRepeat, currentPassword;
+  $$unsubscribe_userInfo();
+  return `<section><h1 class="font-bold text-3xl lg:text-5xl px-6 pr-32 py-8 border-r-3 border-zinc-600 w-fit" data-svelte-h="svelte-1xgmsmx">Settings</h1> <article class="flex max-md:flex-col"><section class="border-main md:border-r-3 border-b-3 md:w-1/3 px-6 py-8"><h2 class="text-2xl" data-svelte-h="svelte-5csabn">Preferences</h2> <div class="mb-6 mt-3"><h3 class="" data-svelte-h="svelte-1w00puw">Currency:</h3> <form class="max-w-xs mt-3"><select id="currencies" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">${each(currencies, (currency, index) => {
+    return `<option ${index === $userInfo.currency ? "selected" : ""}${add_attribute("value", currency, 0)}>${escape(currency)}</option>`;
+  })}</select> ${``}</form></div> <div class=""><h3 class="" data-svelte-h="svelte-1rlfsnz">Language:</h3> <form class="max-w-xs mt-3"><select id="currencies" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">${each(languages, (language, index) => {
+    return `<option ${index === $userInfo.language ? "selected" : ""}${add_attribute("value", language, 0)}>${escape(language)}</option>`;
+  })}</select> ${``}</form></div></section> <section class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8"><h2 class="text-2xl" data-svelte-h="svelte-achc4i">Password</h2> <div class="mt-3"><div><form class="max-w-xs flex flex-col"><label for="currentPassword" data-svelte-h="svelte-t50rs9">Your current password</label> <input class="mb-3 mt-1 my-input" type="text" id="currentPassword" placeholder="current password"${add_attribute("value", currentPassword, 0)}> <div class="flex flex-col mb-6"><label for="newPassword" data-svelte-h="svelte-ylzshu">New password</label> <input class="mb-2 mt-1 my-input" type="password" id="newPassword" placeholder="new password"${add_attribute("value", newPassword, 0)}> <label for="newPasswordRepeat" data-svelte-h="svelte-1dz8x3e">Repeat new password</label> <input type="password" class="my-input mt-1 " id="newPasswordRepeat" placeholder="repeat new password"${add_attribute("value", newPasswordRepeat, 0)}> ${``} ${``}</div> <button class="my-button-2 w-fit mt-4" data-svelte-h="svelte-bfpq6i"><span class="relative z-10">Update</span></button></form></div></div></section> <section class="md:border-main md:border-b-3 md:w-1/3 px-4 py-8" data-svelte-h="svelte-15le4ht"><h3 class="text-2xl mb-3">Account:</h3> <button class="px-4 py-2 relative overflow-hidden border-2 border-red-600 bg-none text-red-600 transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:duration-300 after:absolute after:right-0 after:top-0 after:h-full after:w-0 after:duration-300 hover:text-zinc-100 hover:before:w-2/4 hover:before:bg-red-600 hover:after:w-2/4 hover:after:bg-red-600 select-none uppercase font-bold"><span class="relative z-10">Delete account</span></button></section></article></section>`;
+});
+export {
+  Page as default
+};

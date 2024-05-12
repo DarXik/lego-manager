@@ -10,11 +10,10 @@ services:
     volumes:
       - ./lego-manager-backend-data:/back/uploads
     restart: always
-    environment:
-      - DATABASE_URL=${DATABASE_UR}
-      - JWT_SECRET=${JWT_SECRET}
     env_file:
-      - .env.override
+      - ./.env.backend
+    depends_on:
+      -  db
 
   frontend:
     build:
@@ -25,16 +24,15 @@ services:
     container_name: lego-manager-frontend
     hostname: lego-manager-frontend
     restart: always
+    depends_on:
+      - backend
 
   db:
     image: beercan1989/arm-mysql:latest
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=lego_manager_db
-      - MYSQL_USER=lego
-      - MYSQL_PASSWORD=lego
     container_name: "lego-manager-db"
     hostname: "lego-manager-db"
+    env_file:
+     - ./.env.db
     ports:
       - "3306:3306"
     volumes:

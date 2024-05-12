@@ -39,20 +39,20 @@ const get = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // console.log("sets for user: ", verifiedUser.user.username);
         try {
             const sets = yield prisma_1.default.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } });
-            const attachment = yield prisma_1.default.setAttachment.findMany({ where: { setId: { in: sets.map(set => set.id) }, addedById: verifiedUser.user.id } });
+            const attachment = yield prisma_1.default.setAttachment.findMany({ where: { setId: { in: sets.map((set) => set.id) }, addedById: verifiedUser.user.id } });
             // console.log(attachment)
             if (!sets || sets.length == 0) {
                 return res.status(404).send({ message: "sets not found" });
             }
-            const setsSmaller = sets.map(set => {
+            const setsSmaller = sets.map((set) => {
                 var _a, _b;
                 return {
                     id: set.id,
                     name: set.name,
                     setNumber: set.setNumber,
                     themeName: set.themeName,
-                    addedOn: ((_a = attachment.find(attachment => attachment.setId == set.id)) === null || _a === void 0 ? void 0 : _a.addedOn) || null,
-                    yearBought: ((_b = attachment.find(attachment => attachment.setId == set.id)) === null || _b === void 0 ? void 0 : _b.yearBought) || null,
+                    addedOn: ((_a = attachment.find((attachment) => attachment.setId == set.id)) === null || _a === void 0 ? void 0 : _a.addedOn) || null,
+                    yearBought: ((_b = attachment.find((attachment) => attachment.setId == set.id)) === null || _b === void 0 ? void 0 : _b.yearBought) || null,
                 };
             });
             return res.status(200).send(setsSmaller);

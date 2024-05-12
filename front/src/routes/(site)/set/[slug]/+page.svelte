@@ -272,7 +272,7 @@
             <img
                 src="http://localhost:3000/api/v1/image/{set?.image}"
                 alt=""
-                class="h-[480px] object-cover"
+                class="h-[480px] object-contain"
             />
         </div>
     </div>
