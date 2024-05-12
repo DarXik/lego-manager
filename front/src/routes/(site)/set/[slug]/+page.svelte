@@ -278,7 +278,7 @@
     </div>
     <div class="w-full border-b-3 border-zinc-600">
         <div
-            class="border-zinc-600 md:border-r-3 md:w-fit mx-auto flex max-md:grid grid-cols-2 rows-auto md:justify-center flex-wrap md:gap-x-14 gap-6 md:gap-y-7 p-4"
+            class="border-zinc-600 md:border-r-3 md:border-l-3 md:w-fit mx-auto flex max-md:grid grid-cols-2 rows-auto md:justify-center flex-wrap md:gap-x-14 gap-6 md:gap-y-7 p-4"
         >
             <InfoCardwIcon
                 path="set/number-icon.svg"
