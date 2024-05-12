@@ -26,18 +26,23 @@
  * ```
  */
 declare module '$env/static/private' {
+	export const ACSetupSvcPort: string;
+	export const ACSvcPort: string;
 	export const ALLUSERSPROFILE: string;
+	export const AMDRMPATH: string;
 	export const APPDATA: string;
 	export const CHROME_CRASHPAD_PIPE_NAME: string;
-	export const COLOR: string;
 	export const COLORTERM: string;
 	export const CommonProgramFiles: string;
 	export const CommonProgramW6432: string;
 	export const COMPUTERNAME: string;
 	export const ComSpec: string;
+	export const DokanLibrary1: string;
+	export const DokanLibrary1_LibraryPath_x64: string;
+	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
-	export const EDITOR: string;
-	export const EFC_3348: string;
+	export const EFC_5300: string;
+	export const EnableLog: string;
 	export const FPS_BROWSER_APP_PROFILE_STRING: string;
 	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
@@ -50,31 +55,53 @@ declare module '$env/static/private' {
 	export const LOGONSERVER: string;
 	export const NODE: string;
 	export const NODE_ENV: string;
-	export const NODE_EXE: string;
-	export const NPM_CLI_JS: string;
+	export const NODE_PATH: string;
 	export const npm_command: string;
-	export const npm_config_cache: string;
 	export const npm_config_engine_strict: string;
-	export const npm_config_globalconfig: string;
-	export const npm_config_global_prefix: string;
-	export const npm_config_init_module: string;
-	export const npm_config_local_prefix: string;
-	export const npm_config_metrics_registry: string;
-	export const npm_config_node_gyp: string;
-	export const npm_config_noproxy: string;
-	export const npm_config_npm_version: string;
-	export const npm_config_prefix: string;
-	export const npm_config_userconfig: string;
+	export const npm_config_frozen_lockfile: string;
+	export const npm_config_registry: string;
 	export const npm_config_user_agent: string;
 	export const npm_execpath: string;
 	export const npm_lifecycle_event: string;
 	export const npm_lifecycle_script: string;
 	export const npm_node_execpath: string;
-	export const npm_package_json: string;
+	export const npm_package_dependencies_axios: string;
+	export const npm_package_dependencies_cloudinary: string;
+	export const npm_package_dependencies_fs: string;
+	export const npm_package_dependencies_googleapis: string;
+	export const npm_package_dependencies_imagekit: string;
+	export const npm_package_dependencies_multer: string;
+	export const npm_package_dependencies_pnpm: string;
+	export const npm_package_dependencies_short_uuid: string;
+	export const npm_package_dependencies_svelte_persisted_store: string;
+	export const npm_package_dependencies_uuid: string;
+	export const npm_package_dependencies__cloudinary_url_gen: string;
+	export const npm_package_devDependencies_autoprefixer: string;
+	export const npm_package_devDependencies_postcss: string;
+	export const npm_package_devDependencies_svelte: string;
+	export const npm_package_devDependencies_svelte_check: string;
+	export const npm_package_devDependencies_tailwindcss: string;
+	export const npm_package_devDependencies_tslib: string;
+	export const npm_package_devDependencies_typescript: string;
+	export const npm_package_devDependencies_vite: string;
+	export const npm_package_devDependencies__sveltejs_adapter_auto: string;
+	export const npm_package_devDependencies__sveltejs_kit: string;
+	export const npm_package_devDependencies__sveltejs_vite_plugin_svelte: string;
+	export const npm_package_devDependencies__types_multer: string;
+	export const npm_package_devDependencies__types_node: string;
+	export const npm_package_devDependencies__types_uuid: string;
 	export const npm_package_name: string;
+	export const npm_package_private: string;
+	export const npm_package_scripts_build: string;
+	export const npm_package_scripts_check: string;
+	export const npm_package_scripts_check_watch: string;
+	export const npm_package_scripts_dev: string;
+	export const npm_package_scripts_preview: string;
+	export const npm_package_type: string;
 	export const npm_package_version: string;
-	export const NPM_PREFIX_NPM_CLI_JS: string;
 	export const NUMBER_OF_PROCESSORS: string;
+	export const NVM_HOME: string;
+	export const NVM_SYMLINK: string;
 	export const OneDrive: string;
 	export const OneDriveCommercial: string;
 	export const OneDriveConsumer: string;
@@ -83,6 +110,7 @@ declare module '$env/static/private' {
 	export const Path: string;
 	export const PATHEXT: string;
 	export const PNPM_HOME: string;
+	export const PNPM_SCRIPT_SRC_DIR: string;
 	export const PROCESSOR_ARCHITECTURE: string;
 	export const PROCESSOR_IDENTIFIER: string;
 	export const PROCESSOR_LEVEL: string;
@@ -93,6 +121,7 @@ declare module '$env/static/private' {
 	export const PROMPT: string;
 	export const PSModulePath: string;
 	export const PUBLIC: string;
+	export const RlsSvcPort: string;
 	export const SESSIONNAME: string;
 	export const SystemDrive: string;
 	export const SystemRoot: string;
@@ -109,6 +138,7 @@ declare module '$env/static/private' {
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const VSCODE_INJECTION: string;
+	export const VSCODE_NONCE: string;
 	export const windir: string;
 }
 
@@ -122,9 +152,7 @@ declare module '$env/static/private' {
  * ```
  */
 declare module '$env/static/public' {
-	export const PUBLIC_VITE_CLOUDINARY_CLOUD_NAME: string;
-	export const PUBLIC_VITE_CLOUDINARY_API_KEY: string;
-	export const PUBLIC_VITE_CLOUDINARY_API_SECRET: string;
+	
 }
 
 /**
@@ -143,18 +171,23 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
+		ACSetupSvcPort: string;
+		ACSvcPort: string;
 		ALLUSERSPROFILE: string;
+		AMDRMPATH: string;
 		APPDATA: string;
 		CHROME_CRASHPAD_PIPE_NAME: string;
-		COLOR: string;
 		COLORTERM: string;
 		CommonProgramFiles: string;
 		CommonProgramW6432: string;
 		COMPUTERNAME: string;
 		ComSpec: string;
+		DokanLibrary1: string;
+		DokanLibrary1_LibraryPath_x64: string;
+		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
-		EDITOR: string;
-		EFC_3348: string;
+		EFC_5300: string;
+		EnableLog: string;
 		FPS_BROWSER_APP_PROFILE_STRING: string;
 		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
@@ -167,31 +200,53 @@ declare module '$env/dynamic/private' {
 		LOGONSERVER: string;
 		NODE: string;
 		NODE_ENV: string;
-		NODE_EXE: string;
-		NPM_CLI_JS: string;
+		NODE_PATH: string;
 		npm_command: string;
-		npm_config_cache: string;
 		npm_config_engine_strict: string;
-		npm_config_globalconfig: string;
-		npm_config_global_prefix: string;
-		npm_config_init_module: string;
-		npm_config_local_prefix: string;
-		npm_config_metrics_registry: string;
-		npm_config_node_gyp: string;
-		npm_config_noproxy: string;
-		npm_config_npm_version: string;
-		npm_config_prefix: string;
-		npm_config_userconfig: string;
+		npm_config_frozen_lockfile: string;
+		npm_config_registry: string;
 		npm_config_user_agent: string;
 		npm_execpath: string;
 		npm_lifecycle_event: string;
 		npm_lifecycle_script: string;
 		npm_node_execpath: string;
-		npm_package_json: string;
+		npm_package_dependencies_axios: string;
+		npm_package_dependencies_cloudinary: string;
+		npm_package_dependencies_fs: string;
+		npm_package_dependencies_googleapis: string;
+		npm_package_dependencies_imagekit: string;
+		npm_package_dependencies_multer: string;
+		npm_package_dependencies_pnpm: string;
+		npm_package_dependencies_short_uuid: string;
+		npm_package_dependencies_svelte_persisted_store: string;
+		npm_package_dependencies_uuid: string;
+		npm_package_dependencies__cloudinary_url_gen: string;
+		npm_package_devDependencies_autoprefixer: string;
+		npm_package_devDependencies_postcss: string;
+		npm_package_devDependencies_svelte: string;
+		npm_package_devDependencies_svelte_check: string;
+		npm_package_devDependencies_tailwindcss: string;
+		npm_package_devDependencies_tslib: string;
+		npm_package_devDependencies_typescript: string;
+		npm_package_devDependencies_vite: string;
+		npm_package_devDependencies__sveltejs_adapter_auto: string;
+		npm_package_devDependencies__sveltejs_kit: string;
+		npm_package_devDependencies__sveltejs_vite_plugin_svelte: string;
+		npm_package_devDependencies__types_multer: string;
+		npm_package_devDependencies__types_node: string;
+		npm_package_devDependencies__types_uuid: string;
 		npm_package_name: string;
+		npm_package_private: string;
+		npm_package_scripts_build: string;
+		npm_package_scripts_check: string;
+		npm_package_scripts_check_watch: string;
+		npm_package_scripts_dev: string;
+		npm_package_scripts_preview: string;
+		npm_package_type: string;
 		npm_package_version: string;
-		NPM_PREFIX_NPM_CLI_JS: string;
 		NUMBER_OF_PROCESSORS: string;
+		NVM_HOME: string;
+		NVM_SYMLINK: string;
 		OneDrive: string;
 		OneDriveCommercial: string;
 		OneDriveConsumer: string;
@@ -200,6 +255,7 @@ declare module '$env/dynamic/private' {
 		Path: string;
 		PATHEXT: string;
 		PNPM_HOME: string;
+		PNPM_SCRIPT_SRC_DIR: string;
 		PROCESSOR_ARCHITECTURE: string;
 		PROCESSOR_IDENTIFIER: string;
 		PROCESSOR_LEVEL: string;
@@ -210,6 +266,7 @@ declare module '$env/dynamic/private' {
 		PROMPT: string;
 		PSModulePath: string;
 		PUBLIC: string;
+		RlsSvcPort: string;
 		SESSIONNAME: string;
 		SystemDrive: string;
 		SystemRoot: string;
@@ -226,6 +283,7 @@ declare module '$env/dynamic/private' {
 		VSCODE_GIT_ASKPASS_NODE: string;
 		VSCODE_GIT_IPC_HANDLE: string;
 		VSCODE_INJECTION: string;
+		VSCODE_NONCE: string;
 		windir: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;
@@ -246,9 +304,6 @@ declare module '$env/dynamic/private' {
  */
 declare module '$env/dynamic/public' {
 	export const env: {
-		PUBLIC_VITE_CLOUDINARY_CLOUD_NAME: string;
-		PUBLIC_VITE_CLOUDINARY_API_KEY: string;
-		PUBLIC_VITE_CLOUDINARY_API_SECRET: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

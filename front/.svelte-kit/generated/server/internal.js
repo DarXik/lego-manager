@@ -3,7 +3,7 @@ import root from '../root.svelte';
 import { set_building, set_prerendering } from '__sveltekit/environment';
 import { set_assets } from '__sveltekit/paths';
 import { set_manifest, set_read_implementation } from '__sveltekit/server';
-import { set_private_env, set_public_env, set_safe_public_env } from '../../../node_modules/@sveltejs/kit/src/runtime/shared-server.js';
+import { set_private_env, set_public_env, set_safe_public_env } from '../../../node_modules/.pnpm/@sveltejs+kit@2.5.7_@sveltejs+vite-plugin-svelte@3.1.0_svelte@4.2.16_vite@5.2.11_@types+node@_quv4uymf2tcvnxhvxotonwnyc4/node_modules/@sveltejs/kit/src/runtime/shared-server.js';
 
 export const options = {
 	app_dir: "_app",
@@ -21,7 +21,7 @@ export const options = {
 		app: ({ head, body, assets, nonce, env }) => "<!doctype html>\r\n<html lang=\"en\">\r\n\t<head>\r\n\t\t<meta charset=\"utf-8\" />\r\n\t\t<link rel=\"icon\" href=\"" + assets + "/LEGO_logo.svg\" />\r\n\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n\t\t" + head + "\r\n\t</head>\r\n\t<body data-sveltekit-preload-data=\"hover\">\r\n\t\t<div style=\"display: contents\">" + body + "</div>\r\n\t</body>\r\n</html>\r\n",
 		error: ({ status, message }) => "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\t<head>\r\n\t\t<meta charset=\"utf-8\" />\r\n\t\t<title>" + message + "</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<h1>My custom error page</h1>\r\n\t\t<p>Status: " + status + "</p>\r\n\t\t<p>Message: " + message + "</p>\r\n\t</body>\r\n</html>"
 	},
-	version_hash: "1qxocqg"
+	version_hash: "12rx4g"
 };
 
 export async function get_hooks() {

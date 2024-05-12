@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: back
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    container_name: lego-manager-backend
+    hostname: lego-manager-backend
+    volumes:
+      - ./lego-manager-backend-data:/back/uploads
+    restart: always
+    environment:
+      - DATABASE_URL=${DATABASE_UR}
+      - JWT_SECRET=${JWT_SECRET}
+    env_file:
+      - .env.override
+
+  frontend:
+    build:
+      context: front
+      dockerfile: Dockerfile
+    ports:
+      - "5175:5173"
+    container_name: lego-manager-frontend
+    hostname: lego-manager-frontend
+    restart: always
+
+  db:
+    image: beercan1989/arm-mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=lego_manager_db
+      - MYSQL_USER=lego
+      - MYSQL_PASSWORD=lego
+    container_name: "lego-manager-db"
+    hostname: "lego-manager-db"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./lego-manager-db-data:/var/lib/mysql
+      - ./lego-manager-db-conf:/etc/mysql/conf.d
+    restart: always

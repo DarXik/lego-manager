@@ -18,8 +18,8 @@ const get = async (req: Request, res: Response) => {
         // console.log("sets for user: ", verifiedUser.user.username);
 
         try {
-            const sets = await prisma.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } })
-            const attachment = await prisma.setAttachment.findMany({ where: { setId: { in: sets.map(set => set.id) }, addedById: verifiedUser.user.id } })
+            const sets: any = await prisma.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } })
+            const attachment = await prisma.setAttachment.findMany({ where: { setId: { in: sets.map((set: any) => set.id) }, addedById: verifiedUser.user.id } })
 
             // console.log(attachment)
 
@@ -27,14 +27,14 @@ const get = async (req: Request, res: Response) => {
                 return res.status(404).send({ message: "sets not found" })
             }
 
-            const setsSmaller = sets.map(set => {
+            const setsSmaller: any = sets.map((set: any) => { // proč () kolem setu?
                 return {
                     id: set.id,
                     name: set.name,
                     setNumber: set.setNumber,
                     themeName: set.themeName,
-                    addedOn: attachment.find(attachment => attachment.setId == set.id)?.addedOn || null,
-                    yearBought: attachment.find(attachment => attachment.setId == set.id)?.yearBought || null,
+                    addedOn: attachment.find((attachment: any) => attachment.setId == set.id)?.addedOn || null,
+                    yearBought: attachment.find((attachment: any) => attachment.setId == set.id)?.yearBought || null,
                 }
             })
 
