@@ -32,23 +32,29 @@
             return 0;
         });
     };
+
+    let w: number;
+    onMount(() => {
+        w = window.innerWidth;
+    })
+
 </script>
 
-<section class="">
-    <article class="flex">
-        <div class="px-6 py-8 border-r-3 border-zinc-600 w-1/2">
+<section>
+    <article class="flex max-md:flex-col">
+        <div class="p-8 border-r-3 border-zinc-600 w-full md:w-1/2">
             <h1
-                class="font-bold uppercase text-center text-3xl md:text-4xl lg:text-5xl"
+                class="font-bold uppercase  text-3xl md:text-4xl lg:text-5xl"
             >
-                added sets
+                Your sets <span class="text-xl text-zinc-400">({sets.length})</span>
             </h1>
         </div>
-        <div class="w-1/2 flex h-full justify-start self-end border-main">
+        <div class="w-full md:w-1/2 flex h-full justify-center md:justify-start md:self-end border-main">
             <div class="flex border-zinc-600">
                 <button
                     on:click={() => sort("name")}
                     class:currentKey={currentKey === "name"}
-                    class="uppercase border-r-3 border-zinc-600 p-2 flex items-center gap-2"
+                    class="uppercase max-md:border-l-3 border-r-3 border-zinc-600 p-2 flex items-center gap-2"
                     ><p>name</p>
                     <svg
                         class="w-3.5 h-3.5 transition-all"
@@ -126,16 +132,16 @@
     </article>
     <article class="p-8 border-main">
         <div
-            class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:auto-rows-fr gap-6 w-fit"
+            class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:auto-rows-fr gap-6 md:w-fit max-md:flex flex-col items-center w-full"
         >
             {#if sets.length > 0}
-                {#each sets as set, index}
+                {#each sets as set}
                     <button
-                        class="w-64 h-64 md:w-72 md:h-72 group"
+                        class="w-64 h-fit md:w-72 md:h-72 group"
                         on:click={() => goto(`/set/${set.id}`)}
                     >
                         <div
-                            class="group-hover:border-zinc-100 transition-all group-active:scale-95 group-focus:border-zinc-100 bg-black/50 border border-gray-600/50 h-full w-full"
+                            class="group-hover:border-zinc-100 transition-all group-active:scale-95 group-focus:border-zinc-100 bg-black/50 border border-gray-600/50 h-full w-full "
                         >
                             <div
                                 class="border-b border-gray-600/50 group-hover:border-zinc-100 transition-all py-2 px-4 h-[15%]"
@@ -143,15 +149,15 @@
                                 <p class="text-start">{set.localId + 1}</p>
                             </div>
                             <div
-                                class="flex flex-col justify-between py-2 px-4 h-[85%]"
+                                class="flex flex-col justify-between py-2 px-4 md:h-[85%]"
                             >
                                 <div>
-                                    <p class="text-xl font-bold text-start">
+                                    <p class="text-xl font-bold text-start max-md:mb-8">
                                         {set.name}
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="text-start h-fit">
+                                    <p class="text-start h-fit max-md:hidden">
                                         <span class="text-gray-500 text-sm"
                                             >theme</span
                                         >

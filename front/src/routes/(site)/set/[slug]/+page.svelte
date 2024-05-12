@@ -121,7 +121,7 @@
 </dialog>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog
+<dialog 
     class="border-3 border-zinc-600 bg-black
      text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%]"
     bind:this={modalEdit}
@@ -247,10 +247,10 @@
     </div>
 </dialog>
 
-<section>
+<section in:fade={{ delay: 50, duration: 300 }}>
     <div class="flex">
         <div
-            class="border-b-3 border-r-3 lg:w-3/5 border-zinc-600 flex flex-col justify-between"
+            class="border-b-3 md:border-r-3 w-full lg:w-3/5 border-zinc-600 flex flex-col justify-between"
         >
             <div class="px-4 py-8">
                 <h1
@@ -268,7 +268,7 @@
             </div>
         </div>
 
-        <div class="lg:w-[40%] h-fit border-b-3 border-zinc-600">
+        <div class="lg:w-[40%] max-md:hidden h-fit border-b-3 border-zinc-600">
             <img
                 src="http://localhost:3000/api/v1/image/{set?.image}"
                 alt=""
@@ -278,7 +278,7 @@
     </div>
     <div class="w-full border-b-3 border-zinc-600">
         <div
-            class="border-zinc-600 border-r-3 w-fit mx-auto flex justify-center flex-wrap gap-x-14 gap-y-7 p-4"
+            class="border-zinc-600 md:border-r-3 md:w-fit mx-auto flex max-md:grid grid-cols-2 rows-auto md:justify-center flex-wrap md:gap-x-14 gap-6 md:gap-y-7 p-4"
         >
             <InfoCardwIcon
                 path="set/number-icon.svg"
@@ -322,17 +322,17 @@
             ></InfoCardwIcon>
         </div>
     </div>
-    <div class="flex flex-row">
+    <div class="flex flex-col md:flex-row max-md:w-full">
         {#if set.allInstructions.length > 0 || set.myInstructions.length > 0}
             <div
-                class="lg:w-1/2 border-r-3 border-zinc-600"
+                class="lg:w-1/2 md:border-r-3 border-zinc-600 max-md:border-b-3"
                 class:border-b-3={currentInstructions == 0}
             >
                 <div class="px-4 py-4 mb-4">
-                    <h2 class="text-3xl font-bold mb-12">
+                    <h2 class="text-3xl font-bold mb-8 md:mb-12">
                         Available instructions:
                     </h2>
-                    <div class="flex flex-row gap-4">
+                    <div class="flex flex-col md:flex-row gap-4">
                         <button
                             on:click={() =>
                                 (currentInstructions = set.myInstructions)}
@@ -362,7 +362,7 @@
                         >
                             {i + 1}
                         </p>
-                        <div class="ml-4 flex gap-4">
+                        <div class="ml-4 flex max-md:flex-wrap gap-4">
                             <a
                                 class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
@@ -375,11 +375,11 @@
                             >
                         </div>
                     </div>
-                    <div class="flex flex-col">
+                    <div class="flex flex-col max-md:border-main">
                         {#if currentInstructions.length == 1}
                             <object
                                 title="instructions"
-                                class="h-screen"
+                                class="h-screen max-md:mx-6"
                                 data="http://localhost:3000/api/v1/instructions/{currentInstructions[0]
                                     .instructions}"
                                 type="application/pdf"
@@ -389,8 +389,15 @@
                 {/each}
             </div>
         {/if}
+        <div class="px-8  md:hidden h-fit border-b-3 border-zinc-600">
+            <img
+                src="http://localhost:3000/api/v1/image/{set?.image}"
+                alt=""
+                class="w-11/12 mx-auto object-cover"
+            />
+        </div>
         <div>
-            <div class="flex flex-row gap-4 p-4">
+            <div class="flex flex-row gap-4 p-4 max-md:justify-center max-md:my-4">
                 <button on:click={editSet} class="my-button-2">
                     <span class="relative z-10">Edit set</span>
                 </button>

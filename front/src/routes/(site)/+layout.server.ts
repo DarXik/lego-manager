@@ -3,10 +3,10 @@ import type { PageServerLoad } from "../../../.svelte-kit/types/src/routes/login
 
 export const load = (async ({ locals, data }) => { 
 
-    if (!locals.session && locals.user) {
-        redirect(302, "/login");
+    // if (!locals.session && locals.user) {
+    //     redirect(302, "/login");
 
-    } else {
+    // } else {
         
         // console.log(res1)
 
@@ -14,7 +14,7 @@ export const load = (async ({ locals, data }) => {
             ...data,
             sessionId: locals.session
         }
-    }
+    // }
 
 
 }) satisfies PageServerLoad;

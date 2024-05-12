@@ -163,7 +163,7 @@
                             >Your current password</label
                         >
                         <input
-                            class="mb-3 my-input"
+                            class="mb-3 mt-1 my-input"
                             type="text"
                             bind:value={currentPassword}
                             id="currentPassword"
@@ -172,7 +172,7 @@
                         <div class="flex flex-col mb-6">
                             <label for="newPassword">New password</label>
                             <input
-                                class="mb-1 my-input"
+                                class="mb-2 mt-1  my-input"
                                 type="password"
                                 bind:value={newPassword}
                                 id="newPassword"
@@ -183,7 +183,7 @@
                             >
                             <input
                                 type="password"
-                                class="my-input"
+                                class="my-input mt-1 "
                                 bind:value={newPasswordRepeat}
                                 id="newPasswordRepeat"
                                 placeholder="repeat new password"
@@ -205,7 +205,7 @@
 
                         <button
                             on:click={handlePasswordChange}
-                            class="my-button-2 w-fit"
+                            class="my-button-2 w-fit mt-4"
                         >
                             <span class="relative z-10">Update</span>
                         </button>
@@ -214,7 +214,7 @@
             </div>
         </section>
         <section class="border-main border-b-3 w-1/3 px-4 py-8">
-            <h3 class="text-2xl mb-3">Delete account:</h3>
+            <h3 class="text-2xl mb-3">Account:</h3>
             <button
                 class="px-4 py-2  relative overflow-hidden border-2 border-red-600 bg-none text-red-600 transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:duration-300 after:absolute after:right-0 after:top-0 after:h-full after:w-0 after:duration-300 hover:text-zinc-100 hover:before:w-2/4 hover:before:bg-red-600 hover:after:w-2/4 hover:after:bg-red-600 select-none uppercase font-bold"
                 ><span class="relative z-10">Delete account</span>

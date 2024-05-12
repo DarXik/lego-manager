@@ -62,27 +62,28 @@
 
     let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
     let currentItems = 8;
+    let priceFocused: boolean = false;
 </script>
 
-<section class="">
-    <div class="border-b-3 boder-zinc-600">
+<section in:fade={{ delay: 50, duration: 300 }}>
+    <div class="border-b-3 border-zinc-600">
         <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl p-6">
             Add new set
         </h1>
     </div>
-    <div class="border-b-3 border-zinc-600 p-6">
+    <div class="border-b-3 border-zinc-600 border-r-3 p-6 lg:mr-32">
         <p class="text-zinc-100 transition-all text-2xl">
             Find yours in our database:
         </p>
         <form
-            class="lg:pr-32"
+            class=""
             method="POST"
             action="?/searchLegoSet"
             on:focusin={() => (isSearching = true)}
             on:focusout={() => (isSearching = false)}
             use:enhance
         >
-            <div class="relative flex w-full mt-4">
+            <div class="relative flex w-full mt-4 ">
                 <div
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                 >
@@ -118,11 +119,18 @@
                 <button
                     type="submit"
                     disabled={searchQuery.length == 0}
-                    class="end-3 bottom-1.5 bg-blue-700 hover:bg-blue-800 active:bg-blue-900 transition-all font-medium px-6 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none"
+                    class="px-6 max-md:hidden md:px-12 text-base uppercase hover:bg-purple-800/50 border-2 active:scale-90 border-zinc-400 disabled:border-gray-600 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none transition-all"
                 >
-                    Search
+                    <span class="relative z-10">Search</span>
                 </button>
             </div>
+            <button
+                    type="submit"
+                    disabled={searchQuery.length == 0}
+                    class="px-6 py-2 mt-4 text-base uppercase hover:bg-purple-800/50 border-2 active:scale-90 border-zinc-400 disabled:border-gray-600 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none transition-all"
+                >
+                    <span class="relative z-10">Search</span>
+                </button>
         </form>
         <div class="mt-4">
             {#if form?.setsFound && fetchedSets.length > 0}
@@ -136,7 +144,7 @@
                             class="w-fit border-2 transition-all border-zinc-300 hover:border-zinc-300 hover:bg-zinc-300/90 hover:text-black focus:bg-zinc-300/90 focus:text-black active:border-zinc-400 active:bg-zinc-300/90 select-none group"
                             class:setChosen={set.setNumber == setNumber &&
                                 set.themeName == themeName}
-                            ><div class="  px-4 py-2">
+                            ><div class="px-4 py-2">
                                 <p>{set.name}</p>
                                 <p class="text-xs">
                                     {set.addedBy ? "by user" : ""}
@@ -151,7 +159,7 @@
                             on:click={() => (currentItems = currentItems + 5)}
                             id="loadmore"
                             type="button"
-                            class="border-2 border-green-600 px-4 py-2"
+                            class="border-2 border-green-600 text-green-600 hover:text-zinc-100 hover:bg-green-800 hover:border-green-800 active:scale-90 transition-all px-4 py-2"
                         >
                             Show more
                         </button>
@@ -170,7 +178,7 @@
         enctype="multipart/form-data"
         use:enhance
         class:opacity-50={isSearching}
-        class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col gap-4 lg:w-9/12 transition-all"
+        class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col border-r-3 gap-3 border-gray-600 p-6 lg:mr-32 border-b-3 mb-12"
     >
         <div class="one-cell row-start-1 col-start-1 col-end-1">
             <input
@@ -312,8 +320,10 @@
                     bind:value={price}
                     autocomplete="off"
                     maxlength="30"
-                    class="my-input peer"
+                    class="my-input"
                     placeholder="149.99"
+                    on:focusin={() => (priceFocused = true)}
+                    on:focusout={() => (priceFocused = false)}
                 />
                 <div
                     class="absolute flex flex-col justify-center right-0 bottom-0 h-full pointer-events-none bg-zinc-500 opacity-70"
@@ -329,9 +339,9 @@
             </div>
 
             <label
+                class:text-white={priceFocused}
                 for="price"
-                class="peer-focus:text-white -order-last transition-all duration-200"
-                >Price</label
+                class=" -order-last transition-all duration-200">Price</label
             >
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-1 col-end-2">
@@ -380,12 +390,12 @@
             </div>
         </div>
         <div
-            class="one-cell row-start-7 row-end-7 col-start-1 col-end-1 flex flex-row gap-8"
+            class="one-cell row-start-7 row-end-7 col-start-1 col-end-1 flex flex-row gap-8 mt-8 pb-4"
         >
             <button
                 class:set-added={form?.newSetAdded}
                 type="submit"
-                class="bg-blue-700 hover:bg-blue-800 active:bg-blue-900 border-2 border-transparent py-3 px-10 w-fit mt-10 text-white uppercase font-bold transition-all disabled:cursor-default disabled:opacity-75 disabled:bg-zinc-800 disabled:text-gray-300"
+                class="my-button-2 w-fit uppercase px-12"
                 class:!cursor-default={isSearching}
                 disabled={(form?.newSetAdded &&
                     !(
@@ -396,15 +406,19 @@
                     )) ||
                     isSearching}
             >
-                {form?.newSetAdded ? form?.newSetAdded.message : "Add set"}
+                <span class="relative z-10"
+                    >{form?.newSetAdded
+                        ? form?.newSetAdded.message
+                        : "Add set"}</span
+                >
             </button>
             {#if form?.newSetFailed}
-                <p class="text-red-500 font-bold pt-4">
+                <p class="text-red-500 font-bold uppercase">
                     {form?.newSetFailed.message}
                 </p>
             {/if}
             {#if form?.problem}
-                <p class="text-red-500 font-bold pt-4">
+                <p class="text-red-500 font-bold uppercase">
                     {form?.problem}
                 </p>
             {/if}
@@ -422,11 +436,4 @@
     .setChosen {
         @apply border-zinc-300/70 bg-zinc-300/40 text-white;
     }
-    /* .publicSet {
-        @apply border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-black;
-    }
-
-    .publicSetChosen {
-        @apply border-blue-400 text-blue-400 bg-blue-400 hover:bg-blue-400 hover:text-black;
-    } */
 </style>
