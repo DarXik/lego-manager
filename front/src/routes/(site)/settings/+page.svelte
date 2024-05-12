@@ -100,8 +100,8 @@
     >
         Settings
     </h1>
-    <article class="flex">
-        <section class="border-main border-r-3 border-b-3 w-1/3 px-6 py-8">
+    <article class="flex max-md:flex-col">
+        <section class="border-main md:border-r-3 border-b-3 md:w-1/3 px-6 py-8">
             <h2 class="text-2xl">Preferences</h2>
             <div class="mb-6 mt-3">
                 <h3 class="">Currency:</h3>
@@ -154,7 +154,7 @@
                 </form>
             </div>
         </section>
-        <section class="border-main border-r-3 border-b-3 w-1/3 px-4 py-8">
+        <section class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8">
             <h2 class="text-2xl">Password</h2>
             <div class="mt-3">
                 <div>
@@ -213,7 +213,7 @@
                 </div>
             </div>
         </section>
-        <section class="border-main border-b-3 w-1/3 px-4 py-8">
+        <section class="md:border-main md:border-b-3 md:w-1/3 px-4 py-8">
             <h3 class="text-2xl mb-3">Account:</h3>
             <button
                 class="px-4 py-2  relative overflow-hidden border-2 border-red-600 bg-none text-red-600 transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:duration-300 after:absolute after:right-0 after:top-0 after:h-full after:w-0 after:duration-300 hover:text-zinc-100 hover:before:w-2/4 hover:before:bg-red-600 hover:after:w-2/4 hover:after:bg-red-600 select-none uppercase font-bold"
