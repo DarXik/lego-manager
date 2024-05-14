@@ -1,5 +1,5 @@
 const load = async ({ fetch, locals, data }) => {
-  const response = await fetch("http://localhost:3000/api/v1/sets", {
+  const response = await fetch("http://localhost:3001/api/v1/sets", {
     method: "GET",
     headers: {
       "Authorization": locals.session || ""

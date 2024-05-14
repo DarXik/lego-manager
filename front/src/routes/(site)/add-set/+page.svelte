@@ -1,7 +1,6 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import { onMount } from "svelte";
-    import { navbarHeight, userInfo } from "$lib/store";
+    import { userInfo } from "$lib/store";
     import { fade } from "svelte/transition";
 
     export let form;
@@ -56,9 +55,10 @@
         setNumber = set.setNumber;
         yearReleased = set.yearReleased;
         partsAmount = set.numParts;
-        // themeId = set.themeId;
         themeName = set.themeName;
     }
+
+    
 
     let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
     let currentItems = 8;
@@ -127,7 +127,7 @@
             <button
                     type="submit"
                     disabled={searchQuery.length == 0}
-                    class="px-6 py-2 mt-4 text-base uppercase hover:bg-purple-800/50 border-2 active:scale-90 border-zinc-400 disabled:border-gray-600 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none transition-all"
+                    class="px-6 py-2 mt-4 md:hidden text-base uppercase hover:bg-purple-800/50 border-2 active:scale-90 border-zinc-400 disabled:border-gray-600 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none transition-all"
                 >
                     <span class="relative z-10">Search</span>
                 </button>
@@ -313,6 +313,7 @@
         </div>
         <div class="one-cell row-start-4 row-end-4 col-start-3 col-end-3">
             <div class="relative w-full flex">
+                <input type="text" name="currency" id="currency" bind:value={$userInfo.currency} autocomplete="off" class="hidden">
                 <input
                     type="text"
                     name="price"

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { verifyUser } from "../services/userAuthentication";
-import prisma from "../config/prisma";
+import { verifyUser } from "../../services/userAuthentication";
+import prisma from "../../config/prisma";
 import uniqid from "uniqid";
 import { v4 as uuidv4 } from 'uuid'
 import multer from "multer";
@@ -49,7 +49,7 @@ const post = async (req: Request, res: Response) => {
                         const filename = `${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`
                         newPDFFilenames.push(filename);
 
-                        const filePath = path.join(__dirname, `../../uploads/instructions/${filename}`)
+                        const filePath = path.join(__dirname, `../../../uploads/instructions/${filename}`)
                         await fs.promises.writeFile(filePath, files[key].buffer)
                     }
                     catch (err) {
@@ -61,7 +61,7 @@ const post = async (req: Request, res: Response) => {
                     try {
                         newImageFilename = `${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`;
 
-                        const filePath = path.join(__dirname, `../../uploads/images/${newImageFilename}`)
+                        const filePath = path.join(__dirname, `../../../uploads/images/${newImageFilename}`)
                         await fs.promises.writeFile(filePath, files[key].buffer)
                     }
                     catch (err) {
@@ -106,7 +106,8 @@ const post = async (req: Request, res: Response) => {
                         price: parseInt(userSet?.price) || null,
                         image: newImageFilename || null,
                         addedBy: { connect: { id: verifiedUser.user.id } },
-                        set: { connect: { id: newSet.id } }
+                        set: { connect: { id: newSet.id } },
+                        currency: parseInt(userSet?.currency) || null
                     }
 
                 })

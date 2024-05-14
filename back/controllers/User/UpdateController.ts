@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { verifyUser } from "../services/userAuthentication"
-import prisma from "../config/prisma"
-import { hashPassword, verifyPassword } from "../services/userHash"
+import { verifyUser } from "../../services/userAuthentication"
+import prisma from "../../config/prisma"
+import { hashPassword, verifyPassword } from "../../services/userHash"
 
 const patch = async (req: Request, res: Response) => {
     if (!req.headers.authorization || !req.body) {

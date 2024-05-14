@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import prisma from "../config/prisma"
-import { verifyUser } from "../services/userAuthentication"
+import prisma from "../../config/prisma"
+import { verifyUser } from "../../services/userAuthentication"
 
 
 const get = async (req: Request, res: Response) => {

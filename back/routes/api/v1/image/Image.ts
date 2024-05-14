@@ -1,5 +1,5 @@
 import express from "express"
-import controller from "../../../../controllers/ImageController"
+import controller from "../../../../controllers/Media/ImageController"
 
 const router = express.Router()
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import { verifyUser } from "../services/userAuthentication";
-import prisma from "../config/prisma";
+import { verifyUser } from "../../services/userAuthentication";
+import prisma from "../../config/prisma";
 
 const patch = async (req: Request, res: Response) => {
     // počáteční kontrola

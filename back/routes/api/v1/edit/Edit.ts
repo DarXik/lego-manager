@@ -1,5 +1,5 @@
 import express from "express"
-import controller from "../../../../controllers/SetsEditController"
+import controller from "../../../../controllers/Set/SetsEditController"
 
 const router = express.Router()
 

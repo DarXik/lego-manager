@@ -10,7 +10,7 @@ export const load = async ({ fetch, locals, data }) => {
     })
 
     const res1 = await response.json()
-
+    console.log(res1)
     return {
         ...data,
         sets: res1

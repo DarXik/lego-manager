@@ -16,12 +16,16 @@
     let descriptionEdit = "";
     let yearBoughtEdit = "";
     let priceEdit = "";
+    let w: number = 0;
+    let showInstructions: boolean = true;
 
     onMount(() => {
         if (set) {
             currentInstructions = set.myInstructions;
             instructiosPref = "Your";
         }
+        w = window.innerWidth;
+        if (w < 768) showInstructions = false;
     });
 
     function editSet() {
@@ -121,7 +125,7 @@
 </dialog>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog 
+<dialog
     class="border-3 border-zinc-600 bg-black
      text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%]"
     bind:this={modalEdit}
@@ -347,7 +351,8 @@
                             on:click={() =>
                                 (currentInstructions = set.allInstructions)}
                             on:click={() => (instructiosPref = "Public")}
-                            class:!border-purple-600={instructiosPref == "Public"}
+                            class:!border-purple-600={instructiosPref ==
+                                "Public"}
                             class:!text-purple-500={instructiosPref == "Public"}
                             class="my-button"
                             >Public instructions ({set.allInstructions
@@ -366,17 +371,59 @@
                             <a
                                 class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
-                                target="_blank"><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/open.svg" alt="open icon" class="w-5 h-5"/>Open</span></a
+                                target="_blank"
+                                ><span
+                                    class="relative z-10 flex flex-row items-center gap-4"
+                                >
+                                    <img
+                                        src="/set/open.svg"
+                                        alt="open icon"
+                                        class="w-5 h-5"
+                                    />Open</span
+                                ></a
                             ><a
                                 class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/download/{instruction.instructions}"
                                 target="_self"
-                                download><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/download.svg" alt="open icon" class="w-5 h-5"/>Download</span></a
+                                download
+                                ><span
+                                    class="relative z-10 flex flex-row items-center gap-4"
+                                >
+                                    <img
+                                        src="/set/download.svg"
+                                        alt="open icon"
+                                        class="w-5 h-5"
+                                    />Download</span
+                                ></a
                             >
+                            {#if currentInstructions.length == 1 && w <= 724}
+                                <button
+                                    class="my-button-2 shadow-none px-5 w-fit mx-auto"
+                                    on:click={() =>
+                                        (showInstructions = !showInstructions)}
+                                    ><span
+                                        class="relative z-10 flex flex-row items-center gap-4"
+                                    >
+                                        <img
+                                            src="/set/show-set.svg"
+                                            alt="open icon"
+                                            class="w-5 h-5"
+                                        />Show</span
+                                    ></button
+                                >
+                            {/if}
                         </div>
                     </div>
                     <div class="flex flex-col max-md:border-main">
-                        {#if currentInstructions.length == 1}
+                        {#if currentInstructions.length == 1 && w > 724}
+                            <object
+                                title="instructions"
+                                class="h-screen max-md:mx-6"
+                                data="http://localhost:3000/api/v1/instructions/{currentInstructions[0]
+                                    .instructions}"
+                                type="application/pdf"
+                            ></object>
+                        {:else if currentInstructions.length == 1 && w <= 724 && showInstructions}
                             <object
                                 title="instructions"
                                 class="h-screen max-md:mx-6"
@@ -389,7 +436,7 @@
                 {/each}
             </div>
         {/if}
-        <div class="px-8  md:hidden h-fit border-b-3 border-zinc-600">
+        <div class="px-8 md:hidden h-fit border-b-3 border-zinc-600">
             <img
                 src="http://localhost:3000/api/v1/image/{set?.image}"
                 alt=""
@@ -397,11 +444,17 @@
             />
         </div>
         <div>
-            <div class="flex flex-row gap-4 p-4 max-md:justify-center max-md:my-4">
+            <div
+                class="flex flex-row gap-4 p-4 max-md:justify-center max-md:my-4"
+            >
                 <button on:click={editSet} class="my-button-2">
                     <span class="relative z-10">Edit set</span>
                 </button>
-                <button on:click={() => (deletingSet = !deletingSet)} on:click={editSet} class="my-button-2">
+                <button
+                    on:click={() => (deletingSet = !deletingSet)}
+                    on:click={editSet}
+                    class="my-button-2"
+                >
                     <span class="relative z-10">Delete set</span>
                 </button>
             </div>

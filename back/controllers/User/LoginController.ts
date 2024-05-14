@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import { createToken } from "../services/userAuthentication"
-import prisma from "../config/prisma"
-import { verifyPassword } from "../services/userHash"
+import { createToken } from "../../services/userAuthentication"
+import prisma from "../../config/prisma"
+import { verifyPassword } from "../../services/userHash"
 import { v4 as uuidv4 } from 'uuid'
 
 const post = async (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import express from "express"
-import controller from "../../../controllers/RegisterController"
+import controller from "../../../controllers/User/RegisterController"
 
 const router = express.Router()
 

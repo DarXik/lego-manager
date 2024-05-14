@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { verifyUser } from "../services/userAuthentication"
+import { verifyUser } from "../../services/userAuthentication"
 
 const get = async (req: Request, res: Response) => {
 

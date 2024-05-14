@@ -1,5 +1,5 @@
 import express from "express"
-import controller from "../../../../controllers/SetsSearchController"
+import controller from "../../../../controllers/Set/SetsSearchController"
 
 const router = express.Router()
 
