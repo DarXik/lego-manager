@@ -6,7 +6,6 @@
     import { fade } from "svelte/transition";
 
     export let data;
-    export let form;
 
     let set = data.set;
     let currentInstructions: any = [];
@@ -36,8 +35,11 @@
     }
 
     async function deleteSet() {
-        const request = await fetch("/api/deleteSet", {
-            method: "POST",
+        const request = await fetch("http://localhost:3000/api/v1/sets/edit", {
+            method: "DELETE",
+            headers: {
+                Authorization: data.sessionId || "",
+            },
             body: JSON.stringify({
                 id: data.slug,
             }),
@@ -68,6 +70,28 @@
     }
 
     let updateStatus: any = "";
+
+    async function removeInstruction(id: number) {
+        if (data.set.myInstructions.length) {
+            const request = await fetch("/api/deleteInstruction", {
+                method: "DELETE",
+                body: JSON.stringify({
+                    id: set.myInstructions[id].id,
+                }),
+            });
+
+            if (request.ok) {
+                currentInstructions = currentInstructions.filter(
+                    async (instruction: any) =>
+                        instruction.id !== (await request.json()).id,
+                );
+            } else {
+                updateStatus = await request.json();
+            }
+        }
+    }
+
+    $: console.log(data.set);
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -81,7 +105,7 @@
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div on:click|stopPropagation>
         <!-- <slot name="header" /> -->
-        <div class="border-b-3 border-zinc-600 p-2 pb-8 text-white">
+        <div class="border-b-3 border-zinc-600 p-3 pb-8 text-white">
             <p class="mb-1">Delete:</p>
             <p class="uppercase italic text-xl">{set.name}</p>
             {#if updateStatus.status === 200}
@@ -101,7 +125,7 @@
                 </p>
             {/if}
         </div>
-        <div class="p-2 text-lg">
+        <div class="p-3 text-lg">
             <p>
                 &bull; Set will be deleted only from your account. <br />
                 &bull; Those already added by others will not be deleted. <br />
@@ -113,8 +137,8 @@
         <div class="flex flex-row justify-evenly mt-12 border-main">
             <button
                 on:click={deleteSet}
-                class="w-full py-2 font-bold text-red-600 hover:text-black hover:bg-red-600 transition-all border-r-[1.5px] border-zinc-600"
-                >I am sure</button
+                class="w-full uppercase py-2 font-bold text-red-600 hover:text-black hover:bg-red-600 transition-all border-r-[1.5px] border-zinc-600"
+                >Delete</button
             >
             <button
                 class="w-full py-2 text-zinc-100 hover:text-black hover:bg-zinc-300 transition-all p-2 px-4 border-l-[1.5px] border-zinc-600"
@@ -134,7 +158,7 @@
 >
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div on:click|stopPropagation>
-        <div class="border-b-3 border-zinc-600 p-2 pb-8 text-white">
+        <div class="border-b-3 border-zinc-600 p-3 pb-8 text-white">
             <p class="mb-1">Editing:</p>
             <p class="uppercase italic text-xl">{set.name}</p>
             {#if updateStatus.status === 200}
@@ -149,7 +173,7 @@
                     transition:fade={{ duration: 200 }}
                     class="pt-2 text-red-600"
                 >
-                    Error deleting set <br />
+                    Error updating set <br />
                     <span class="italic">→ {updateStatus.message}</span>
                 </p>
             {/if}
@@ -179,7 +203,7 @@
                 bind:value={set.id}
             />
 
-            <div class="flex flex-col gap-6 p-2">
+            <div class="flex flex-col gap-6 p-3">
                 <div class="flex flex-col">
                     <textarea
                         name="descriptionEdit"
@@ -232,11 +256,24 @@
                 </div>
             </div>
 
+            <!-- <div>
+                <p
+                    class="text-white transition-all duration-200 mb-1"
+                >
+                    Your instructions
+                </p>
+                {#if set.myInstructions.length > 0}
+                    {#each set.myInstructions as instruction}
+                        <p>{instruction.instructions}</p>
+                    {/each}
+                {/if}
+            </div> -->
+
             <div class="flex flex-row justify-evenly mt-12 border-main">
                 <button
                     type="submit"
                     disabled={loading}
-                    class="w-full py-2 font-bold text-green-600 hover:text-black hover:bg-green-600 transition-all border-r-[1.5px] border-zinc-600 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                    class="w-full uppercase py-2 font-bold text-green-600 hover:text-black hover:bg-green-600 transition-all border-r-[1.5px] border-zinc-600 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-transparent"
                     >Update
                 </button>
                 <button
@@ -329,7 +366,7 @@
     <div class="flex flex-col md:flex-row max-md:w-full">
         {#if set.allInstructions.length > 0 || set.myInstructions.length > 0}
             <div
-                class="lg:w-1/2 md:border-r-3 border-zinc-600 max-md:border-b-3"
+                class="lg:w-2/3 md:border-r-3 border-zinc-600 max-md:border-b-3"
                 class:border-b-3={currentInstructions == 0}
             >
                 <div class="px-4 py-4 mb-4">
@@ -360,14 +397,24 @@
                         >
                     </div>
                 </div>
+                {#if updateStatus.message}
+                    <p
+                        transition:fade={{ duration: 200 }}
+                        class="p-2 text-red-600"
+                    >
+                        {updateStatus.message}
+                    </p>
+                {/if}
                 {#each currentInstructions as instruction, i}
-                    <div class="flex flex-row items-center border-main">
+                    <div class="flex flex-row items-center border-main group">
                         <p
-                            class="text-2xl font-bold border-r-3 border-zinc-600 h-full p-4 w-12"
+                            class="text-xl md:text-2xl font-bold border-r-3 border-zinc-600 h-full p-4 w-12"
                         >
                             {i + 1}
                         </p>
-                        <div class="ml-4 flex max-md:flex-wrap gap-4">
+                        <div
+                            class="ml-4 flex justify-start max-md:flex-wrap gap-4 w-full"
+                        >
                             <a
                                 class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
@@ -378,7 +425,7 @@
                                     <img
                                         src="/set/open.svg"
                                         alt="open icon"
-                                        class="w-5 h-5"
+                                        class="w-5 h-5 max-lg:hidden"
                                     />Open</span
                                 ></a
                             ><a
@@ -393,12 +440,14 @@
                                         src="/set/download.svg"
                                         alt="open icon"
                                         class="w-5 h-5"
-                                    />Download</span
+                                    /><span class="hidden md:block"
+                                        >Download</span
+                                    ></span
                                 ></a
                             >
                             {#if currentInstructions.length == 1 && w <= 724}
                                 <button
-                                    class="my-button-2 shadow-none px-5 w-fit mx-auto"
+                                    class="my-button-2 shadow-none px-5 w-fit"
                                     on:click={() =>
                                         (showInstructions = !showInstructions)}
                                     ><span
@@ -408,10 +457,24 @@
                                             src="/set/show-set.svg"
                                             alt="open icon"
                                             class="w-5 h-5"
-                                        />Show</span
+                                        /><span class="hidden md:block"
+                                            >Show</span
+                                        ></span
                                     ></button
                                 >
                             {/if}
+                        </div>
+                        <div class="w-fit flex justify-end mr-4">
+                            <button
+                                on:click={() => removeInstruction(i)}
+                                class="justify-end md:group-hover:opacity-100 md:opacity-0 transition-all cursor-pointer active:scale-90"
+                            >
+                                <img
+                                    src="../../../../../set/remove-media.svg"
+                                    alt="remove"
+                                    class="w-9"
+                                /></button
+                            >
                         </div>
                     </div>
                     <div class="flex flex-col max-md:border-main">
@@ -452,7 +515,6 @@
                 </button>
                 <button
                     on:click={() => (deletingSet = !deletingSet)}
-                    on:click={editSet}
                     class="my-button-2"
                 >
                     <span class="relative z-10">Delete set</span>

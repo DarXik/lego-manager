@@ -7,4 +7,5 @@ const express_1 = __importDefault(require("express"));
 const SetsEditController_1 = __importDefault(require("../../../../controllers/Set/SetsEditController"));
 const router = express_1.default.Router();
 router.patch("/", SetsEditController_1.default.patch);
+router.delete("/", SetsEditController_1.default.deleteMedia);
 exports.default = router;

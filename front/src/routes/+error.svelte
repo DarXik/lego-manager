@@ -19,7 +19,7 @@
             </p>
             <a
                 class="mt-8 px-4 py-2 my-button-2 disabled:pointer-events-none disabled:cursor-not-allowed"
-                href="/">GO HOME</a
+                href="/"><span class="relative z-10">GO HOME</span></a
             >
         {:else}
             <h1 class="text-3xl font-bold">Your request failed</h1>
@@ -28,9 +28,9 @@
             </p>
             <div class="flex mt-8 gap-8">
                 <a
-                class="mt-8 px-4 py-2 my-button-2 disabled:pointer-events-none disabled:cursor-not-allowed"
-                href="/">GO HOME</a
-            >
+                    class="relative z-10 mt-8 px-4 py-2 my-button-2 disabled:pointer-events-none disabled:cursor-not-allowed"
+                    href="/"><span class="relative z-10">GO HOME</span></a
+                >
                 <!-- <button on:click={() => history.back()}
                 class=" px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed "
                 >GO BACK</button

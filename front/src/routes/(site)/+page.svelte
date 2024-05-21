@@ -8,7 +8,7 @@
     let sets: any = [];
 
     $: if (data && sets.length == 0) {
-        sets = data.sets.slice().sort((a, b) => a.name > b.name);
+        sets = data.sets.slice().sort((a:any, b:any) => a.name > b.name);
 
         for (const key in sets) {
             sets[key].localId = parseInt(key);
@@ -24,7 +24,7 @@
         currentKey = filter;
 
         if (sets) {
-            sets = sets.slice().sort((a, b) => {
+            sets = sets.slice().sort((a: any, b: any) => {
                 if (a[filter] < b[filter]) {
                     return -1 * (order ? 1 : -1);
                 }
@@ -197,6 +197,6 @@
 
 <style lang="postcss">
     .currentKey {
-        @apply bg-zinc-400 text-black transition-all;
+        @apply bg-purple-300/60 text-black transition-all;
     }
 </style>
