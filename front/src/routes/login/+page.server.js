@@ -14,7 +14,7 @@ export const actions = {
 
 
         try {
-            let response = await fetch("http://localhost:3000/user/login", {
+            let response = await fetch("http://backend:3000/user/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,10 +30,10 @@ export const actions = {
                 let res1 = await response.json()
 
                 cookies.set("session", res1.session, {
-                    path: "/",
                     httpOnly: true,
-                    sameSite: "strict",
-                    secure: true,
+                    path: "/",
+                    sameSite: "none",
+                    secure: false,
                     maxAge: 60 * 60 * 24 * 60
                 })
                 

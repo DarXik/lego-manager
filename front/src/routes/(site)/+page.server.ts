@@ -2,7 +2,7 @@ import type { Actions } from './$types';
 
 export const load = async ({ fetch, locals, data }) => {
 
-    const response = await fetch('http://localhost:3000/api/v1/sets', {
+    const response = await fetch('http://backend:3000/api/v1/sets', {
         method: 'GET',
         headers: {
             "Authorization": locals.session || ""
@@ -10,7 +10,7 @@ export const load = async ({ fetch, locals, data }) => {
     })
 
     const res1 = await response.json()
-    console.log(res1)
+
     return {
         ...data,
         sets: res1

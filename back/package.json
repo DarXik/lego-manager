@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "tsc & node build/server.js",
-    "start": " node build/server.js",
-    "dev": "node build/server.js"
+    "build": "tsc",
+    "start": "pnpm exec prisma db push && node build/server.js",
+    "dev": "tsc && node build/server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,12 +20,12 @@
     "@types/uniqid": "^5.3.4",
     "@types/uuid": "^9.0.8",
     "nodemon": "^3.1.0",
-    "prisma": "^5.14.0",
+    "prisma": "^5.13.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^5.13.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",

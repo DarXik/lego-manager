@@ -58,11 +58,10 @@
     </div>
 </nav>
 {#if isVisible}
-<!-- overflow při scrollu -->
     <div
         in:slide={{ duration: 400 }}
-        out:slide={{ duration: 400 }}        
-        class="z-20 absolute md:hidden top-0 left-0 w-screen h-full bg-gray-950 flex flex-col justify-center items-center gap-y-16"
+        out:slide={{ duration: 200 }}
+        class="z-20 absolute md:hidden top-0 left-0 w-screen h-screen bg-gray-950 flex flex-col justify-center items-center gap-y-16"
     >
         <div class="flex flex-col gap-y-4">
             <a on:click={() => isVisible = !isVisible}

@@ -1,41 +1,44 @@
 services:
+  db:
+    image: mysql:latest
+    container_name: lego-manager-db
+    hostname: lego-manager-db
+    env_file:
+     - .env.db
+    ports:
+      - 3306:3306
+    volumes:
+      - ./lego-manager-db-data:/var/lib/mysql
+      - ./lego-manager-db-conf:/etc/mysql/conf.d
+    restart: always
+
   backend:
     build:
       context: back
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
     container_name: lego-manager-backend
     hostname: lego-manager-backend
     volumes:
       - ./lego-manager-backend-data:/back/uploads
     restart: always
+    ports:
+       - 3000:3000
     env_file:
-      - ./.env.backend
+      - .env.backend
     depends_on:
-      -  db
+      - db
 
   frontend:
     build:
       context: front
       dockerfile: Dockerfile
     ports:
-      - "5175:5173"
+      - 5173:3000
     container_name: lego-manager-frontend
     hostname: lego-manager-frontend
     restart: always
     depends_on:
       - backend
-
-  db:
-    image: beercan1989/arm-mysql:latest
-    container_name: "lego-manager-db"
-    hostname: "lego-manager-db"
-    env_file:
-     - ./.env.db
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./lego-manager-db-data:/var/lib/mysql
-      - ./lego-manager-db-conf:/etc/mysql/conf.d
-    restart: always
+    environment:
+      - ORIGIN=http://localhost:5173
+      - BODY_SIZE_LIMIT=Infinity

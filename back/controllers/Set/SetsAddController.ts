@@ -33,7 +33,7 @@ const post = async (req: Request, res: Response) => {
         try {
             const files: any = req.files || req.file
 
-            const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.JPG', '.JPEG', '.PNG', '.GIF', '.WEBP', '.svg', '.SVG', '.pdf', '.PDF']
+            const allowedExtensions = ['.jpg', '.jpeg', '.png', , '.webp', '.JPG', '.JPEG', '.PNG', , '.WEBP', '.pdf', '.PDF']
 
             for (const key in files) {
 
@@ -49,7 +49,7 @@ const post = async (req: Request, res: Response) => {
                         const filename = `${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`
                         newPDFFilenames.push(filename);
 
-                        const filePath = path.join(__dirname, `../../../uploads/instructions/${filename}`)
+                        const filePath = path.join(__dirname, `../../uploads/instructions/${filename}`)
                         await fs.promises.writeFile(filePath, files[key].buffer)
                     }
                     catch (err) {
@@ -61,7 +61,7 @@ const post = async (req: Request, res: Response) => {
                     try {
                         newImageFilename = `${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`;
 
-                        const filePath = path.join(__dirname, `../../../uploads/images/${newImageFilename}`)
+                        const filePath = path.join(__dirname, `../../uploads/images/${newImageFilename}`)
                         await fs.promises.writeFile(filePath, files[key].buffer)
                     }
                     catch (err) {
@@ -106,8 +106,7 @@ const post = async (req: Request, res: Response) => {
                         price: parseInt(userSet?.price) || null,
                         image: newImageFilename || null,
                         addedBy: { connect: { id: verifiedUser.user.id } },
-                        set: { connect: { id: newSet.id } },
-                        currency: parseInt(userSet?.currency) || null
+                        set: { connect: { id: newSet.id } }
                     }
 
                 })

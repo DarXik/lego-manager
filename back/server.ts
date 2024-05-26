@@ -13,16 +13,14 @@ import setsEditRoute from "./routes/api/v1/edit/Edit"
 import logoutRoute from "./routes/user/logout/User"
 import updateRoute from "./routes/user/update/User"
 import multer from "multer";
-// import fileupload from "express-fileupload"
 
 const upload = multer()
 const app = express();
 const PORT = 3000;
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
-// app.use(express.static("public"))
-// app.use(fileupload())
+
+app.use(express.json({limit: "500mb"}));
+app.use(express.urlencoded({limit: "500mb", extended: true }));
 
 app.use("/user/check", userCheckRoute)
 app.use("/user/login", loginRoute);

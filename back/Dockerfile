@@ -4,20 +4,16 @@ WORKDIR /back
 
 COPY package*.json ./
 
-ENV PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1
+RUN corepack enable pnpm
 
-RUN npm install
-
-RUN npm install -g typescript
+RUN pnpm install 
 
 COPY . .
 
 RUN npx prisma generate
 
-RUN npx prisma db push
-
-RUN tsc
+RUN pnpm run build 
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]

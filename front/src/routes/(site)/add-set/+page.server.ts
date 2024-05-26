@@ -2,7 +2,7 @@ import type { Actions } from './$types';
 import axios from 'axios';
 
 export const actions = {
-    addSet: async ({ request, cookies, locals }) => {
+    addSet: async ({ request, locals }) => {
         const formData = await request.formData();
 
         
@@ -14,13 +14,13 @@ export const actions = {
         
         console.log("form data: ", formData)
         const newSet = await axios({
-            url: "http://localhost:3000/api/v1/sets/add",
+            url: "http://backend:3000/api/v1/sets/add",
             method: "POST",
             headers: {
                 "Authorization": locals.session || "",
                 'Content-Type': `multipart/form-data`,
             },
-            timeout: 5000,
+            // timeout: 5000,
             data: formData
         })
 
@@ -44,7 +44,7 @@ export const actions = {
 
         console.log("search query: ", searchQuery)
 
-        let response = await fetch(`http://localhost:3000/api/v1/sets/search/${searchQuery}`, {
+        let response = await fetch(`http://backend:3000/api/v1/sets/search/${searchQuery}`, {
             method: "GET",
             headers: new Headers({
                 "Authorization": locals.session || ""

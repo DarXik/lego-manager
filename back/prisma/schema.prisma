@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  engineType= "binary"
 }
 
 datasource db {
@@ -28,7 +29,7 @@ model SetAttachment {
   lastModified DateTime       @updatedAt
   description  String?        @db.VarChar(255)
   yearBought   Int?           @db.SmallInt
-  price        Int?           @db.Int
+  price        Int?
   currency     Int?           @db.Int
   image        String?        @db.VarChar(255)
   instructions Instructions[]

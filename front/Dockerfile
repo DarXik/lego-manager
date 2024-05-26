@@ -2,14 +2,16 @@ FROM node:latest
 
 WORKDIR /front
 
-COPY package*.json pnpm-lock.yaml ./
+COPY package*.json ./
 
-RUN npm install -g pnpm
+RUN corepack enable pnpm
 
 RUN pnpm install
 
 COPY . .
 
+RUN pnpm run build
+
 EXPOSE 5173
 
-CMD ["pnpm", "build"]
+CMD ["pnpm", "start"]

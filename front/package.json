@@ -4,16 +4,17 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --host",
+		"start": "node build/index.js",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-node": "^5.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/multer": "^1.4.11",
 		"@types/node": "^20.12.7",
 		"@types/uuid": "^9.0.8",
 		"autoprefixer": "^10.4.19",
@@ -28,6 +29,8 @@
 	"type": "module",
 	"dependencies": {
 		"axios": "^1.6.8",
+		"fs": "^0.0.1-security",
+		"multer": "^1.4.5-lts.1",
 		"pnpm": "^9.0.6",
 		"short-uuid": "^4.2.2",
 		"svelte-persisted-store": "^0.9.1",

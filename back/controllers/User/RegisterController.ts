@@ -1,4 +1,7 @@
 import { Request, Response } from "express"
+// import { User } from "../models/User"
+import { PrismaClient } from "@prisma/client"
+import { v4 as uuidv4 } from 'uuid'
 import { hashPassword } from "../../services/userHash"
 import prisma from "../../config/prisma"
 

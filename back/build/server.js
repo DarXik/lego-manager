@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 // import connectDB from "./config/db";
-const Sets_1 = __importDefault(require("./routes/api/v1/set/Sets"));
+const Sets_1 = __importDefault(require("./routes/api/v1/Sets"));
 const User_1 = __importDefault(require("./routes/user/login/User"));
 const User_2 = __importDefault(require("./routes/user/register/User"));
 const Search_1 = __importDefault(require("./routes/api/v1/search/Search"));
