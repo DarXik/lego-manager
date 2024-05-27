@@ -11,7 +11,7 @@ const get = async (req: Request, res: Response) => {
 
 
     try {
-        const filePath = path.join(__dirname, `../../uploads/instructions/${filename}`)
+        const filePath = path.join(__dirname, `../../../uploads/instructions/${filename}`)
         
         if (!fs.existsSync(filePath)) {
             return res.status(404).send({ message: "pdf not found 1" })
