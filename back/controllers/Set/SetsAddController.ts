@@ -48,8 +48,9 @@ const post = async (req: Request, res: Response) => {
                     try {
                         const filename = `${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`
                         newPDFFilenames.push(filename);
-
-                        const filePath = path.join(__dirname, `../../uploads/instructions/${filename}`)
+                        console.log(filename)
+                        const filePath = path.join(__dirname, `../../../uploads/instructions/${filename}`)
+                        console.log(filePath)
                         await fs.promises.writeFile(filePath, files[key].buffer)
                     }
                     catch (err) {
@@ -61,7 +62,10 @@ const post = async (req: Request, res: Response) => {
                     try {
                         newImageFilename = `${uniqid()}-${files[key].originalname.split(".")[0]}${ext}`;
 
-                        const filePath = path.join(__dirname, `../../uploads/images/${newImageFilename}`)
+                        const filePath = path.join(__dirname, `../../../uploads/images/${newImageFilename}`)
+
+                        console.log(newImageFilename)
+                        console.log(filePath)
                         await fs.promises.writeFile(filePath, files[key].buffer)
                     }
                     catch (err) {
@@ -70,11 +74,10 @@ const post = async (req: Request, res: Response) => {
                     }
                 }
             }
-            // }
         }
         catch (err) {
             console.log(err)
-            return res.status(500).send({ message: "image could not be saved" })
+            return res.status(500).send({ message: "media could not be saved" })
         }
     }
 

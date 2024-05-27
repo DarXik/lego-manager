@@ -7,8 +7,10 @@
     export let data;
     let sets: any = [];
 
-    $: if (data && sets.length > 0) {
-        sets = data.sets.slice().sort((a:any, b:any)=> a.name > b.name);
+    console.log(data)
+
+    $: if (data.sets.length > 0 || sets.length > 0) {
+        sets = data.sets.slice().sort((a: any, b: any) => a.name > b.name);
         for (const key in sets) {
             sets[key].localId = parseInt(key);
         }
@@ -22,7 +24,7 @@
         let order = !ascending;
         currentKey = filter;
 
-        sets = sets.slice().sort((a:any, b:any) => {
+        sets = sets.slice().sort((a: any, b: any) => {
             if (a[filter] < b[filter]) {
                 return -1 * (order ? 1 : -1);
             }
@@ -36,20 +38,21 @@
     let w: number;
     onMount(() => {
         w = window.innerWidth;
-    })
-
+    });
 </script>
 
 <section>
     <article class="flex max-md:flex-col">
         <div class="p-8 border-r-3 border-zinc-600 w-full md:w-1/2">
-            <h1
-                class="font-bold uppercase  text-3xl md:text-4xl lg:text-5xl"
-            >
-                Your sets <span class="text-xl text-zinc-400">({sets.length})</span>
+            <h1 class="font-bold uppercase text-3xl md:text-4xl lg:text-5xl">
+                Your sets <span class="text-xl text-zinc-400"
+                    >({sets.length})</span
+                >
             </h1>
         </div>
-        <div class="w-full md:w-1/2 flex h-full justify-center md:justify-start md:self-end border-main">
+        <div
+            class="w-full md:w-1/2 flex h-full justify-center md:justify-start md:self-end border-main"
+        >
             <div class="flex border-zinc-600">
                 <button
                     on:click={() => sort("name")}
@@ -141,7 +144,7 @@
                         on:click={() => goto(`/set/${set.id}`)}
                     >
                         <div
-                            class="group-hover:border-zinc-100 transition-all group-active:scale-95 group-focus:border-zinc-100 bg-black/50 border border-gray-600/50 h-full w-full "
+                            class="group-hover:border-zinc-100 transition-all group-active:scale-95 group-focus:border-zinc-100 bg-black/50 border border-gray-600/50 h-full w-full"
                         >
                             <div
                                 class="border-b border-gray-600/50 group-hover:border-zinc-100 transition-all py-2 px-4 h-[15%]"
@@ -152,7 +155,9 @@
                                 class="flex flex-col justify-between py-2 px-4 md:h-[85%]"
                             >
                                 <div>
-                                    <p class="text-xl font-bold text-start max-md:mb-8">
+                                    <p
+                                        class="text-xl font-bold text-start max-md:mb-8"
+                                    >
                                         {set.name}
                                     </p>
                                 </div>

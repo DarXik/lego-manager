@@ -5,3 +5,5 @@ export const userInfo: Writable<Writable<{ username: string; email: string; curr
 export const userSets = writable([])
 export const isSearching = writable(false)
 export const navbarHeight = writable(0)
+
+

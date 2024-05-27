@@ -19,7 +19,8 @@ services:
     container_name: lego-manager-backend
     hostname: lego-manager-backend
     volumes:
-      - ./lego-manager-backend-data:/back/uploads
+      - ./lego-manager-backend-images:/back/uploads/images
+      - ./lego-manager-backend-instructions:/back/uploads/instructions
     restart: always
     ports:
        - 3000:3000
