@@ -20,7 +20,7 @@ const get = async (req: Request, res: Response) => {
         try {
             const sets: any = await prisma.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } })
             const attachment = await prisma.setAttachment.findMany({ where: { setId: { in: sets.map((set: any) => set.id) }, addedById: verifiedUser.user.id } })
-
+            
             // console.log(attachment)
 
             if (!sets || sets.length == 0) {
@@ -35,6 +35,7 @@ const get = async (req: Request, res: Response) => {
                     themeName: set.themeName,
                     addedOn: attachment.find((attachment: any) => attachment.setId == set.id)?.addedOn || null,
                     yearBought: attachment.find((attachment: any) => attachment.setId == set.id)?.yearBought || null,
+                    
                 }
             })
 

@@ -40,11 +40,6 @@ const post = async (req: Request, res: Response) => {
 
             res.status(200).send({
                 session: userSession,
-                username: user.username,
-                email: user.email,
-                preferredCurrency: user.preferredCurrency,
-                preferredLanguage: user.preferredLanguage
-
             })
 
         } catch (err) {

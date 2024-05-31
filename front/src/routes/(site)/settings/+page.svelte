@@ -3,6 +3,8 @@
     import { userInfo } from "$lib/store";
     import { fade } from "svelte/transition";
 
+    export let data;
+
     let currencies = ["CZK", "EUR", "USD", "GBP"];
     let languages = ["Čeština", "English", "Deutsch"];
     let newPassword: String, newPasswordRepeat: String, currentPassword: String;
@@ -113,7 +115,7 @@
                     >
                         {#each currencies as currency, index}
                             <option
-                                selected={index === $userInfo.currency}
+                                selected={index === data.currency}
                                 value={currency}>{currency}</option
                             >
                         {/each}
@@ -138,7 +140,7 @@
                     >
                         {#each languages as language, index}
                             <option
-                                selected={index === $userInfo.language}
+                                selected={index === data.language}
                                 value={language}>{language}</option
                             >
                         {/each}

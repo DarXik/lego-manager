@@ -296,7 +296,7 @@
                 title="No. of bricks"
             ></InfoCardwIcon>
             <InfoCardwIcon
-                path="currencies/{currencies[$userInfo.currency]}"
+                path="currencies/{currencies[data.currency]}"
                 text={set.price}
                 title="Price"
             ></InfoCardwIcon>

@@ -21,10 +21,7 @@
         passwordMatch = false;
     }
 
-    $: if (form?.success) {
-        userInfo.set(form.user);
-        goto("/");
-    }
+    
 </script>
 
 <section

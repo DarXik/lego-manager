@@ -103,7 +103,6 @@
                         />
                     </svg>
                 </button>
-
                 <button
                     on:click={() => sort("setNumber")}
                     class:currentKey={currentKey === "setNumber"}
