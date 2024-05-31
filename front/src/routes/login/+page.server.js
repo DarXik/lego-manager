@@ -37,15 +37,17 @@ export const actions = {
                     maxAge: 60 * 60 * 24 * 60
                 })
                 
-                return {
-                    success: true,
-                    user:{
-                        username: res1.username,
-                        email: res1.email,
-                        currency: res1.preferredLanguage,
-                        language: res1.preferredLanguage
-                    }
-                }
+                // return {
+                //     success: true,
+                //     user:{
+                //         username: res1.username,
+                //         email: res1.email,
+                //         currency: res1.preferredLanguage,
+                //         language: res1.preferredLanguage
+                //     }
+                // }
+
+                redirect(302, "/");
 
             } else {
                 return {
