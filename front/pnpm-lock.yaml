@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@cloudinary/url-gen':
-        specifier: ^1.19.0
-        version: 1.19.0
       axios:
         specifier: ^1.6.8
         version: 1.6.8
@@ -85,12 +82,6 @@ packages:
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
     engines: {node: '>=6.0.0'}
-
-  '@cloudinary/transformation-builder-sdk@1.13.3':
-    resolution: {integrity: sha512-tBMpjcwBjUgINGm2lKodb1fe32yBeq2KTSD7TrrFPm2/dQOb7lKmVuDaDe89IPcV+QZbb1JY/ZWL9pZjUV4aKw==}
-
-  '@cloudinary/url-gen@1.19.0':
-    resolution: {integrity: sha512-3WSqYAMEe8lcYMFmkNPhOfv6Ql76mpf8O7YEC+CCaoIYrfBubzzeF8yENCaZK9tFJEHvMepI+uWWfilNrz48XA==}
 
   '@esbuild/aix-ppc64@0.20.2':
     resolution: {integrity: sha512-D+EBOJHXdNZcLJRBkhENNG8Wji2kgc9AZ9KiPr1JuZjsNtyHzrsfLRrY0tk2H2aoFu6RANO1y1iPPUCDYWkb5g==}
@@ -1341,14 +1332,6 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
-
-  '@cloudinary/transformation-builder-sdk@1.13.3':
-    dependencies:
-      '@cloudinary/url-gen': 1.19.0
-
-  '@cloudinary/url-gen@1.19.0':
-    dependencies:
-      '@cloudinary/transformation-builder-sdk': 1.13.3
 
   '@esbuild/aix-ppc64@0.20.2':
     optional: true

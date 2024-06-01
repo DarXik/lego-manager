@@ -1,3 +1,5 @@
+import { redirect } from "@sveltejs/kit";
+
 export const actions = {
     default: async ({request, cookies}) => {
         const data = await request.formData();

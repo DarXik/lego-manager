@@ -26,10 +26,10 @@
 
     $: console.log(form);
 
-    $: if (form?.success) {
-        console.log("success");
-        goto("/login");
-    }
+    // $: if (form?.success) {
+    //     console.log("success");
+    //     goto("/login");
+    // }
 
     // $: if (form?.problem) {
     //     setTimeout(() => {

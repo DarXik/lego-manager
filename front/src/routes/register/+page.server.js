@@ -40,10 +40,8 @@ export const actions = {
             })
             
             if (response.ok) {
-                // throw  redirect(301, "localhost:3000/login") // nefunguje
-                return {
-                    success: true,
-                }
+                redirect(302, "/");
+                
             } else {
                 return {
                     success: false,
