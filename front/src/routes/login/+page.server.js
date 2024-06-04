@@ -34,7 +34,7 @@ export const actions = {
                 cookies.set("session", res1.session, {
                     httpOnly: true,
                     path: "/",
-                    sameSite: "none",
+                    sameSite: "secure",
                     secure: false,
                     maxAge: 60 * 60 * 24 * 60
                 })

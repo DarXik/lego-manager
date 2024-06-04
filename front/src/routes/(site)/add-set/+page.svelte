@@ -330,7 +330,7 @@
                 >
                     <img
                         src="../../../../currencies/{currencies[
-                            $userInfo.currency
+                            data.currency
                         ]}"
                         alt="currency"
                         class="w-8 h-fit p-1.5"

@@ -41,5 +41,5 @@ services:
     depends_on:
       - backend
     environment:
-      - ORIGIN=http://localhost:5173
+      - ORIGIN=https://lego-manager.fun
       - BODY_SIZE_LIMIT=Infinity
