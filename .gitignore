@@ -8,6 +8,8 @@
 /back/build
 /back/build
 /back/build
+/lego-manager-backend-images
+/lego-manager-backend-instructions
 
 /lego-manager-db-data
 .env.backend
