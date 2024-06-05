@@ -16,7 +16,7 @@ export const actions = {
 
 
         try {
-            let response = await fetch("http://backend:3000/user/login", {
+            let response = await fetch("http://localhost:3000/user/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,20 +34,10 @@ export const actions = {
                 cookies.set("session", res1.session, {
                     httpOnly: true,
                     path: "/",
-                    sameSite: "secure",
+                    sameSite: "strict",
                     secure: false,
                     maxAge: 60 * 60 * 24 * 60
                 })
-                
-                // return {
-                //     success: true,
-                //     user:{
-                //         username: res1.username,
-                //         email: res1.email,
-                //         currency: res1.preferredLanguage,
-                //         language: res1.preferredLanguage
-                //     }
-                // }
 
                 redirect(302, "/");
 

@@ -3,7 +3,7 @@ export async function PATCH({ request, locals, cookies }) {
 
 
     if (locals.session) {
-        const response = await fetch(`http://backend:3000/user/logout`, {
+        const response = await fetch(`http://localhost:3000/user/logout`, {
             method: "GET",
             headers: new Headers({
                 "Authorization": locals.session || ""

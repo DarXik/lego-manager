@@ -12,6 +12,9 @@
 		"src/routes/(site)/add-set/+page.server.ts",
 		"src/routes/(site)/+layout.server.ts"
 	],
+	"/api/deleteInstruction": [
+		"src/routes/api/deleteInstruction/+server.js"
+	],
 	"/api/deleteSet": [
 		"src/routes/api/deleteSet/+server.js"
 	],

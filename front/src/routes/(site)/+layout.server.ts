@@ -8,7 +8,7 @@ export const load = (async ({ locals, data }: { locals: any; data: any; }) => {
 
     } else {
 
-        const response = await fetch('http://backend:3000/user/preferences', {
+        const response = await fetch('http://localhost:3000/user/preferences', {
             method: 'GET',
             headers: {
                 "Authorization": locals.session || ""

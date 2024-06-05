@@ -26,7 +26,7 @@ export const actions = {
 
 
         try {
-            let response = await fetch("http://backend:3000/user/register", {
+            let response = await fetch("http://localhost:3000/user/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
