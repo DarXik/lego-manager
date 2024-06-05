@@ -362,7 +362,7 @@
                         >
                             {i + 1}
                         </p>
-                        <div class="ml-4 flex max-md:flex-wrap gap-4">
+                        <div class="ml-4 flex max-md:flex-wrap gap-4 ">
                             <a
                                 class="my-button-2 shadow-none px-5"
                                 href="http://192.168.0.13:3000/api/v1/instructions/{instruction.instructions}"
@@ -375,7 +375,7 @@
                             >
                         </div>
                     </div>
-                    <div class="flex flex-col max-md:border-main">
+                    <div class="flex flex-col max-md:border-main border-gray-600 md:last:border-b-3">
                         {#if currentInstructions.length == 1}
                             <object
                                 title="instructions"

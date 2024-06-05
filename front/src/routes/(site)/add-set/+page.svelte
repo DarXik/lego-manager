@@ -22,6 +22,7 @@
     let searchQuery = "";
     let fetchedSets: any = [];
     let files: any;
+    let sending: boolean = false;
 
     function handleImageUpload(e: Event) {
         const image = (e.target as HTMLInputElement)?.files?.[0];
@@ -63,6 +64,8 @@
     let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
     let currentItems = 8;
     let priceFocused: boolean = false;
+
+    $: console.log(sending);
 </script>
 
 <section in:fade={{ delay: 50, duration: 300 }}>
@@ -83,7 +86,7 @@
             on:focusout={() => (isSearching = false)}
             use:enhance
         >
-            <div class="relative flex w-full mt-4 ">
+            <div class="relative flex w-full mt-4">
                 <div
                     class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
                 >
@@ -125,12 +128,12 @@
                 </button>
             </div>
             <button
-                    type="submit"
-                    disabled={searchQuery.length == 0}
-                    class="px-6 py-2 mt-4  md:hidden text-base uppercase hover:bg-purple-800/50 border-2 active:scale-90 border-zinc-400 disabled:border-gray-600 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none transition-all"
-                >
-                    <span class="relative z-10">Search</span>
-                </button>
+                type="submit"
+                disabled={searchQuery.length == 0}
+                class="px-6 py-2 mt-4 md:hidden text-base uppercase hover:bg-purple-800/50 border-2 active:scale-90 border-zinc-400 disabled:border-gray-600 disabled:cursor-default disabled:opacity-75 disabled:bg-gray-600 disabled:hover:bg-gray-600 disabled:active:bg-gray-600 disabled:text-gray-300 select-none transition-all"
+            >
+                <span class="relative z-10">Search</span>
+            </button>
         </form>
         <div class="mt-4">
             {#if form?.setsFound && fetchedSets.length > 0}
@@ -176,7 +179,18 @@
         method="POST"
         action="?/addSet"
         enctype="multipart/form-data"
-        use:enhance
+        use:enhance={() => {
+            sending = true;
+            return async ({ result }) => {
+                if (result) {
+                    console.log(result);
+                    sending = false;
+                    // setTimeout(() => {
+                    //     window.location.reload();
+                    // }, 1000);
+                }
+            };
+        }}
         class:opacity-50={isSearching}
         class="lg:grid lg:grid-cols-3 lg:grid-rows-auto flex flex-col border-r-3 gap-3 border-gray-600 p-6 lg:mr-32 border-b-3 mb-12"
     >
@@ -329,9 +343,7 @@
                     class="absolute flex flex-col justify-center right-0 bottom-0 h-full pointer-events-none bg-zinc-500 opacity-70"
                 >
                     <img
-                        src="../../../../currencies/{currencies[
-                            data.currency
-                        ]}"
+                        src="../../../../currencies/{currencies[data.currency]}"
                         alt="currency"
                         class="w-8 h-fit p-1.5"
                     />
@@ -398,6 +410,7 @@
                 class="my-button-2 w-fit uppercase px-12"
                 class:!cursor-default={isSearching}
                 disabled={(form?.newSetAdded &&
+                    sending &&
                     !(
                         name.length === 0 ||
                         setNumber.length === 0 ||
@@ -406,11 +419,9 @@
                     )) ||
                     isSearching}
             >
-                <span class="relative z-10"
-                    >{form?.newSetAdded
-                        ? form?.newSetAdded.message
-                        : "Add set"}</span
-                >
+                <span class="relative z-10">
+                    {form?.newSetAdded ? form?.newSetAdded.message : "Add set"}
+                </span>
             </button>
             {#if form?.newSetFailed}
                 <p class="text-red-500 font-bold uppercase">
@@ -421,6 +432,9 @@
                 <p class="text-red-500 font-bold uppercase">
                     {form?.problem}
                 </p>
+            {/if}
+            {#if sending}
+                <p class="text-white font-bold uppercase transition-all">Uploading...</p>
             {/if}
         </div>
     </form>

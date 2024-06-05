@@ -33,7 +33,7 @@ export const actions = {
         //   });
 
         const newSet = await axios({
-            url: "http://backend:3000/api/v1/sets/edit",
+            url: "http://localhost:3000/api/v1/sets/edit",
             method: "PATCH",
             headers: {
                 "Authorization": locals.session || "",

@@ -14,7 +14,7 @@ export const actions = {
         
         console.log("form data: ", formData)
         const newSet = await axios({
-            url: "http://backend:3000/api/v1/sets/add",
+            url: "http://localhost:3000/api/v1/sets/add",
             method: "POST",
             headers: {
                 "Authorization": locals.session || "",
@@ -44,7 +44,7 @@ export const actions = {
 
         console.log("search query: ", searchQuery)
 
-        let response = await fetch(`http://backend:3000/api/v1/sets/search/${searchQuery}`, {
+        let response = await fetch(`http://localhost:3000/api/v1/sets/search/${searchQuery}`, {
             method: "GET",
             headers: new Headers({
                 "Authorization": locals.session || ""

@@ -19,9 +19,9 @@ export const options = {
 	service_worker: false,
 	templates: {
 		app: ({ head, body, assets, nonce, env }) => "<!doctype html>\r\n<html lang=\"en\">\r\n\t<head>\r\n\t\t<meta charset=\"utf-8\" />\r\n\t\t<link rel=\"icon\" href=\"" + assets + "/navbar/lego-logo.svg\" />\r\n\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n\t\t" + head + "\r\n\t</head>\r\n\t<body data-sveltekit-preload-data=\"hover\">\r\n\t\t<div style=\"display: contents\">" + body + "</div>\r\n\t</body>\r\n</html>\r\n",
-		error: ({ status, message }) => "<!DOCTYPE html>\n<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\" />\n\t\t<title>" + message + "</title>\n\t</head>\n\t<body>\n\t\t<h1>My custom error page</h1>\n\t\t<p>Status: " + status + "</p>\n\t\t<p>Message: " + message + "</p>\n\t</body>\n</html>"
+		error: ({ status, message }) => "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n\t<head>\r\n\t\t<meta charset=\"utf-8\" />\r\n\t\t<title>" + message + "</title>\r\n\t</head>\r\n\t<body>\r\n\t\t<h1>My custom error page</h1>\r\n\t\t<p>Status: " + status + "</p>\r\n\t\t<p>Message: " + message + "</p>\r\n\t</body>\r\n</html>"
 	},
-	version_hash: "evbauz"
+	version_hash: "w65dau"
 };
 
 export async function get_hooks() {
