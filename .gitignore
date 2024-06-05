@@ -14,3 +14,4 @@
 /lego-manager-db-data
 .env.backend
 .env.db
+.env
