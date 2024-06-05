@@ -434,7 +434,7 @@
                 </p>
             {/if}
             {#if sending}
-                <p class="text-white font-bold uppercase transition-all">Uploading...</p>
+                <p class="text-white font-bold uppercase transition-all italic">Uploading...</p>
             {/if}
         </div>
     </form>
