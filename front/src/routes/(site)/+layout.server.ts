@@ -1,5 +1,6 @@
 import { redirect } from "@sveltejs/kit";
-import type { PageServerLoad } from "../../../.svelte-kit/types/src/routes/login/$types";
+import { env } from '$env/dynamic/private';
+const secretOrigin = env.SECRET_ORIGIN;
 
 export const load = (async ({ locals, data }: { locals: any; data: any; }) => {
 
@@ -8,7 +9,7 @@ export const load = (async ({ locals, data }: { locals: any; data: any; }) => {
 
     } else {
 
-        const response = await fetch('http://localhost:3000/user/preferences', {
+        const response = await fetch(`http://${secretOrigin}:3000/user/preferences`, {
             method: 'GET',
             headers: {
                 "Authorization": locals.session || ""

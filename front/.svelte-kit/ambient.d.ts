@@ -26,10 +26,7 @@
  * ```
  */
 declare module '$env/static/private' {
-	export const ACSetupSvcPort: string;
-	export const ACSvcPort: string;
 	export const ALLUSERSPROFILE: string;
-	export const AMDRMPATH: string;
 	export const APPDATA: string;
 	export const CHROME_CRASHPAD_PIPE_NAME: string;
 	export const COLORTERM: string;
@@ -37,12 +34,10 @@ declare module '$env/static/private' {
 	export const CommonProgramW6432: string;
 	export const COMPUTERNAME: string;
 	export const ComSpec: string;
-	export const DokanLibrary1: string;
-	export const DokanLibrary1_LibraryPath_x64: string;
-	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
-	export const EFC_5952: string;
-	export const EnableLog: string;
+	export const EFC_6044: string;
+	export const FPS_BROWSER_APP_PROFILE_STRING: string;
+	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
@@ -95,8 +90,6 @@ declare module '$env/static/private' {
 	export const npm_package_type: string;
 	export const npm_package_version: string;
 	export const NUMBER_OF_PROCESSORS: string;
-	export const NVM_HOME: string;
-	export const NVM_SYMLINK: string;
 	export const OneDrive: string;
 	export const OneDriveCommercial: string;
 	export const OneDriveConsumer: string;
@@ -116,7 +109,6 @@ declare module '$env/static/private' {
 	export const PROMPT: string;
 	export const PSModulePath: string;
 	export const PUBLIC: string;
-	export const RlsSvcPort: string;
 	export const SESSIONNAME: string;
 	export const SystemDrive: string;
 	export const SystemRoot: string;
@@ -133,7 +125,6 @@ declare module '$env/static/private' {
 	export const VSCODE_GIT_ASKPASS_NODE: string;
 	export const VSCODE_GIT_IPC_HANDLE: string;
 	export const VSCODE_INJECTION: string;
-	export const VSCODE_NONCE: string;
 	export const windir: string;
 }
 
@@ -166,10 +157,7 @@ declare module '$env/static/public' {
  */
 declare module '$env/dynamic/private' {
 	export const env: {
-		ACSetupSvcPort: string;
-		ACSvcPort: string;
 		ALLUSERSPROFILE: string;
-		AMDRMPATH: string;
 		APPDATA: string;
 		CHROME_CRASHPAD_PIPE_NAME: string;
 		COLORTERM: string;
@@ -177,12 +165,10 @@ declare module '$env/dynamic/private' {
 		CommonProgramW6432: string;
 		COMPUTERNAME: string;
 		ComSpec: string;
-		DokanLibrary1: string;
-		DokanLibrary1_LibraryPath_x64: string;
-		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
-		EFC_5952: string;
-		EnableLog: string;
+		EFC_6044: string;
+		FPS_BROWSER_APP_PROFILE_STRING: string;
+		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
 		HOME: string;
 		HOMEDRIVE: string;
@@ -235,8 +221,6 @@ declare module '$env/dynamic/private' {
 		npm_package_type: string;
 		npm_package_version: string;
 		NUMBER_OF_PROCESSORS: string;
-		NVM_HOME: string;
-		NVM_SYMLINK: string;
 		OneDrive: string;
 		OneDriveCommercial: string;
 		OneDriveConsumer: string;
@@ -256,7 +240,6 @@ declare module '$env/dynamic/private' {
 		PROMPT: string;
 		PSModulePath: string;
 		PUBLIC: string;
-		RlsSvcPort: string;
 		SESSIONNAME: string;
 		SystemDrive: string;
 		SystemRoot: string;
@@ -273,7 +256,6 @@ declare module '$env/dynamic/private' {
 		VSCODE_GIT_ASKPASS_NODE: string;
 		VSCODE_GIT_IPC_HANDLE: string;
 		VSCODE_INJECTION: string;
-		VSCODE_NONCE: string;
 		windir: string;
 		[key: `PUBLIC_${string}`]: undefined;
 		[key: `${string}`]: string | undefined;

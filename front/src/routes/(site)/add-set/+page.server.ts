@@ -1,5 +1,7 @@
 import type { Actions } from './$types';
 import axios from 'axios';
+import { env } from '$env/dynamic/private';
+const secretOrigin = env.SECRET_ORIGIN;
 
 export const actions = {
     addSet: async ({ request, locals }) => {
@@ -14,7 +16,7 @@ export const actions = {
         
         console.log("form data: ", formData)
         const newSet = await axios({
-            url: "http://localhost:3000/api/v1/sets/add",
+            url: `http://${secretOrigin}:3000/api/v1/sets/add`,
             method: "POST",
             headers: {
                 "Authorization": locals.session || "",
@@ -44,7 +46,7 @@ export const actions = {
 
         console.log("search query: ", searchQuery)
 
-        let response = await fetch(`http://localhost:3000/api/v1/sets/search/${searchQuery}`, {
+        let response = await fetch(`http://${secretOrigin}:3000/api/v1/sets/search/${searchQuery}`, {
             method: "GET",
             headers: new Headers({
                 "Authorization": locals.session || ""

@@ -1,4 +1,6 @@
 import { redirect } from "@sveltejs/kit";
+import { env } from '$env/dynamic/private';
+const secretOrigin = env.SECRET_ORIGIN;
 
 export const actions = {
     default: async ({request, cookies}) => {
@@ -16,7 +18,7 @@ export const actions = {
 
 
         try {
-            let response = await fetch("http://localhost:3000/user/login", {
+            let response = await fetch(`http://${secretOrigin}:3000/user/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

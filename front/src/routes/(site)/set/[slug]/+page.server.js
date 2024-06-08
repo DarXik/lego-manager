@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { env } from '$env/dynamic/private';
+const secretOrigin = env.SECRET_ORIGIN;
 
 export const load = async ({ params, locals }) => {
     let slug = params.slug
     console.log(slug)
-    const response = await fetch(`http://localhost:3000/api/v1/sets/${slug}`, {
+    const response = await fetch(`http://${secretOrigin}:3000/api/v1/sets/${slug}`, {
         method: "GET",
         headers: {
             "Authorization": locals.session || ""
@@ -33,7 +35,7 @@ export const actions = {
         //   });
 
         const newSet = await axios({
-            url: "http://localhost:3000/api/v1/sets/edit",
+            url: `http://${secretOrigin}:3000/api/v1/sets/edit`,
             method: "PATCH",
             headers: {
                 "Authorization": locals.session || "",

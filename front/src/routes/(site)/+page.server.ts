@@ -1,8 +1,10 @@
 import type { Actions } from './$types';
+import { env } from '$env/dynamic/private';
+const secretOrigin = env.SECRET_ORIGIN;
 
 export const load = async ({ fetch, locals, data }) => {
 
-    const response = await fetch('http://localhost:3000/api/v1/sets', {
+    const response = await fetch(`http://${secretOrigin}:3000/api/v1/sets`, {
         method: 'GET',
         headers: {
             "Authorization": locals.session || ""
