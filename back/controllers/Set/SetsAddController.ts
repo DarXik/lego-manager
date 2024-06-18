@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { verifyUser } from "../../services/userAuthentication";
 import prisma from "../../config/prisma";
 import uniqid from "uniqid";
-import { v4 as uuidv4 } from 'uuid'
 import multer from "multer";
 const upload = multer({ dest: "uploads/" })
 import path from "path"

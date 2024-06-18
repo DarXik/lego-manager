@@ -13,6 +13,7 @@ import setsEditRoute from "./routes/api/v1/edit/Edit"
 import logoutRoute from "./routes/user/logout/User"
 import updateRoute from "./routes/user/update/User"
 import userPreferences from "./routes/user/preferences/User"
+import deleteAccountRoute from "./routes/user/delete/User"
 import multer from "multer";
 
 const upload = multer()
@@ -29,6 +30,8 @@ app.use("/user/register", registerRoute);
 app.use("/user/logout", logoutRoute)
 app.use("/user/update", updateRoute)
 app.use("/user/preferences", userPreferences)
+app.use("/user/deleteAccount", deleteAccountRoute)
+
 app.use("/api/v1/sets", setsRoute);
 app.use("/api/v1/sets/add", upload.any(), setsAddRoute);
 app.use("/api/v1/sets/delete", setsDeleteRoute);

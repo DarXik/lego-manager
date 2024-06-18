@@ -31,6 +31,7 @@
 		"src/routes/register/+page.server.js"
 	],
 	"/(site)/settings": [
+		"src/routes/(site)/settings/+page.server.ts",
 		"src/routes/(site)/+layout.server.ts"
 	],
 	"/(site)/set/[slug]": [

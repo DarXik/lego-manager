@@ -1,6 +1,5 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import { userInfo } from "$lib/store";
     import { fade } from "svelte/transition";
 
     export let data;
@@ -13,7 +12,11 @@
         currencyUpdated: boolean,
         languageUpdated: boolean = false;
 
-    async function handleCurrencyChange(e) {
+    let deletingAccount: boolean = false;
+    let modalDelete: HTMLDialogElement;
+    $: if (deletingAccount) modalDelete.showModal();
+
+    async function handleCurrencyChange(e: any) {
         const currency = currencies.indexOf(e.target.value).toString();
 
         const response = await fetch("/api/updatePreference", {
@@ -26,7 +29,7 @@
         if (response.ok) {
             console.log(await response.json());
 
-            $userInfo.currency = currency;
+            data.currency = currency;
 
             currencyUpdated = true;
 
@@ -36,7 +39,7 @@
         }
     }
 
-    async function handleLanguageChange(e) {
+    async function handleLanguageChange(e: any) {
         const language = languages.indexOf(e.target.value).toString();
 
         const response = await fetch("/api/updatePreference", {
@@ -48,7 +51,7 @@
         console.log(await response.json());
 
         if (response.ok) {
-            $userInfo.language = language;
+            data.language = language;
 
             languageUpdated = true;
 
@@ -96,6 +99,47 @@
     }
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+
+<dialog
+    class="border-3 border-zinc-600 bg-black
+        text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm w-[80%] md:w-[60%] lg:w-[45%] xl:w-[35%]"
+    bind:this={modalDelete}
+    on:close={() => (deletingAccount = false)}
+    on:click|self={() => modalDelete.close()}
+>
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div on:click|stopPropagation>
+        <div class="border-b-3 border-zinc-600 p-2 pb-8 text-white">
+            <p class="mb-1 text-3xl font-bold">Delete account:</p>
+        </div>
+        <div class="p-2 text-lg">
+            <p>
+                &bull; Account will be deleted and no one can reverse it.<br />
+                &bull; Your sets already added by others will not be deleted.
+                <br />
+                &bull; This action cannot be undone.
+            </p>
+        </div>
+
+        <!-- svelte-ignore a11y-autofocus -->
+        <form
+            method="POST"
+            class="flex flex-row justify-evenly mt-12 border-main"
+        >
+            <button
+                type="submit"
+                class="w-full py-2 font-bold text-red-600 hover:text-black hover:bg-red-600 transition-all border-r-[1.5px] border-zinc-600"
+                >I am sure</button
+            >
+            <button
+                class="w-full py-2 text-zinc-100 hover:text-black hover:bg-zinc-300 transition-all p-2 px-4 border-l-[1.5px] border-zinc-600"
+                on:click={() => modalDelete.close()}>Go back</button
+            >
+        </form>
+    </div>
+</dialog>
+
 <section in:fade={{ delay: 50, duration: 300 }}>
     <h1
         class="font-bold text-3xl lg:text-5xl px-6 pr-32 py-8 border-r-3 border-zinc-600 w-fit"
@@ -103,7 +147,9 @@
         Settings
     </h1>
     <article class="flex max-md:flex-col">
-        <section class="border-main md:border-r-3 border-b-3 md:w-1/3 px-6 py-8">
+        <section
+            class="border-main md:border-r-3 border-b-3 md:w-1/3 px-6 py-8"
+        >
             <h2 class="text-2xl">Preferences</h2>
             <div class="mb-6 mt-3">
                 <h3 class="">Currency:</h3>
@@ -156,7 +202,9 @@
                 </form>
             </div>
         </section>
-        <section class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8">
+        <section
+            class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8"
+        >
             <h2 class="text-2xl">Password</h2>
             <div class="mt-3">
                 <div>
@@ -174,7 +222,7 @@
                         <div class="flex flex-col mb-6">
                             <label for="newPassword">New password</label>
                             <input
-                                class="mb-2 mt-1  my-input"
+                                class="mb-2 mt-1 my-input"
                                 type="password"
                                 bind:value={newPassword}
                                 id="newPassword"
@@ -185,7 +233,7 @@
                             >
                             <input
                                 type="password"
-                                class="my-input mt-1 "
+                                class="my-input mt-1"
                                 bind:value={newPasswordRepeat}
                                 id="newPasswordRepeat"
                                 placeholder="repeat new password"
@@ -218,9 +266,35 @@
         <section class="md:border-main md:border-b-3 md:w-1/3 px-4 py-8">
             <h3 class="text-2xl mb-3">Account:</h3>
             <button
-                class="px-4 py-2  relative overflow-hidden border-2 border-red-600 bg-none text-red-600 transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:duration-300 after:absolute after:right-0 after:top-0 after:h-full after:w-0 after:duration-300 hover:text-zinc-100 hover:before:w-2/4 hover:before:bg-red-600 hover:after:w-2/4 hover:after:bg-red-600 select-none uppercase font-bold"
+                on:click={() => (deletingAccount = !deletingAccount)}
+                class="px-4 py-2 relative overflow-hidden border-2 border-red-600 bg-none text-red-600 transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:duration-300 after:absolute after:right-0 after:top-0 after:h-full after:w-0 after:duration-300 hover:text-zinc-100 hover:before:w-2/4 hover:before:bg-red-600 hover:after:w-2/4 hover:after:bg-red-600 select-none uppercase font-bold"
                 ><span class="relative z-10">Delete account</span>
             </button>
         </section>
     </article>
 </section>
+
+<style>
+    dialog[open] {
+        animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes zoom {
+        from {
+            transform: scale(0.95);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+    dialog[open]::backdrop {
+        animation: fade 0.2s ease-out;
+    }
+    @keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+</style>

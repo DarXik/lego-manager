@@ -21,7 +21,7 @@ export const dictionary = {
 		"/(site)/add-set": [~5,[2]],
 		"/login": [~8],
 		"/register": [~9],
-		"/(site)/settings": [7,[2]],
+		"/(site)/settings": [~7,[2]],
 		"/(site)/set/[slug]": [~6,[2]]
 	};
 
