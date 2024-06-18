@@ -85,6 +85,16 @@ const post = async (req: Request, res: Response) => {
 
         // uložení a vytvoření setu
         let set: any = await prisma.sets.findUnique({ where: { setNumber: userSet.setNumber } })
+        try {
+            if ((await prisma.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } })).find((s) => s.setNumber == userSet.setNumber)) {
+                console.log("set already added");
+                return res.status(400).send({ message: "set already added" })
+            }
+        }
+        catch (err) {
+            console.log(err)
+            return res.status(500).send({ message: "set could not be saved" })
+        }
 
         if (!set) {
 
@@ -95,7 +105,6 @@ const post = async (req: Request, res: Response) => {
                         name: userSet.name,
                         yearReleased: parseInt(userSet.yearReleased),
                         partsAmount: parseInt(userSet.partsAmount),
-                        // themeId: parseInt(userSet.themeId),
                         themeName: userSet.themeName,
                         addedBy: { connect: { id: verifiedUser.user.id } },
                         usedBy: { connect: { id: verifiedUser.user.id } },

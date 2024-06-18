@@ -24,6 +24,8 @@
     let files: any;
     let sending: boolean = false;
 
+    let setStatus: any;
+
     function handleImageUpload(e: Event) {
         const image = (e.target as HTMLInputElement)?.files?.[0];
         if (!image) return;
@@ -32,18 +34,18 @@
     }
 
     $: {
-        if (form?.newSetAdded) {
-            uploadedImage = "";
-            setTimeout(() => {
-                uploadedImage = "";
-                imageThumbnail = "";
-                window.location.reload();
-            }, 3000);
-            imageThumbnail = "";
-            searchQuery = "";
-            isSearching = false;
-            files = null;
-        }
+        // if (form?.message && form?.status == 201) {
+        //     uploadedImage = "";
+        //     setTimeout(() => {
+        //         uploadedImage = "";
+        //         imageThumbnail = "";
+        //         window.location.reload();
+        //     }, 3000);
+        //     imageThumbnail = "";
+        //     searchQuery = "";
+        //     isSearching = false;
+        //     files = null;
+        // }
 
         if (form?.setsFound) {
             fetchedSets = form?.setsFound;
@@ -57,15 +59,12 @@
         setNumber = set.setNumber;
         yearReleased = set.yearReleased;
         partsAmount = set.numParts;
-        // themeId = set.themeId;
         themeName = set.themeName;
     }
 
     let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
     let currentItems = 8;
     let priceFocused: boolean = false;
-
-    $: console.log(sending);
 </script>
 
 <section in:fade={{ delay: 50, duration: 300 }}>
@@ -183,11 +182,16 @@
             sending = true;
             return async ({ result }) => {
                 if (result) {
-                    console.log(result);
                     sending = false;
-                    // setTimeout(() => {
-                    //     window.location.reload();
-                    // }, 1000);
+                    setStatus = result;
+                    console.log(result);
+                    setTimeout(() => {
+                        window.location.reload();
+                        imageThumbnail = "";
+                        searchQuery = "";
+                        isSearching = false;
+                        files = null;
+                    }, 1200);
                 }
             };
         }}
@@ -357,10 +361,7 @@
             >
         </div>
         <div class="one-cell row-start-5 row-end-5 col-start-1 col-end-2">
-            <label for="imageThumbnail"
-                >Set image <span class="text-sm">*portrait preferred</span
-                ></label
-            >
+            <label for="imageThumbnail">Set image</label>
             <div class="my-input">
                 <input
                     type="file"
@@ -405,6 +406,20 @@
             class="one-cell row-start-7 row-end-7 col-start-1 col-end-1 flex flex-row gap-8 mt-8 pb-4"
         >
             <button
+                type="submit"
+                class="my-button-2 w-fit uppercase px-12"
+                class:!cursor-default={isSearching}
+                disabled={(sending &&
+                    !(
+                        name.length === 0 ||
+                        setNumber.length === 0 ||
+                        partsAmount.length === 0 ||
+                        themeName.length === 0
+                    )) ||
+                    isSearching}
+                ><span class="relative z-10">Add set</span>
+            </button>
+            <!-- <button
                 class:set-added={form?.newSetAdded}
                 type="submit"
                 class="my-button-2 w-fit uppercase px-12"
@@ -422,19 +437,40 @@
                 <span class="relative z-10">
                     {form?.newSetAdded ? form?.newSetAdded.message : "Add set"}
                 </span>
-            </button>
-            {#if form?.newSetFailed}
+            </button> -->
+            <!-- {#if form?.newSetFailed}
                 <p class="text-red-500 font-bold uppercase">
                     {form?.newSetFailed.message}
                 </p>
             {/if}
             {#if form?.problem}
-                <p class="text-red-500 font-bold uppercase">
+                <p class="te xt-red-500 font-bold uppercase">
                     {form?.problem}
                 </p>
+            {/if} -->
+            <!-- {#if form?.data.message}
+                <p class="text-white font-bold uppercase transition-all">
+                    {form?.data.message}
+                </p>
+            {/if} -->
+            {#if setStatus?.data?.message}
+                <p class="text-green-500 font-bold uppercase transition-all">
+                    {setStatus?.data?.message}
+                </p>
             {/if}
+
+            {#if setStatus?.status == 500}
+                <p class="text-red-500 font-bold uppercase transition-all">
+                    Set could not be added
+                </p>
+            {/if}
+
             {#if sending}
-                <p class="text-white font-bold uppercase transition-all italic">Uploading...</p>
+                <p
+                    class="text-gray-300 font-bold uppercase transition-all italic"
+                >
+                    Uploading...
+                </p>
             {/if}
         </div>
     </form>

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { userSets } from "$lib/store";
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
 
@@ -24,6 +23,7 @@
         let order = !ascending;
         currentKey = filter;
 
+        console.log("sorting ", filter);
         sets = sets.slice().sort((a: any, b: any) => {
             if (a[filter] < b[filter]) {
                 return -1 * (order ? 1 : -1);

@@ -1,9 +1,10 @@
+// @ts-nocheck
 import type { Actions } from './$types';
 import axios from 'axios';
 import { env } from '$env/dynamic/private';
 const secretOrigin = env.SECRET_ORIGIN;
 
-export const actions: Actions = {
+export const actions = {
     addSet: async ({ request, locals }) => {
         const formData = await request.formData();
 
@@ -64,3 +65,4 @@ export const actions: Actions = {
 
     }
 } satisfies Actions;
+;null as any as Actions;

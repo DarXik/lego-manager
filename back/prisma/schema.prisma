@@ -13,7 +13,6 @@ model Sets {
   setNumber    String          @unique @db.VarChar(255)
   name         String          @db.VarChar(255)
   partsAmount  Int             @db.Int
-  // themeId      Int             @db.Int
   themeName    String          @db.Text
   yearReleased Int             @db.SmallInt
   addedBy      Users           @relation(fields: [addedById], references: [id])
