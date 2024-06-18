@@ -16,3 +16,4 @@
 .env.db
 .env
 .env
+.env.frontend
