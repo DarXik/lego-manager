@@ -1,14 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { fade, slide } from "svelte/transition";
-
-    // $: isInSlug = $page.url.pathname.includes("/set/");
+    import { slide } from "svelte/transition";
 
     let isExpanded: boolean = false;
-
-    function clickHandler() {
-        isExpanded = !isExpanded;
-    }
 
     async function logout() {
         isExpanded = false;
@@ -24,7 +18,7 @@
 
     let accountHover: boolean = false;
     let addHover: boolean = false;
-    let isVisible: boolean = true;
+    let isVisible: boolean = false;
     let w: number;
 
     onMount(() => {
@@ -34,51 +28,60 @@
     $: if (w > 768) isVisible = false;
 </script>
 
-<!-- <svelte:window bind:scrollY={y} /> -->
-
-<nav
-    
-    class=" fixed md:hidden z-30 top-0 w-full bg-gray-950 h-20 border-gray-600"
->
+<nav class=" fixed md:hidden z-30 top-0 w-full bg-black h-20 border-gray-600">
     <div class="flex justify-between items-center px-3 h-full">
-        <a href="/" title="home">
+        <a href="/" title="home" on:click={() => (isVisible = false)}>
             <img
                 src="../../../../navbar/lego-logo.svg"
                 alt="lego logo"
                 class="w-12 h-12 transition-all active:scale-90"
             />
         </a>
-        <button on:click={() => (isVisible = !isVisible)}
-            ><img
+        <button on:click={() => (isVisible = !isVisible)}>
+            <img
                 src="../../../../navbar/hamburger.svg"
                 alt="hamburger"
                 class="w-12 h-12 md:hidden"
-            /></button
-        >
+            />
+        </button>
     </div>
 </nav>
 {#if isVisible}
     <div
         in:slide={{ duration: 400 }}
         out:slide={{ duration: 200 }}
-        class="z-20 absolute md:hidden top-0 left-0 w-screen h-screen bg-gray-950 flex flex-col justify-center items-center gap-y-16"
+        class="z-20 fixed md:hidden top-0 left-0 w-screen h-screen bg-gray-950 flex flex-col justify-center items-center gap-y-16"
     >
-        <div class="flex flex-col gap-y-4">
-            <a on:click={() => isVisible = !isVisible}
+        <div class="flex flex-col gap-y-4 text-center">
+            <a
+                on:click={() => (isVisible = !isVisible)}
+                href="/"
+                class="text-zinc-100 px-10 py-3 border-2 border-zinc-100"
+            >
+                Home
+            </a>
+            <a
+                on:click={() => (isVisible = !isVisible)}
                 class="text-zinc-100 px-10 py-3 border-2 border-zinc-100"
                 href="/add-set">Add set</a
             >
-            <a on:click={() => isVisible = !isVisible}
+            <a
+                on:click={() => (isVisible = !isVisible)}
                 class="text-zinc-100 px-10 py-3 border-2 border-zinc-100"
                 href="/account">Account</a
             >
         </div>
         <div class="flex flex-col gap-y-4">
-            <a on:click={() => isVisible = !isVisible}
+            <a
+                on:click={() => (isVisible = !isVisible)}
                 class="text-zinc-100 px-10 py-3 border-2 border-zinc-100"
                 href="/settings">Settings</a
             >
-            <button class="text-zinc-100 px-10 py-3 border-2 border-zinc-100" title="logout" on:click={logout}>
+            <button
+                class="text-zinc-100 px-10 py-3 border-2 border-zinc-100"
+                title="logout"
+                on:click={logout}
+            >
                 Logout
             </button>
         </div>

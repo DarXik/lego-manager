@@ -2,7 +2,6 @@
     import { onMount } from "svelte";
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
     import { enhance } from "$app/forms";
-    import { userInfo } from "$lib/store";
     import { fade } from "svelte/transition";
 
     export let data;
