@@ -1,22 +1,19 @@
 
 /front/node_modules
-/back/node_modules
-/back/uploads
-/back/build
-/back/build
 /front/build
+
+/back/node_modules
+/back/uploads/images
+/back/uploads/instructions
 /back/build
-/back/build
-/back/build
+
 /lego-manager-backend-images
 /lego-manager-backend-instructions
-
 /lego-manager-db-data
-.env.backend
-.env.db
-.env
-.env
-.env.frontend
 
 /front/.env
 /back/.env
+.env.backend
+.env.frontend
+.env.db
+.env
