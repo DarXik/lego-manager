@@ -3,6 +3,8 @@
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
     import { enhance } from "$app/forms";
     import { fade } from "svelte/transition";
+    import { env } from '$env/dynamic/private';
+    const mediaOrigin = env.MEDIA_ORIGIN; 
 
     export let data;
     export let form;
@@ -269,7 +271,7 @@
 
         <div class="lg:w-[40%] max-md:hidden h-fit border-b-3 border-zinc-600">
             <img
-                src="http://localhost:3000/api/v1/image/{set?.image}"
+                src="http://${mediaOrigin}/api/v1/image/{set?.image}"
                 alt=""
                 class="h-[480px] object-cover"
             />
@@ -364,11 +366,11 @@
                         <div class="ml-4 flex max-md:flex-wrap gap-4 ">
                             <a
                                 class="my-button-2 shadow-none px-5"
-                                href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
+                                href="http://${mediaOrigin}/api/v1/instructions/{instruction.instructions}"
                                 target="_blank"><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/open.svg" alt="open icon" class="w-5 h-5"/>Open</span></a
                             ><a
                                 class="my-button-2 shadow-none px-5"
-                                href="http://localhost:3000/api/v1/instructions/download/{instruction.instructions}"
+                                href="http://${mediaOrigin}/api/v1/instructions/download/{instruction.instructions}"
                                 target="_self"
                                 download><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/download.svg" alt="open icon" class="w-5 h-5"/>Download</span></a
                             >
@@ -379,7 +381,7 @@
                             <object
                                 title="instructions"
                                 class="h-screen max-md:mx-6"
-                                data="http://localhost:3000/api/v1/instructions/{currentInstructions[0]
+                                data="http://${mediaOrigin}/api/v1/instructions/{currentInstructions[0]
                                     .instructions}"
                                 type="application/pdf"
                             ></object>
@@ -390,7 +392,7 @@
         {/if}
         <div class="px-8  md:hidden h-fit border-b-3 border-zinc-600">
             <img
-                src="http://192.168.0.13:3000/api/v1/image/{set?.image}"
+                src="http://${mediaOrigin}/api/v1/image/{set?.image}"
                 alt=""
                 class="w-11/12 mx-auto object-cover"
             />

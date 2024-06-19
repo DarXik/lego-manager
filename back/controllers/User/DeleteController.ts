@@ -29,7 +29,7 @@ const deleteAccount = async (req: Request, res: Response) => {
             // odpojí a smaže instrukce, které měl pouze uživatel ve svých vlastních setech
             for (const set of sets) {
                 if (set.usedBy.length == 1) {
-                    let instruction = await prisma.instructions.findUnique({ where: { id: set.id })
+                    let instruction = await prisma.instructions.findUnique({ where: { id: set.id }})
 
                     // smaže instukci, pokud existuje - jen tu soukromou
                     if (instruction) {
