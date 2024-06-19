@@ -17,3 +17,6 @@
 .env
 .env
 .env.frontend
+
+/front/.env
+/back/.env
