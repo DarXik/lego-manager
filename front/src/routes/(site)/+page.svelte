@@ -2,45 +2,40 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
 
-    // export let form;
     export let data;
     let sets: any = [];
 
-    console.log(data)
-
-    $: if (data.sets.length > 0 || sets.length > 0) {
-        sets = data.sets.slice().sort((a: any, b: any) => a.name > b.name);
-        
-        for (const key in sets) {
-            sets[key].localId = parseInt(key);
-        }
-    }
+    console.log(data);
 
     let ascending: boolean = true;
     let currentKey: string = "name";
 
-    $: console.log(sets);
+    $: sort = (filter: string) => {
+        ascending = !ascending;
+        let order = !ascending;
+        currentKey = filter;
 
-    // $: sort = (filter: string) => {
-    //     ascending = !ascending;
-    //     let order = !ascending;
-    //     currentKey = filter;
-
-    //     console.log("sorting ", filter);
-    //     sets = sets.slice().sort((a: any, b: any) => {
-    //         if (a[filter] < b[filter]) {
-    //             return -1 * (order ? 1 : -1);
-    //         }
-    //         if (a[filter] > b[filter]) {
-    //             return 1 * (order ? 1 : -1);
-    //         }
-    //         return 0;
-    //     });
-    // };
+        sets = sets.slice().sort((a: any, b: any) => {
+            if (a[filter] < b[filter]) {                
+                return -1  * (order ? 1 : -1);
+            }
+            if (a[filter] > b[filter]) {
+                return 1   * (order ? 1 : -1);
+            }
+            return 0;
+        });
+    };
 
     let w: number;
     onMount(() => {
         w = window.innerWidth;
+        if (data.sets.length > 0 || sets.length > 0) {
+            sets = data.sets.slice().sort((a: any, b: any) => a.name > b.name);
+
+            for (const key in sets) {
+                sets[key].localId = parseInt(key);
+            }
+        }
     });
 </script>
 

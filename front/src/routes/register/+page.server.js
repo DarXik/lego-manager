@@ -40,7 +40,8 @@ export const actions = {
             })
             
             if (response.ok) {
-                redirect(302, "/");
+                // redirect(302, "/");
+                return {success: true};
                 
             } else {
                 return {

@@ -24,7 +24,7 @@
         passwordMatch = false;
     }
 
-    $: console.log(form);
+    $: if (form?.success) goto("/login");
 
     // $: if (form?.success) {
     //     console.log("success");

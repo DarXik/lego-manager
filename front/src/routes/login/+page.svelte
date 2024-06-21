@@ -21,11 +21,11 @@
         passwordMatch = false;
     }
 
-    
+    $: if (form?.success) goto("/");
 </script>
 
 <section
-    class="flex items-center justify-center min-h-screen mx-10 "
+    class="flex items-center justify-center min-h-screen mx-10"
     in:fade={{ delay: 50, duration: 300 }}
 >
     <div
@@ -54,7 +54,9 @@
                 />
             </div>
             <div class="flex flex-col space-y-1 mb-8">
-                <label for="password" class="text-sm font-medium peer-focus:text-white -order-last transition-all duration-200"
+                <label
+                    for="password"
+                    class="text-sm font-medium peer-focus:text-white -order-last transition-all duration-200"
                     >Password</label
                 >
                 <div class="w-full h-fit relative">
