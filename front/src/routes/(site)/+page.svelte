@@ -10,6 +10,7 @@
 
     $: if (data.sets.length > 0 || sets.length > 0) {
         sets = data.sets.slice().sort((a: any, b: any) => a.name > b.name);
+        
         for (const key in sets) {
             sets[key].localId = parseInt(key);
         }
@@ -18,22 +19,24 @@
     let ascending: boolean = true;
     let currentKey: string = "name";
 
-    $: sort = (filter: string) => {
-        ascending = !ascending;
-        let order = !ascending;
-        currentKey = filter;
+    $: console.log(sets);
 
-        console.log("sorting ", filter);
-        sets = sets.slice().sort((a: any, b: any) => {
-            if (a[filter] < b[filter]) {
-                return -1 * (order ? 1 : -1);
-            }
-            if (a[filter] > b[filter]) {
-                return 1 * (order ? 1 : -1);
-            }
-            return 0;
-        });
-    };
+    // $: sort = (filter: string) => {
+    //     ascending = !ascending;
+    //     let order = !ascending;
+    //     currentKey = filter;
+
+    //     console.log("sorting ", filter);
+    //     sets = sets.slice().sort((a: any, b: any) => {
+    //         if (a[filter] < b[filter]) {
+    //             return -1 * (order ? 1 : -1);
+    //         }
+    //         if (a[filter] > b[filter]) {
+    //             return 1 * (order ? 1 : -1);
+    //         }
+    //         return 0;
+    //     });
+    // };
 
     let w: number;
     onMount(() => {
