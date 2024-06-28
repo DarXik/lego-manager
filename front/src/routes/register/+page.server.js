@@ -5,21 +5,20 @@ export const actions = {
         const data = await request.formData();
         console.log(data);
 
-        const email = data.get("email");
         const password = data.get("password");
         const confirm_password = data.get("confirm_password");
         const username = data.get("username");
 
-        if (!email || !password) {
+        if (!username || !password) {
             return {
-                email,
-                problem: "Missing email or password"
+                username,
+                problem: "Missing username or password"
             };
         }
 
-        if(confirm_password !== password) {
+        if (confirm_password !== password) {
             return {
-                email,
+                username,
                 problem: "Passwords do not match"
             };
         }
@@ -33,16 +32,17 @@ export const actions = {
                     "Accept": "application/json"
                 },
                 body: JSON.stringify({
-                    email: email,
                     password: password,
                     username: username
                 })
             })
-            
+
+            console.log(response)
+
             if (response.ok) {
                 // redirect(302, "/");
-                return {success: true};
-                
+                return { success: true };
+
             } else {
                 return {
                     success: false,

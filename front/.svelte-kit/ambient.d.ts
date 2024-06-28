@@ -44,10 +44,8 @@ declare module '$env/static/private' {
 	export const DokanLibrary1_LibraryPath_x64: string;
 	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
-	export const EFC_6076: string;
+	export const EFC_6232: string;
 	export const EnableLog: string;
-	export const FPS_BROWSER_APP_PROFILE_STRING: string;
-	export const FPS_BROWSER_USER_PROFILE_STRING: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
@@ -69,6 +67,7 @@ declare module '$env/static/private' {
 	export const npm_lifecycle_script: string;
 	export const npm_node_execpath: string;
 	export const npm_package_dependencies_axios: string;
+	export const npm_package_dependencies_dotenv: string;
 	export const npm_package_dependencies_fs: string;
 	export const npm_package_dependencies_multer: string;
 	export const npm_package_dependencies_pnpm: string;
@@ -103,7 +102,6 @@ declare module '$env/static/private' {
 	export const NVM_HOME: string;
 	export const NVM_SYMLINK: string;
 	export const OneDrive: string;
-	export const OneDriveCommercial: string;
 	export const OneDriveConsumer: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
 	export const OS: string;
@@ -189,10 +187,8 @@ declare module '$env/dynamic/private' {
 		DokanLibrary1_LibraryPath_x64: string;
 		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
-		EFC_6076: string;
+		EFC_6232: string;
 		EnableLog: string;
-		FPS_BROWSER_APP_PROFILE_STRING: string;
-		FPS_BROWSER_USER_PROFILE_STRING: string;
 		GIT_ASKPASS: string;
 		HOME: string;
 		HOMEDRIVE: string;
@@ -214,6 +210,7 @@ declare module '$env/dynamic/private' {
 		npm_lifecycle_script: string;
 		npm_node_execpath: string;
 		npm_package_dependencies_axios: string;
+		npm_package_dependencies_dotenv: string;
 		npm_package_dependencies_fs: string;
 		npm_package_dependencies_multer: string;
 		npm_package_dependencies_pnpm: string;
@@ -248,7 +245,6 @@ declare module '$env/dynamic/private' {
 		NVM_HOME: string;
 		NVM_SYMLINK: string;
 		OneDrive: string;
-		OneDriveCommercial: string;
 		OneDriveConsumer: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
 		OS: string;

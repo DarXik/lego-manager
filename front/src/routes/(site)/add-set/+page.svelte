@@ -1,8 +1,7 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
-    import { onMount } from "svelte";
-    import { navbarHeight, userInfo } from "$lib/store";
     import { fade } from "svelte/transition";
+    import Loader from "../components/Loader.svelte";
 
     export let form;
     export let data;
@@ -24,6 +23,10 @@
     let files: any;
     let sending: boolean = false;
 
+    let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
+    let currentItems = 8;
+    let priceFocused: boolean = false;
+
     let setStatus: any;
 
     function handleImageUpload(e: Event) {
@@ -34,19 +37,6 @@
     }
 
     $: {
-        // if (form?.message && form?.status == 201) {
-        //     uploadedImage = "";
-        //     setTimeout(() => {
-        //         uploadedImage = "";
-        //         imageThumbnail = "";
-        //         window.location.reload();
-        //     }, 3000);
-        //     imageThumbnail = "";
-        //     searchQuery = "";
-        //     isSearching = false;
-        //     files = null;
-        // }
-
         if (form?.setsFound) {
             fetchedSets = form?.setsFound;
         }
@@ -61,10 +51,6 @@
         partsAmount = set.numParts;
         themeName = set.themeName;
     }
-
-    let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
-    let currentItems = 8;
-    let priceFocused: boolean = false;
 </script>
 
 <section in:fade={{ delay: 50, duration: 300 }}>
@@ -191,7 +177,7 @@
                         searchQuery = "";
                         isSearching = false;
                         files = null;
-                    }, 1200);
+                    }, 1500);
                 }
             };
         }}
@@ -306,7 +292,7 @@
             <label
                 for="yearReleased"
                 class="peer-focus:text-white -order-last transition-all duration-200"
-                >Year of release</label
+                >Year of release <span class="text-red-600">*</span></label
             >
         </div>
         <div class="one-cell row-start-4 row-end-4 col-start-2 col-end-2">
@@ -419,43 +405,17 @@
                     isSearching}
                 ><span class="relative z-10">Add set</span>
             </button>
-            <!-- <button
-                class:set-added={form?.newSetAdded}
-                type="submit"
-                class="my-button-2 w-fit uppercase px-12"
-                class:!cursor-default={isSearching}
-                disabled={(form?.newSetAdded &&
-                    sending &&
-                    !(
-                        name.length === 0 ||
-                        setNumber.length === 0 ||
-                        partsAmount.length === 0 ||
-                        themeName.length === 0
-                    )) ||
-                    isSearching}
-            >
-                <span class="relative z-10">
-                    {form?.newSetAdded ? form?.newSetAdded.message : "Add set"}
-                </span>
-            </button> -->
-            <!-- {#if form?.newSetFailed}
-                <p class="text-red-500 font-bold uppercase">
-                    {form?.newSetFailed.message}
-                </p>
-            {/if}
-            {#if form?.problem}
-                <p class="te xt-red-500 font-bold uppercase">
-                    {form?.problem}
-                </p>
-            {/if} -->
-            <!-- {#if form?.data.message}
-                <p class="text-white font-bold uppercase transition-all">
-                    {form?.data.message}
-                </p>
-            {/if} -->
             {#if setStatus?.data?.message}
-                <p class="text-green-500 font-bold uppercase transition-all">
+                <p
+                    class="text-green-500 font-bold uppercase transition-all flex flex-row gap-1"
+                >
                     {setStatus?.data?.message}
+                    <span
+                        ><img
+                            src="../../../../add-set/check-ok.svg"
+                            alt="ok"
+                        /></span
+                    >
                 </p>
             {/if}
 
@@ -467,9 +427,11 @@
 
             {#if sending}
                 <p
-                    class="text-gray-300 font-bold uppercase transition-all italic"
+                    class="text-gray-300 font-bold uppercase transition-all italic flex flex-row gap-2 mt-2"
                 >
-                    Uploading...
+                    Adding set... <span>
+                        <Loader></Loader>
+                    </span>
                 </p>
             {/if}
         </div>

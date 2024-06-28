@@ -15,13 +15,11 @@ const get = async (req: Request, res: Response) => {
 
     // všechny sety
     if (!req.params.id) {
-        // console.log("sets for user: ", verifiedUser.user.username);
 
+        console.log("get all sets")
         try {
             const sets: any = await prisma.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } })
             const attachment = await prisma.setAttachment.findMany({ where: { setId: { in: sets.map((set: any) => set.id) }, addedById: verifiedUser.user.id } })
-            
-            // console.log(attachment)
 
             if (!sets || sets.length == 0) {
                 return res.status(404).send({ message: "sets not found" })
@@ -35,7 +33,7 @@ const get = async (req: Request, res: Response) => {
                     themeName: set.themeName,
                     addedOn: attachment.find((attachment: any) => attachment.setId == set.id)?.addedOn || null,
                     yearBought: attachment.find((attachment: any) => attachment.setId == set.id)?.yearBought || null,
-                    
+
                 }
             })
 

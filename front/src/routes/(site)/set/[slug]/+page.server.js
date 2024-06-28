@@ -12,7 +12,7 @@ export const load = async ({ params, locals }) => {
         }
     })
     let res1 = await response.json()
-    console.log(res1)
+    console.log(res1.currency)
 
     if (response.ok) {
         return {

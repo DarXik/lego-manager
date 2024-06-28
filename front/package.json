@@ -29,6 +29,7 @@
 	"type": "module",
 	"dependencies": {
 		"axios": "^1.6.8",
+		"dotenv": "^16.4.5",
 		"fs": "^0.0.1-security",
 		"multer": "^1.4.5-lts.1",
 		"pnpm": "^9.0.6",

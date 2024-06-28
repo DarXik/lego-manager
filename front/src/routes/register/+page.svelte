@@ -64,7 +64,7 @@
                     class="my-input"
                 />
             </div>
-            <div class="flex flex-col space-y-1 mb-4">
+            <!-- <div class="flex flex-col space-y-1 mb-4">
                 <label for="email" class="text-sm font-medium">Email</label>
                 <input
                     type="text"
@@ -75,7 +75,7 @@
                     autocomplete="off"
                     class="my-input"
                 />
-            </div>
+            </div> -->
             <div class="flex flex-col space-y-1 mb-4">
                 <label for="password" class="text-sm font-medium"
                     >Password</label

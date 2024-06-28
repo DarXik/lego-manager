@@ -4,7 +4,6 @@
     import { fade } from "svelte/transition";
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
-    import { userInfo } from "$lib/store";
 
     export let form: any;
     export let data: any;
@@ -41,7 +40,7 @@
         <form method="POST" class="" use:enhance>
             <div class="flex flex-col space-y-1 mb-4">
                 <label for="email" class="text-sm font-medium"
-                    >Email or Username</label
+                    >Username</label
                 >
                 <input
                     type="text"

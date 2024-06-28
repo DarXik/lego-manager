@@ -1,18 +1,17 @@
-import { redirect } from "@sveltejs/kit";
 import { env } from '$env/dynamic/private';
 const secretOrigin = env.SECRET_ORIGIN;
 
 export const actions = {
-    default: async ({request, cookies}) => {
+    default: async ({ request, cookies }) => {
         const data = await request.formData();
 
-        const email = data.get("email");
+        const username = data.get("email");
         const password = data.get("password");
 
-        if (!email || !password) {
+        if (!username || !password) {
             return {
-                email,
-                problem: "Missing email or password"
+                email: username,
+                problem: "Missing username or password"
             };
         }
 
@@ -25,7 +24,7 @@ export const actions = {
                     "Accept": "application/json"
                 },
                 body: JSON.stringify({
-                    email: email,
+                    email: username,
                     password: password,
                 })
             })
@@ -43,7 +42,7 @@ export const actions = {
 
                 // redirect(302, "/");
 
-                return {success: true};
+                return { success: true };
 
             } else {
                 return {

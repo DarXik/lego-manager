@@ -3,7 +3,7 @@
   import Navbar from "./components/Navbar.svelte";
   import { onMount } from "svelte";
   import { userSets, userInfo } from "$lib/store";
-  import { fade } from "svelte/transition";
+    import type { PageData } from "./$types";
 
   export let data;
 
@@ -21,8 +21,8 @@
 <main class="md:ml-24 max-md:mt-20 min-h-screen">
   <div class="border-b-3 border-zinc-600 p-4 px-6 max-md:hidden">
     <p class="text-2xl">
-      <span class="text-base text-gray-500">user:</span>
-      {data.email ? data.email : "--"}
+      <span class="text-base text-gray-500">logged in as</span>
+      {data.username ? data.username : "--"}
     </p>
   </div>
   <slot />

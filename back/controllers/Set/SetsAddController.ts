@@ -18,7 +18,6 @@ const post = async (req: Request, res: Response) => {
         return res.status(404).send({ message: "user not found" })
     }
 
-
     const userSet: any = await req.body
     console.log(userSet)
     let newImageFilename;
@@ -109,7 +108,6 @@ const post = async (req: Request, res: Response) => {
                         usedBy: { connect: { id: verifiedUser.user.id } },
                     }
                 })
-
                 let newAttachment = await prisma.setAttachment.create({
                     data: {
                         description: userSet?.description || null,
@@ -117,7 +115,8 @@ const post = async (req: Request, res: Response) => {
                         price: parseInt(userSet?.price) || null,
                         image: newImageFilename || null,
                         addedBy: { connect: { id: verifiedUser.user.id } },
-                        set: { connect: { id: newSet.id } }
+                        set: { connect: { id: newSet.id } },
+                        currency: verifiedUser.user.preferredCurrency
                     }
 
                 })

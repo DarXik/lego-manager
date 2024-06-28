@@ -22,7 +22,6 @@ export const load = (async ({ locals, data }: { locals: any; data: any; }) => {
             ...data,
             sessionId: locals.session,
             username: res.username,
-            email: res.email,
             currency: res.preferredCurrency,
             language: res.preferredLanguage
         }

@@ -35,7 +35,7 @@
 
             setTimeout(() => {
                 currencyUpdated = false;
-            }, 4000);
+            }, 2000);
         }
     }
 
@@ -57,7 +57,7 @@
 
             setTimeout(() => {
                 languageUpdated = false;
-            }, 4000);
+            }, 2000);
         }
     }
 
@@ -81,7 +81,7 @@
 
             setTimeout(() => {
                 passwordUpdated = false;
-            }, 4000);
+            }, 2000);
         }
     }
 

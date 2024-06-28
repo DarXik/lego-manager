@@ -39,6 +39,8 @@ const get = async (req: Request, res: Response) => {
             }
         })
 
+        console.log("user logged out");
+        
         return res.status(200).send({ message: "user logged out" })
 
     }

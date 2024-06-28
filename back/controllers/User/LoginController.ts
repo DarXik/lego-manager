@@ -7,12 +7,12 @@ import { v4 as uuidv4 } from 'uuid'
 const post = async (req: Request, res: Response) => {
     console.log(req.body);
 
-    if ((!req.body.email && !req.body.username) || !req.body.password) {
+    if (!req.body.email || !req.body.password) {
         return res.status(400).send({ message: "something is missing" })
     }
 
     try {
-        const user = await prisma.users.findUnique({ where: { email: req.body.email } } || { where: { username: req.body.email } })
+        const user = await prisma.users.findFirst({ where: { username: req.body.email } })
         console.log("logging in: ", user)
 
         if (!user) {

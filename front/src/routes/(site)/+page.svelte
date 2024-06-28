@@ -2,13 +2,13 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
 
-    export let data;
+    export let data: any;
     let sets: any = [];
-
-    console.log(data);
-
+    let w: number;
     let ascending: boolean = true;
     let currentKey: string = "name";
+
+    console.log(data);
 
     $: sort = (filter: string) => {
         ascending = !ascending;
@@ -16,17 +16,16 @@
         currentKey = filter;
 
         sets = sets.slice().sort((a: any, b: any) => {
-            if (a[filter] < b[filter]) {                
-                return -1  * (order ? 1 : -1);
+            if (a[filter] < b[filter]) {
+                return -1 * (order ? 1 : -1);
             }
             if (a[filter] > b[filter]) {
-                return 1   * (order ? 1 : -1);
+                return 1 * (order ? 1 : -1);
             }
             return 0;
         });
     };
 
-    let w: number;
     onMount(() => {
         w = window.innerWidth;
         if (data.sets.length > 0 || sets.length > 0) {

@@ -3,6 +3,7 @@
     import InfoCardwIcon from "./components/InfoCardwIcon.svelte";
     import { enhance } from "$app/forms";
     import { fade } from "svelte/transition";
+    import { goto } from "$app/navigation";
 
     export let data;
     export let form;
@@ -15,6 +16,13 @@
     let descriptionEdit = "";
     let yearBoughtEdit = "";
     let priceEdit = "";
+    let modalDelete: any;
+    let modalEdit: any;
+    let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
+    let loading = false;
+    let updateStatus: any = "";
+
+    $:console.log(data)
 
     onMount(() => {
         if (set) {
@@ -44,25 +52,17 @@
             setTimeout(() => {
                 deletingSet = false;
 
-                window.location.reload();
-            }, 2500);
+                goto("/");
+            }, 1500);
         }
     }
-
-    let modalDelete: any;
-    let modalEdit: any;
 
     $: if (modalDelete && deletingSet && !editingSet) modalDelete.showModal();
     $: if (modalEdit && editingSet && !deletingSet) modalEdit.showModal();
 
-    let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
-    let loading = false;
-
     function handleSubmit() {
         loading = true;
     }
-
-    let updateStatus: any = "";
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -98,9 +98,9 @@
         </div>
         <div class="p-2 text-lg">
             <p>
-                &bull; Set will be deleted only from your account. <br />
-                &bull; Those already added by others will not be deleted. <br />
-                &bull; This action cannot be undone.
+                &bull; Set will only be deleted from your account. <br />
+                &bull; Sets already added by others will not be deleted. <br />
+                &bull; This action is irreversible.
             </p>
         </div>
 
@@ -120,7 +120,7 @@
 </dialog>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog 
+<dialog
     class="border-3 border-zinc-600 bg-black
      text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm w-[80%] md:w-[60%] lg:w-[50%] xl:w-[40%]"
     bind:this={modalEdit}
@@ -162,7 +162,7 @@
                             loading = false;
 
                             window.location.reload();
-                        }, 2500);
+                        }, 1000);
                     }
                 };
             }}
@@ -296,8 +296,8 @@
                 title="No. of bricks"
             ></InfoCardwIcon>
             <InfoCardwIcon
-                path="currencies/{currencies[data.currency]}"
-                text={set.price}
+                path="currencies/{currencies[data.set.currency]}"
+                text={set.price + ",-"}
                 title="Price"
             ></InfoCardwIcon>
             <InfoCardwIcon
@@ -347,7 +347,8 @@
                             on:click={() =>
                                 (currentInstructions = set.allInstructions)}
                             on:click={() => (instructiosPref = "Public")}
-                            class:!border-purple-600={instructiosPref == "Public"}
+                            class:!border-purple-600={instructiosPref ==
+                                "Public"}
                             class:!text-purple-500={instructiosPref == "Public"}
                             class="my-button"
                             >Public instructions ({set.allInstructions
@@ -362,20 +363,40 @@
                         >
                             {i + 1}
                         </p>
-                        <div class="ml-4 flex max-md:flex-wrap gap-4 ">
+                        <div class="ml-4 flex max-md:flex-wrap gap-4">
                             <a
                                 class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/{instruction.instructions}"
-                                target="_blank"><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/open.svg" alt="open icon" class="w-5 h-5"/>Open</span></a
+                                target="_blank"
+                                ><span
+                                    class="relative z-10 flex flex-row items-center gap-4"
+                                >
+                                    <img
+                                        src="/set/open.svg"
+                                        alt="open icon"
+                                        class="w-5 h-5"
+                                    />Open</span
+                                ></a
                             ><a
                                 class="my-button-2 shadow-none px-5"
                                 href="http://localhost:3000/api/v1/instructions/download/{instruction.instructions}"
                                 target="_self"
-                                download><span class="relative z-10 flex flex-row items-center gap-4"> <img src="/set/download.svg" alt="open icon" class="w-5 h-5"/>Download</span></a
+                                download
+                                ><span
+                                    class="relative z-10 flex flex-row items-center gap-4"
+                                >
+                                    <img
+                                        src="/set/download.svg"
+                                        alt="open icon"
+                                        class="w-5 h-5"
+                                    />Download</span
+                                ></a
                             >
                         </div>
                     </div>
-                    <div class="flex flex-col max-md:border-main border-gray-600 md:last:border-b-3">
+                    <div
+                        class="flex flex-col max-md:border-main border-gray-600 md:last:border-b-3"
+                    >
                         {#if currentInstructions.length == 1}
                             <object
                                 title="instructions"
@@ -389,7 +410,7 @@
                 {/each}
             </div>
         {/if}
-        <div class="px-8  md:hidden h-fit border-b-3 border-zinc-600">
+        <div class="px-8 md:hidden h-fit border-b-3 border-zinc-600">
             <img
                 src="http://localhost:3000/api/v1/image/{set?.image}"
                 alt=""
@@ -397,11 +418,16 @@
             />
         </div>
         <div>
-            <div class="flex flex-row gap-4 p-4 max-md:justify-center max-md:my-4">
+            <div
+                class="flex flex-row gap-4 p-4 max-md:justify-center max-md:my-4"
+            >
                 <button on:click={editSet} class="my-button-2">
                     <span class="relative z-10">Edit set</span>
                 </button>
-                <button on:click={() => (deletingSet = !deletingSet)} on:click={editSet} class="my-button-2">
+                <button
+                    on:click={() => (deletingSet = !deletingSet)}
+                    class="my-button-2"
+                >
                     <span class="relative z-10">Delete set</span>
                 </button>
             </div>

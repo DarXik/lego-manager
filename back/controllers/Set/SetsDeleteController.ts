@@ -64,18 +64,18 @@ const deleteSet = async (req: Request, res: Response) => {
             }
         })
 
-        if (instructions?.instructions) {
-            try {
+        // if (instructions?.instructions) {
+        //     try {
 
-                let file = path.join(__dirname, `../../uploads/instructions/${instructions?.instructions}`)
-                console.log("file do delete: ", file)
-                await fs.unlink(file)
-            }
-            catch (err) {
-                console.log(err)
-                return res.status(500).send({ message: "pdf could not be deleted" })
-            }
-        }
+        //         let file = path.join(__dirname, `../../../../back/uploads/instructions/${instruction.instructions}`)
+        //         console.log("file do delete: ", file)
+        //         await fs.unlink(file)
+        //     }
+        //     catch (err) {
+        //         console.log(err)
+        //         return res.status(500).send({ message: "pdf could not be deleted" })
+        //     }
+        // }
 
         res.status(200).send({ message: "set deleted" })
 
