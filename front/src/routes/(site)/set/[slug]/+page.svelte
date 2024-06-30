@@ -297,7 +297,7 @@
             ></InfoCardwIcon>
             <InfoCardwIcon
                 path="currencies/{currencies[data.set.currency]}"
-                text={set.price + ",-"}
+                text={set.price}
                 title="Price"
             ></InfoCardwIcon>
             <InfoCardwIcon

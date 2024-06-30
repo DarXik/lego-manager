@@ -23,6 +23,10 @@ const post = async (req: Request, res: Response) => {
             return res.status(401).send({ message: "wrong password" })
         }
 
+        if(user.deleted){
+            return res.status(401).send({ message: "user deleted" })
+        }
+
         const userSession: string = createToken(user.id.toString()).toString()
 
         try {

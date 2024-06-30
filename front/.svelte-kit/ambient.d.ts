@@ -44,7 +44,7 @@ declare module '$env/static/private' {
 	export const DokanLibrary1_LibraryPath_x64: string;
 	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
-	export const EFC_6232: string;
+	export const EFC_6156: string;
 	export const EnableLog: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
@@ -187,7 +187,7 @@ declare module '$env/dynamic/private' {
 		DokanLibrary1_LibraryPath_x64: string;
 		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
-		EFC_6232: string;
+		EFC_6156: string;
 		EnableLog: string;
 		GIT_ASKPASS: string;
 		HOME: string;

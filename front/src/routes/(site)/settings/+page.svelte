@@ -29,7 +29,7 @@
         if (response.ok) {
             console.log(await response.json());
 
-            data.currency = currency;
+            data.currency = currency; // neupdatuje - použít story
 
             currencyUpdated = true;
 

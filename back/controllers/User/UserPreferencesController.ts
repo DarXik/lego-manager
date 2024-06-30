@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import prisma from "../../config/prisma"
 import { verifyUser } from "../../services/userAuthentication"
 
-
+// při loginu
 const get = async (req: Request, res: Response) => {
     if ((!req.headers.authorization)) {
         return res.status(400).send({ message: "something is missing" })

@@ -9,73 +9,76 @@ const deleteSet = async (req: Request, res: Response) => {
     if (!req.params.id || !req.headers.authorization) {
         return res.status(400).send({ message: "something is missing" })
     }
+    
     const verifiedUser: any = await verifyUser(req.headers.authorization.toString())
     if (!verifiedUser.user || !verifiedUser.token) {
         return res.status(404).send({ message: "user not found" })
     }
-
-    let setId = req.params.id;
-    console.log("set to delete: ", setId)
+    console.log("set to delete: ", req.params.id)
 
     try {
-        await prisma.users.update({
-            where: { id: verifiedUser.user.id },
-            data: {
-                usedSets: { disconnect: [{ id: setId }] },
-            }
-        })
-
-        // let attachment = await prisma.setAttachment.findFirst({
-        //     where: {
-        //         setId: setId,
-        //         addedById: verifiedUser.user.id
-        //     }
-        // })
-
-        // await prisma.setAttachment.deleteMany({
-        //     where: {
-        //         setId: setId,
-        //         addedById: verifiedUser.user.id
-        //     }
-        // })
-
-        // if (attachment?.image) {
-        //     try {
-        //         await fs.unlink(path.join(__dirname, `../../uploads/images/${attachment?.image}`))
-        //     }
-        //     catch (err) {
-        //         console.log(err)
-        //         return res.status(500).send({ message: "image could not be deleted" })
-        //     }
-        // }
-
-
-        let instructions = await prisma.instructions.findFirst({
+        const set: any = await prisma.sets.findFirst({
             where: {
-                setId: setId,
-                addedById: verifiedUser.user.id
-            }
+                AND: [{ usedBy: { some: { id: verifiedUser.user.id } } }, { addedById: verifiedUser.user.id }, { id: req.params.id }]
+            },
+            include: { usedBy: true }
         })
 
-        await prisma.instructions.deleteMany({
-            where: {
-                setId: setId,
-                addedById: verifiedUser.user.id
-            }
-        })
+        if (!set) {
+            return res.status(404).send({ message: "set not found" })
+        }
 
-        // if (instructions?.instructions) {
-        //     try {
+        console.log(set.usedBy.length)
+        console.log(set.addedById)
+        console.log(set.usedBy[0].id)
 
-        //         let file = path.join(__dirname, `../../../../back/uploads/instructions/${instruction.instructions}`)
-        //         console.log("file do delete: ", file)
-        //         await fs.unlink(file)
-        //     }
-        //     catch (err) {
-        //         console.log(err)
-        //         return res.status(500).send({ message: "pdf could not be deleted" })
-        //     }
-        // }
+        if (set.usedBy.length == 1 && set.addedById == verifiedUser.user.id && set.usedBy[0].id == verifiedUser.user.id) {
+
+            await prisma.setAttachment.deleteMany({
+                where: {
+                    setId: set.id
+                }
+            })
+
+            await prisma.instructions.deleteMany({
+                where: {
+                    setId: set.id
+                }
+            })
+
+            await prisma.users.update({
+                where: { id: verifiedUser.user.id },
+                data: {
+                    usedSets: { disconnect: [{ id: set.id }] },
+                }
+            })
+
+            await prisma.sets.delete({
+                where: { id: set.id }
+            })
+
+            console.log(`set ${set.name} also deleted completely`);
+        }
+        else {
+
+            await prisma.users.update({
+                where: { id: verifiedUser.user.id },
+                data: {
+                    usedSets: { disconnect: [{ id: set.id }] },
+                }
+            })
+
+            await prisma.sets.update({
+                where: { id: set.id },
+                data: {
+                    usedBy: { disconnect: [{ id: verifiedUser.user.id }] },
+                }
+            })
+
+            console.log(`set ${set.name} disconnected`);
+        }
+
+        // ještě mazat instrukce a obrázky, plus attachmenty
 
         res.status(200).send({ message: "set deleted" })
 

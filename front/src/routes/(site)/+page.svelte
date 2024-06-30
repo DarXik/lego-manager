@@ -178,6 +178,12 @@
                                             .toLocaleString("de-DE")
                                             .split(",")[0]}
                                     </p>
+                                    <p class="text-start">
+                                        <span class="text-gray-500 text-sm"
+                                            >owned by</span
+                                        >
+                                        {set.addedBy}
+                                    </p>
                                 </div>
                             </div>
                         </div>

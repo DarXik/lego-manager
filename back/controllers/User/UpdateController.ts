@@ -46,15 +46,8 @@ const patch = async (req: Request, res: Response) => {
 
                     try {
                         // nefungují historické ceny
-                        // if (attachment.yearBought != new Date().getFullYear() && attachment.yearBought) {
                         newPrice = await fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currencies[attachment.currency]}.min.json`)
-                        // }
-                        // else {
-                        //     newPrice = await fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.min.json`)
-                        // }
-
                         newPrice = await newPrice.json()
-                        console.log("response from currency conversion ", newPrice)
                     }
                     catch (err) {
                         console.log(err)
@@ -67,13 +60,14 @@ const patch = async (req: Request, res: Response) => {
                             return res.status(500).send({ message: "currency conversion failed" })
                         }
                     }
-                    console.log(newPrice)
-                    const result: number = attachment.price * (newPrice[currencies[attachment.currency]][currencies[req.body.currency]] || 1);
+
+                    const result: number = Math.floor(attachment.price * (newPrice[currencies[attachment.currency]][currencies[req.body.currency]]));
 
                     console.log(`currency conversion from ${attachment.price} ${currencies[attachment.currency]} to ${currencies[parseInt(req.body.currency)]} resulted in ${result} ${currencies[parseInt(req.body.currency)]}`)
 
                     await prisma.setAttachment.update({
                         where: {
+                            
                             id: attachment.id
                         },
                         data: {
@@ -82,21 +76,17 @@ const patch = async (req: Request, res: Response) => {
                         }
                     })
                 }
-                else {
-                    try {
-                        await prisma.setAttachment.update({
-                            where: {
-                                id: attachment.id
-                            },
-                            data: {
-                                currency: parseInt(req.body.currency)
-                            }
-                        })
-                    }
-                    catch (err) {
-                        console.log(err)
-                        return res.status(500).send({ message: "currency could not be updated" })
-                    }
+                else if (attachment.currency) {
+
+                    console.log("updating currency only")
+                    await prisma.setAttachment.update({
+                        where: {
+                            id: attachment.id
+                        },
+                        data: {
+                            currency: parseInt(req.body.currency)
+                        }
+                    })
                 }
             }
 

@@ -7,88 +7,97 @@ import fs from 'fs/promises'
 const deleteAccount = async (req: Request, res: Response) => {
 
     if (!req.headers.authorization) {
-        return res.status(400)
+        return res.status(400).send({ message: "Authorization header is missing" });
     }
 
-    const verifiedUser: any = await verifyUser(req.headers.authorization)
+    const verifiedUser: any = await verifyUser(req.headers.authorization.toString())
+    if (!verifiedUser.user || !verifiedUser.token) {
+        return res.status(404).send({ message: "user not found" })
+    }
+    console.log("deleting account ", verifiedUser.user.username)
+    // if (verifiedUser.user && verifiedUser.token) {
+    // await fs.unlink(path.join(__dirname, `../../uploads/instructions/${element.instructions}`))
+    // await fs.unlink(path.join(__dirname, `../../uploads/images/${attachment.image}`))
 
-    if (verifiedUser.user && verifiedUser.token) {
-        try {
-            const attachments = await prisma.setAttachment.findMany({ where: { addedById: verifiedUser.user.id } })
+    try {
+        await prisma.sessions.deleteMany({
+            where: {
+                userId: verifiedUser.user.id
+            }
+        })
 
-            // všechny sety uživatele
-            const sets = await prisma.sets.findMany({
-                where: {
-                    AND: [{ usedBy: { some: { id: verifiedUser.user.id } } }, { addedById: verifiedUser.user.id }]
-                },
-                include: { usedBy: true }
+        const sets: any[] = await prisma.sets.findMany({
+            where: {
+                AND: [{ usedBy: { some: { id: verifiedUser.user.id } } }, { addedById: verifiedUser.user.id }]
+            },
+            include: { usedBy: true }
+        })
+
+        if (!sets) {
+            return res.status(404).send({ message: "sets not found" })
+        }
+
+        let hasUsedSets: boolean = false;
+
+        for (const set of sets) {
+            console.log(set.usedBy.length)
+            console.log(set.addedById)
+            console.log(set.usedBy[0].id)
+
+            if (set.usedBy.length == 1 && set.addedById == verifiedUser.user.id && set.usedBy[0].id == verifiedUser.user.id) {
+                await prisma.setAttachment.deleteMany({
+                    where: {
+                        setId: set.id
+                    }
+                })
+
+                await prisma.instructions.deleteMany({
+                    where: {
+                        setId: set.id
+                    }
+                })
+
+                await prisma.users.update({
+                    where: { id: verifiedUser.user.id },
+                    data: {
+                        usedSets: { disconnect: [{ id: set.id }] },
+                    }
+                })
+
+                await prisma.sets.delete({
+                    where: { id: set.id }
+                })
+            }
+            else {
+                hasUsedSets = true;
+            }
+        }
+
+        if (!hasUsedSets) {
+            await prisma.users.delete({
+                where: { id: verifiedUser.user.id }
             })
-
-            // odpojí a smaže instrukce, které měl pouze uživatel ve svých vlastních setech
-            for (const set of sets) {
-                if (set.usedBy.length == 1) {
-                    let instruction = await prisma.instructions.findUnique({ where: { id: set.id } })
-
-                    // smaže instukci, pokud existuje - jen tu soukromou
-                    if (instruction) {
-                        try {
-                            await fs.unlink(path.join(__dirname, `../../../../back/uploads/instructions/${instruction.instructions}`))
-                            await prisma.instructions.delete({ where: { id: set.id } })
-                            console.log(`instruction ${instruction.instructions} deleted`);
-                        }
-                        catch (err) {
-                            console.log(err)
-                            return res.status(500).send({ message: "could not find instruction when deleting" });
-                        }
-                    }
-                }
-            }
-
-            for (const attachment of attachments) {
-
-                // smaže obrázek, pokud existuje
-                if (attachment.image != null) {
-                    console.log(attachment.image)
-
-                    try {
-                        await fs.unlink(path.join(__dirname, `../../../../back/uploads/images/${attachment.image}`))
-                    }
-                    catch (err) {
-                        console.log(err)
-                        return res.status(500).send({ message: "could not find image when deleting" });
-                    }
-                }
-
-                // smaže vždy daný set attachment
-                await prisma.setAttachment.delete({ where: { id: attachment.id } })
-                console.log(`attachment ${attachment.id} deleted`);
-
-            }
-
-            for (const set of sets) {
-                if (set.usedBy.length == 1) {
-                    await prisma.sets.delete({ where: { id: set.id } })
-                    console.log(`set ${set.name} deleted`);
-                }
-            }
-            // smaže sessions uživatele
-            await prisma.sessions.deleteMany({ where: { userId: verifiedUser.user.id } })
-            await prisma.users.delete({ where: { id: verifiedUser.user.id } })
-            console.log(`user ${verifiedUser.user.id} deleted`);
-
-
-            return res.status(200).send({ message: "account deleted" })
         }
-        catch (err) {
-            console.log(err)
-            return res.status(500).send({ message: "could not delete account" })
+        else {
+            await prisma.users.update({
+                where: { id: verifiedUser.user.id },
+                data: {
+                    usedSets: { set: [] },
+                    Instructions: { set: [] },
+                    sessions: { set: [] },
+                    deleted: true,
+                    username: `deleted_${verifiedUser.user.username}_${Date.now()}`,
+                    password: `deleted_${verifiedUser.user.username}_${Date.now()}`,
+                }
+            })
         }
-    }
-    else {
-        console.log("user not verified")
-        return res.status(404)
-    }
 
+        return res.status(200).send({ message: "account deleted" })
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({ message: "could not delete account" })
+    }
 }
 
 export default { deleteAccount }

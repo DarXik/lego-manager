@@ -25,7 +25,7 @@ const get = async (req: Request, res: Response) => {
                 return res.status(404).send({ message: "sets not found" })
             }
 
-            const setsSmaller: any = sets.map((set: any) => { // proč () kolem setu?
+            const setsSmaller: any = sets.map(async (set: any) => {
                 return {
                     id: set.id,
                     name: set.name,
@@ -33,7 +33,7 @@ const get = async (req: Request, res: Response) => {
                     themeName: set.themeName,
                     addedOn: attachment.find((attachment: any) => attachment.setId == set.id)?.addedOn || null,
                     yearBought: attachment.find((attachment: any) => attachment.setId == set.id)?.yearBought || null,
-
+                    // addedBy: set.addedBy.username,
                 }
             })
 
@@ -44,6 +44,7 @@ const get = async (req: Request, res: Response) => {
             return res.status(500).send({ message: "sets could not be found" })
         }
     }
+
     // jeden specifický set
     else {
         // console.log("looking for set: ", req.params.id);

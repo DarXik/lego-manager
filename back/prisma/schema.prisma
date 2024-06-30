@@ -50,8 +50,7 @@ model Instructions {
 
 model Users {
   id                String          @id @default(uuid()) @db.Char(36)
-  username          String         @db.VarChar(255) @unique
-  // email             String?          @unique @db.VarChar(255)
+  username          String          @unique @db.VarChar(255)
   password          String          @db.VarChar(255)
   preferredCurrency Int             @db.Int
   preferredLanguage Int             @db.Int
@@ -60,6 +59,7 @@ model Users {
   setAttachments    SetAttachment[]
   Instructions      Instructions[]
   ownedSets         Sets[]
+  deleted           Boolean         @default(false)
 }
 
 model Sessions {
