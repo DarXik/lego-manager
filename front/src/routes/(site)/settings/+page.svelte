@@ -1,8 +1,9 @@
 <script lang="ts">
     import { enhance } from "$app/forms";
     import { fade } from "svelte/transition";
+    import type { PageData } from "./$types";
 
-    export let data;
+    export let data: PageData;
 
     let currencies = ["CZK", "EUR", "USD", "GBP"];
     let languages = ["Čeština", "English", "Deutsch"];
@@ -126,6 +127,7 @@
         <form
             method="POST"
             class="flex flex-row justify-evenly mt-12 border-main"
+            action="?/deleteAccount"
         >
             <button
                 type="submit"
@@ -166,6 +168,7 @@
                             >
                         {/each}
                     </select>
+                    <p class="italic text-gray-400 text-sm">*experimental feature</p>
                     {#if currencyUpdated}
                         <p
                             transition:fade={{ duration: 200 }}
@@ -191,6 +194,7 @@
                             >
                         {/each}
                     </select>
+                    <p class="italic text-gray-400 text-sm">*not working yet</p>
                     {#if languageUpdated}
                         <p
                             transition:fade={{ duration: 200 }}
@@ -263,14 +267,14 @@
                 </div>
             </div>
         </section>
-        <section class="md:border-main md:border-b-3 md:w-1/3 px-4 py-8">
+        <!-- <section class="md:border-main md:border-b-3 md:w-1/3 px-4 py-8">
             <h3 class="text-2xl mb-3">Account:</h3>
             <button
                 on:click={() => (deletingAccount = !deletingAccount)}
                 class="px-4 py-2 relative overflow-hidden border-2 border-red-600 bg-none text-red-600 transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:duration-300 after:absolute after:right-0 after:top-0 after:h-full after:w-0 after:duration-300 hover:text-zinc-100 hover:before:w-2/4 hover:before:bg-red-600 hover:after:w-2/4 hover:after:bg-red-600 select-none uppercase font-bold"
                 ><span class="relative z-10">Delete account</span>
             </button>
-        </section>
+        </section> -->
     </article>
 </section>
 

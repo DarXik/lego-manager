@@ -3,9 +3,9 @@
   import Navbar from "./components/Navbar.svelte";
   import { onMount } from "svelte";
   import { userSets, userInfo } from "$lib/store";
-    import type { PageData } from "./$types";
+  import type { PageData } from "./$types";
 
-  export let data;
+  export let data: PageData;
 
   $: console.log(data);
 

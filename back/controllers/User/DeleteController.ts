@@ -15,9 +15,6 @@ const deleteAccount = async (req: Request, res: Response) => {
         return res.status(404).send({ message: "user not found" })
     }
     console.log("deleting account ", verifiedUser.user.username)
-    // if (verifiedUser.user && verifiedUser.token) {
-    // await fs.unlink(path.join(__dirname, `../../uploads/instructions/${element.instructions}`))
-    // await fs.unlink(path.join(__dirname, `../../uploads/images/${attachment.image}`))
 
     try {
         await prisma.sessions.deleteMany({
@@ -28,7 +25,7 @@ const deleteAccount = async (req: Request, res: Response) => {
 
         const sets: any[] = await prisma.sets.findMany({
             where: {
-                AND: [{ usedBy: { some: { id: verifiedUser.user.id } } }, { addedById: verifiedUser.user.id }]
+                AND: [{ usedBy: { some: { id: verifiedUser.user.id } } }]
             },
             include: { usedBy: true }
         })
@@ -44,12 +41,42 @@ const deleteAccount = async (req: Request, res: Response) => {
             console.log(set.addedById)
             console.log(set.usedBy[0].id)
 
+            try {
+                let attachment = await prisma.setAttachment.findFirst({
+                    where: {
+                        setId: set.id,
+                        addedById: verifiedUser.user.id
+                    }
+                })
+                await fs.unlink(path.join(__dirname, `../../uploads/images/${attachment?.image}`))
+            }
+            catch (err) {
+                console.log(err)
+            }
+
             if (set.usedBy.length == 1 && set.addedById == verifiedUser.user.id && set.usedBy[0].id == verifiedUser.user.id) {
+                console.log("set added by me")
                 await prisma.setAttachment.deleteMany({
                     where: {
                         setId: set.id
                     }
                 })
+
+                let instructions: any[] = await prisma.instructions.findMany({
+                    where: {
+                        setId: set.id,
+                        addedById: verifiedUser.user.id,
+                    }
+                })
+
+                try {
+                    for (const instruction of instructions) {
+                        await fs.unlink(path.join(__dirname, `../../uploads/instructions/${instruction.instructions}`))
+                    }
+                }
+                catch (err) {
+                    console.log(err)
+                }
 
                 await prisma.instructions.deleteMany({
                     where: {
@@ -66,6 +93,51 @@ const deleteAccount = async (req: Request, res: Response) => {
 
                 await prisma.sets.delete({
                     where: { id: set.id }
+                })
+            }
+            else if (set.addedById != verifiedUser.user.id) {
+                console.log("set added by someone else")
+                await prisma.setAttachment.deleteMany({
+                    where: {
+                        setId: set.id,
+                        addedById: verifiedUser.user.id
+                    }
+                })
+
+                let instructions: any[] = await prisma.instructions.findMany({
+                    where: {
+                        setId: set.id,
+                        addedById: verifiedUser.user.id,
+                    }
+                })
+
+                try {
+                    for (const instruction of instructions) {
+                        await fs.unlink(path.join(__dirname, `../../uploads/instructions/${instruction.instructions}`))
+                    }
+                }
+                catch (err) {
+                    console.log(err)
+                }
+
+                await prisma.instructions.deleteMany({
+                    where: {
+                        setId: set.id
+                    }
+                })
+
+                await prisma.users.update({
+                    where: { id: verifiedUser.user.id },
+                    data: {
+                        usedSets: { disconnect: [{ id: set.id }] },
+                    }
+                })
+
+                await prisma.sets.update({
+                    where: { id: set.id },
+                    data: {
+                        usedBy: { disconnect: [{ id: verifiedUser.user.id }] }
+                    }
                 })
             }
             else {

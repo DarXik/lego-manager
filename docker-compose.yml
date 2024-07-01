@@ -45,3 +45,5 @@ services:
       - SECRET_ORIGIN=${SECRET_ORIGIN}
       - SECRET_MEDIA_ORIGIN=${SECRET_MEDIA_ORIGIN}
       - BODY_SIZE_LIMIT=Infinity
+    env_file:
+      - .env.frontend

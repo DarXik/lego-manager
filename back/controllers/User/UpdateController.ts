@@ -33,7 +33,10 @@ const patch = async (req: Request, res: Response) => {
 
             const attachments = await prisma.setAttachment.findMany({
                 where: {
-                    addedById: verifiedUser.user.id
+                    AND: [
+                        { addedById: verifiedUser.user.id },
+                        { price: { not: null } },
+                    ]
                 }
             })
 
@@ -41,7 +44,8 @@ const patch = async (req: Request, res: Response) => {
                 console.log("requested currency ", req.body.currency)
                 console.log("current currency ", attachment.currency)
 
-                if (attachment.price && attachment.currency) {
+
+                if (attachment.price) {
                     let newPrice: any;
 
                     try {
@@ -53,7 +57,7 @@ const patch = async (req: Request, res: Response) => {
                         console.log(err)
 
                         try {
-                            newPrice = await fetch(`https://latest.currency-api.pages.dev/v1/currencies/${currencies[attachment.currency]}.min.json`)
+                            newPrice = await fetch(`https://latest.currency-api.pages.dev/v1/currencies/${currencies[attachment?.currency]}.min.json`)
                         }
                         catch (err) {
                             console.log(err)
@@ -61,13 +65,13 @@ const patch = async (req: Request, res: Response) => {
                         }
                     }
 
-                    const result: number = Math.floor(attachment.price * (newPrice[currencies[attachment.currency]][currencies[req.body.currency]]));
+                    const result: number = Math.ceil(attachment.price * (newPrice[currencies[attachment.currency]][currencies[req.body.currency]]));
 
                     console.log(`currency conversion from ${attachment.price} ${currencies[attachment.currency]} to ${currencies[parseInt(req.body.currency)]} resulted in ${result} ${currencies[parseInt(req.body.currency)]}`)
 
                     await prisma.setAttachment.update({
                         where: {
-                            
+
                             id: attachment.id
                         },
                         data: {
@@ -76,23 +80,24 @@ const patch = async (req: Request, res: Response) => {
                         }
                     })
                 }
-                else if (attachment.currency) {
+                else {
+                    console.log("no price")
 
-                    console.log("updating currency only")
                     await prisma.setAttachment.update({
                         where: {
+
                             id: attachment.id
                         },
                         data: {
                             currency: parseInt(req.body.currency)
                         }
+
                     })
                 }
             }
-
-            console.log("new currency after sets ", req.body.currency)
             return res.status(200).send({ message: "preferred currency updated" })
         }
+
         catch (err) {
             console.log(err)
             return res.status(500).send({ message: "preferred currency could not be updated" })

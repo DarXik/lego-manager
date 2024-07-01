@@ -4,9 +4,10 @@
     import { enhance } from "$app/forms";
     import { fade } from "svelte/transition";
     import { goto } from "$app/navigation";
+    import type { ActionData, PageData } from "./$types.js";
 
-    export let data;
-    export let form;
+    export let data:PageData;
+    export let form: ActionData;
 
     let set = data.set;
     let currentInstructions: any = [];

@@ -1,8 +1,9 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
+    import type { PageData } from "./$types";
 
-    export let data: any;
+    export let data: PageData;
     let sets: any = [];
     let w: number;
     let ascending: boolean = true;
@@ -178,11 +179,13 @@
                                             .toLocaleString("de-DE")
                                             .split(",")[0]}
                                     </p>
-                                    <p class="text-start">
+                                    <p class="text-start" class:hidden={set.addedBy == data.username}>
                                         <span class="text-gray-500 text-sm"
                                             >owned by</span
                                         >
-                                        {set.addedBy}
+                                        <span>
+                                            {set.addedBy}
+                                        </span>
                                     </p>
                                 </div>
                             </div>

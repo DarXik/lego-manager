@@ -25,7 +25,11 @@ const get = async (req: Request, res: Response) => {
                 return res.status(404).send({ message: "sets not found" })
             }
 
-            const setsSmaller: any = sets.map(async (set: any) => {
+            console.log("sets found: ", sets)
+
+            const setsSmaller: any = await sets.map(async (set: any) => {
+                const addedByUser = await prisma.users.findUnique({ where: { id: set.addedById } })
+
                 return {
                     id: set.id,
                     name: set.name,
@@ -33,11 +37,12 @@ const get = async (req: Request, res: Response) => {
                     themeName: set.themeName,
                     addedOn: attachment.find((attachment: any) => attachment.setId == set.id)?.addedOn || null,
                     yearBought: attachment.find((attachment: any) => attachment.setId == set.id)?.yearBought || null,
-                    // addedBy: set.addedBy.username,
+                    addedBy: addedByUser?.username,
                 }
             })
 
-            return res.status(200).send(setsSmaller)
+            // console.log("sets smaller: ",await setsSmaller)
+            return res.status(200).send(await Promise.all(setsSmaller))
         }
         catch (err) {
             console.log(err)

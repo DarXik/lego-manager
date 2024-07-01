@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Instructions {
+  id            String        @id @db.Char(36)
+  instructions  String        @db.VarChar(255)
+  addedById     String        @db.Char(36)
+  attachmentId  String        @db.Char(36)
+  setId         String        @db.Char(36)
+  Users         Users         @relation(fields: [addedById], references: [id])
+  SetAttachment SetAttachment @relation(fields: [attachmentId], references: [id])
+  Sets          Sets          @relation(fields: [setId], references: [id])
+
+  @@index([addedById], map: "Instructions_addedById_fkey")
+  @@index([attachmentId], map: "Instructions_attachmentId_fkey")
+  @@index([setId], map: "Instructions_setId_fkey")
+}
+
+model Sessions {
+  id     String @id @db.Char(36)
+  token  String @db.VarChar(255)
+  userId String @db.Char(36)
+  Users  Users  @relation(fields: [userId], references: [id])
+
+  @@index([userId], map: "Sessions_userId_fkey")
+}
+
+model SetAttachment {
+  id           String         @id @db.Char(36)
+  addedOn      DateTime       @default(now())
+  lastModified DateTime
+  description  String?        @db.VarChar(255)
+  yearBought   Int?           @db.SmallInt
+  price        Int?
+  currency     Int?
+  image        String?        @db.VarChar(255)
+  addedById    String         @db.Char(36)
+  setId        String         @db.Char(36)
+  Instructions Instructions[]
+  Users        Users          @relation(fields: [addedById], references: [id])
+  Sets         Sets           @relation(fields: [setId], references: [id])
+
+  @@index([addedById], map: "SetAttachment_addedById_fkey")
+  @@index([setId], map: "SetAttachment_setId_fkey")
+}
+
+model Sets {
+  id                          String          @id @db.Char(36)
+  setNumber                   String          @unique @db.VarChar(255)
+  name                        String          @db.VarChar(255)
+  partsAmount                 Int
+  themeName                   String          @db.Text
+  yearReleased                Int             @db.SmallInt
+  addedById                   String          @db.Char(36)
+  Instructions                Instructions[]
+  SetAttachment               SetAttachment[]
+  Users_Sets_addedByIdToUsers Users           @relation("Sets_addedByIdToUsers", fields: [addedById], references: [id])
+  Users_usedBy                Users[]         @relation("usedBy")
+
+  @@index([addedById], map: "Sets_addedById_fkey")
+}
+
+model Users {
+  id                         String          @id @db.Char(36)
+  username                   String          @unique @db.VarChar(255)
+  password                   String          @db.VarChar(255)
+  preferredCurrency          Int
+  preferredLanguage          Int
+  deleted                    Boolean         @default(false)
+  Instructions               Instructions[]
+  Sessions                   Sessions[]
+  SetAttachment              SetAttachment[]
+  Sets_Sets_addedByIdToUsers Sets[]          @relation("Sets_addedByIdToUsers")
+  Sets_usedBy                Sets[]          @relation("usedBy")
+}

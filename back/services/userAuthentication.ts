@@ -27,11 +27,7 @@ const verifyUser = async (token: string) => {
                 }
             })
 
-            // console.log("found user: ", foundUser);
-            // console.log("decoded: ", decoded);
-
             if (foundUser) {
-                // console.log("authenticated user: ", foundUser?.username);
                 return {
                     user: foundUser,
                     token: decoded.user

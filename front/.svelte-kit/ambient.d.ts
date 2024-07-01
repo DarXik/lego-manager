@@ -29,6 +29,7 @@ declare module '$env/static/private' {
 	export const ORIGIN: string;
 	export const SECRET_ORIGIN: string;
 	export const SECRET_MEDIA_ORIGIN: string;
+	export const DATABASE_URL: string;
 	export const ACSetupSvcPort: string;
 	export const ACSvcPort: string;
 	export const ALLUSERSPROFILE: string;
@@ -44,7 +45,7 @@ declare module '$env/static/private' {
 	export const DokanLibrary1_LibraryPath_x64: string;
 	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
-	export const EFC_6156: string;
+	export const EFC_10648: string;
 	export const EnableLog: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
@@ -74,8 +75,10 @@ declare module '$env/static/private' {
 	export const npm_package_dependencies_short_uuid: string;
 	export const npm_package_dependencies_svelte_persisted_store: string;
 	export const npm_package_dependencies_uuid: string;
+	export const npm_package_dependencies__prisma_client: string;
 	export const npm_package_devDependencies_autoprefixer: string;
 	export const npm_package_devDependencies_postcss: string;
+	export const npm_package_devDependencies_prisma: string;
 	export const npm_package_devDependencies_svelte: string;
 	export const npm_package_devDependencies_svelte_check: string;
 	export const npm_package_devDependencies_tailwindcss: string;
@@ -172,6 +175,7 @@ declare module '$env/dynamic/private' {
 		ORIGIN: string;
 		SECRET_ORIGIN: string;
 		SECRET_MEDIA_ORIGIN: string;
+		DATABASE_URL: string;
 		ACSetupSvcPort: string;
 		ACSvcPort: string;
 		ALLUSERSPROFILE: string;
@@ -187,7 +191,7 @@ declare module '$env/dynamic/private' {
 		DokanLibrary1_LibraryPath_x64: string;
 		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
-		EFC_6156: string;
+		EFC_10648: string;
 		EnableLog: string;
 		GIT_ASKPASS: string;
 		HOME: string;
@@ -217,8 +221,10 @@ declare module '$env/dynamic/private' {
 		npm_package_dependencies_short_uuid: string;
 		npm_package_dependencies_svelte_persisted_store: string;
 		npm_package_dependencies_uuid: string;
+		npm_package_dependencies__prisma_client: string;
 		npm_package_devDependencies_autoprefixer: string;
 		npm_package_devDependencies_postcss: string;
+		npm_package_devDependencies_prisma: string;
 		npm_package_devDependencies_svelte: string;
 		npm_package_devDependencies_svelte_check: string;
 		npm_package_devDependencies_tailwindcss: string;

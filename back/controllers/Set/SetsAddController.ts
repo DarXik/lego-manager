@@ -161,7 +161,8 @@ const post = async (req: Request, res: Response) => {
                         price: parseInt(userSet?.price) || null,
                         image: newImageFilename || null,
                         addedBy: { connect: { id: verifiedUser.user.id } },
-                        set: { connect: { id: set.id } }
+                        set: { connect: { id: set.id } },
+                        currency: verifiedUser.user.preferredCurrency
                     }
                 })
                 if (newPDFFilenames.length > 0) {

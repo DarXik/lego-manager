@@ -2,9 +2,10 @@
     import { enhance } from "$app/forms";
     import { fade } from "svelte/transition";
     import Loader from "../components/Loader.svelte";
+    import type { PageData } from "../$types";
 
     export let form;
-    export let data;
+    export let data: PageData;
 
     let name: any = "";
     let setNumber: any = "";
