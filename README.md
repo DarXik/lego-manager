@@ -6,7 +6,7 @@ in root there should be 3 env files - env/env.backend/env.frontend/env.db
 
 ### env
 is for docker to properly set up the app for public hosting
-- ORIGIN=http://localhost:5173
+- ORIGIN=https://lego-manager.fun
 - SECRET=backend
 - SECRET_MEDIA_ORIGIN=your_ip:port_of_backend
 ### env.backend
