@@ -33,12 +33,11 @@ export const actions = {
                 let res1 = await response.json()
 
                 cookies.set("session", res1.session, {
-                    httpOnly: false,
+                    httpOnly: true,
                     path: "/",
                     sameSite: "none",
-                    secure: false,
-                    maxAge: 60 * 60 * 24 * 60,
-
+                    secure: true,
+                    maxAge: 60 * 60 * 24 * 60,                    
                 })
 
                 // redirect(302, "/");

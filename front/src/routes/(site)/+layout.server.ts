@@ -6,12 +6,7 @@ const secretOrigin = env.SECRET_ORIGIN;
 export const load: LayoutServerLoad = (async ({ locals, data, cookies }: PageServerLoadEvent) => {
 
     if (!locals.session || !locals.user) {
-        cookies.delete("session", {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            path: "/"
-        });
+        cookies.delete("session", {path: "/"});
 
         redirect(302, "/login");
     }
