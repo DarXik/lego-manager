@@ -10,6 +10,8 @@ RUN pnpm install
 
 COPY . .
 
+RUN npx prisma generate
+
 RUN pnpm run build
 
 EXPOSE 5173

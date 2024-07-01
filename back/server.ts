@@ -1,5 +1,4 @@
 import express from "express";
-// import connectDB from "./config/db";
 import setsRoute from "./routes/api/v1/set/Sets";
 import loginRoute from "./routes/user/login/User"
 import registerRoute from "./routes/user/register/User"
