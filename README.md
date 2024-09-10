@@ -13,6 +13,7 @@ is for docker to properly set up the app for public hosting
 is for backend part and is read by docker when building 
 - it contains DATABASE_URL - currently root and root is used and it is address can be found in docker-compose.yml
 - and JWT_SECRET - up to you but should be strong
+- also /back/.env can be added for dev purposes (JWT)
 ### env.frontend
 is essentially only for checking if currently logged in user has a cookie with session that exists
 - it contains DATABASE_URL - currently root and root is used and it is address can be found in docker-compose.yml
