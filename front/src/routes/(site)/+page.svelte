@@ -2,6 +2,8 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
     import type { PageData } from "./$types";
+    import { enhance } from "$app/forms";
+    import { fade } from "svelte/transition";
 
     export let data: PageData;
     let sets: any = [];
@@ -39,7 +41,7 @@
     });
 </script>
 
-<section>
+<section in:fade={{ delay: 50, duration: 300 }}>
     <article class="flex max-md:flex-col">
         <div class="p-8 border-r-3 border-zinc-600 w-full md:w-1/2">
             <h1 class="font-bold uppercase text-3xl md:text-4xl lg:text-5xl">

@@ -103,7 +103,7 @@ const patch = async (req: Request, res: Response) => {
             return res.status(500).send({ message: "preferred currency could not be updated" })
         }
     }
-    if (req.body.language) {
+    else if (req.body.language) {
         try {
 
             await prisma.users.update({
@@ -123,7 +123,7 @@ const patch = async (req: Request, res: Response) => {
             return res.status(500).send({ message: "preferred language could not be updated" })
         }
     }
-    if (req.body.newPassword && req.body.newPasswordRepeat && req.body.currentPassword) {
+    else if (req.body.newPassword && req.body.newPasswordRepeat && req.body.currentPassword) {
         try {
             if (req.body.newPassword !== req.body.newPasswordRepeat) {
                 return res.status(400).send({ message: "passwords do not match" })
@@ -151,6 +151,29 @@ const patch = async (req: Request, res: Response) => {
             return res.status(500).send({ message: "password could not be updated" })
         }
 
+    }
+    else if(req.body.newUsername){
+        console.log("new username: ", req.body.newUsername)
+
+        try{
+            await prisma.users.update({
+                where: {
+                    id: verifiedUser.user.id
+                },
+                data: {
+                    username: req.body.newUsername
+                }
+            })
+
+            return res.status(200).send({ message: "username updated" })
+        }
+        catch(err){
+            console.log(err)
+            return res.status(500).send({ message: "username could not be updated" })
+        }
+    }
+    else {
+        return res.status(400).send({ message: "something is missing" })
     }
 
 }

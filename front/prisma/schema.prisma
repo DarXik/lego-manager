@@ -7,75 +7,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Instructions {
-  id            String        @id @db.Char(36)
-  instructions  String        @db.VarChar(255)
-  addedById     String        @db.Char(36)
-  attachmentId  String        @db.Char(36)
-  setId         String        @db.Char(36)
-  Users         Users         @relation(fields: [addedById], references: [id])
-  SetAttachment SetAttachment @relation(fields: [attachmentId], references: [id])
-  Sets          Sets          @relation(fields: [setId], references: [id])
-
-  @@index([addedById], map: "Instructions_addedById_fkey")
-  @@index([attachmentId], map: "Instructions_attachmentId_fkey")
-  @@index([setId], map: "Instructions_setId_fkey")
-}
-
-model Sessions {
-  id     String @id @db.Char(36)
-  token  String @db.VarChar(255)
-  userId String @db.Char(36)
-  Users  Users  @relation(fields: [userId], references: [id])
-
-  @@index([userId], map: "Sessions_userId_fkey")
+model Sets {
+  id           String          @id @default(uuid()) @db.Char(36)
+  setNumber    String          @unique @db.VarChar(255)
+  name         String          @db.VarChar(255)
+  partsAmount  Int             @db.Int
+  themeName    String          @db.Text
+  yearReleased Int             @db.SmallInt
+  addedBy      Users           @relation(fields: [addedById], references: [id])
+  addedById    String          @db.Char(36)
+  attachments  SetAttachment[]
+  instructions Instructions[]
+  usedBy       Users[]         @relation("usedBy")
 }
 
 model SetAttachment {
-  id           String         @id @db.Char(36)
+  id           String         @id @default(uuid()) @db.Char(36)
   addedOn      DateTime       @default(now())
-  lastModified DateTime
+  lastModified DateTime       @updatedAt
   description  String?        @db.VarChar(255)
   yearBought   Int?           @db.SmallInt
   price        Int?
-  currency     Int?
+  currency     Int           @db.Int
   image        String?        @db.VarChar(255)
+  instructions Instructions[]
   addedById    String         @db.Char(36)
+  addedBy      Users          @relation(fields: [addedById], references: [id])
+  set          Sets           @relation(fields: [setId], references: [id])
   setId        String         @db.Char(36)
-  Instructions Instructions[]
-  Users        Users          @relation(fields: [addedById], references: [id])
-  Sets         Sets           @relation(fields: [setId], references: [id])
-
-  @@index([addedById], map: "SetAttachment_addedById_fkey")
-  @@index([setId], map: "SetAttachment_setId_fkey")
 }
 
-model Sets {
-  id                          String          @id @db.Char(36)
-  setNumber                   String          @unique @db.VarChar(255)
-  name                        String          @db.VarChar(255)
-  partsAmount                 Int
-  themeName                   String          @db.Text
-  yearReleased                Int             @db.SmallInt
-  addedById                   String          @db.Char(36)
-  Instructions                Instructions[]
-  SetAttachment               SetAttachment[]
-  Users_Sets_addedByIdToUsers Users           @relation("Sets_addedByIdToUsers", fields: [addedById], references: [id])
-  Users_usedBy                Users[]         @relation("usedBy")
-
-  @@index([addedById], map: "Sets_addedById_fkey")
+model Instructions {
+  id           String        @id @default(uuid()) @db.Char(36)
+  instructions String        @db.VarChar(255)
+  addedById    String        @db.Char(36)
+  addedBy      Users         @relation(fields: [addedById], references: [id])
+  attachment   SetAttachment @relation(fields: [attachmentId], references: [id])
+  attachmentId String        @db.Char(36)
+  set          Sets          @relation(fields: [setId], references: [id])
+  setId        String        @db.Char(36)
 }
 
 model Users {
-  id                         String          @id @db.Char(36)
-  username                   String          @unique @db.VarChar(255)
-  password                   String          @db.VarChar(255)
-  preferredCurrency          Int
-  preferredLanguage          Int
-  deleted                    Boolean         @default(false)
-  Instructions               Instructions[]
-  Sessions                   Sessions[]
-  SetAttachment              SetAttachment[]
-  Sets_Sets_addedByIdToUsers Sets[]          @relation("Sets_addedByIdToUsers")
-  Sets_usedBy                Sets[]          @relation("usedBy")
+  id                String          @id @default(uuid()) @db.Char(36)
+  username          String          @unique @db.VarChar(255)
+  password          String          @db.VarChar(255)
+  preferredCurrency Int             @db.Int
+  preferredLanguage Int             @db.Int
+  sessions          Sessions[]
+  usedSets          Sets[]          @relation("usedBy")
+  setAttachments    SetAttachment[]
+  Instructions      Instructions[]
+  ownedSets         Sets[]
+  deleted           Boolean         @default(false)
+}
+
+model Sessions {
+  id     String @id @default(uuid()) @db.Char(36)
+  token  String @db.VarChar(255)
+  userId String @db.Char(36)
+  user   Users  @relation(fields: [userId], references: [id])
 }

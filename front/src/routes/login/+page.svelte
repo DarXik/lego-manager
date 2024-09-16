@@ -81,7 +81,7 @@
             <button
                 type="submit"
                 disabled={passwordMatch}
-                class="text-base my-button-2 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed mb-8"
+                class="text-base my-button-2 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed mb-8 mt-4"
             >
                 <span class="relative z-10">Sign In</span>
             </button>

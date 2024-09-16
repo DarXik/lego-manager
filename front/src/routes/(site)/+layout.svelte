@@ -39,7 +39,7 @@
       ><p class="md:text-end w-full">
         &copy; {new Date().getFullYear()} | Made by David Pitra
       </p>
-      <p>730 584 006 | david@cosminary.dev</p>
+      <!-- <p>730 584 006 | david@cosminary.dev</p> -->
     </small>
   </div>
 </footer>

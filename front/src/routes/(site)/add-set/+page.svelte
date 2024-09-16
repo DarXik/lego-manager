@@ -172,6 +172,7 @@
                     sending = false;
                     setStatus = result;
                     console.log(result);
+                    
                     setTimeout(() => {
                         window.location.reload();
                         imageThumbnail = "";

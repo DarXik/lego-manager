@@ -29,7 +29,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^5.16.1",
+		"@prisma/client": "^5.19.1",
+		"@sveltejs/adapter-auto": "^3.2.4",
 		"axios": "^1.6.8",
 		"dotenv": "^16.4.5",
 		"fs": "^0.0.1-security",

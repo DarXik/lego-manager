@@ -12,10 +12,14 @@
     let passwordUpdated: boolean,
         currencyUpdated: boolean,
         languageUpdated: boolean = false;
+    let newUsername: String;
+    let usernameUpdated: boolean = false;
 
     let deletingAccount: boolean = false;
     let modalDelete: HTMLDialogElement;
     $: if (deletingAccount) modalDelete.showModal();
+
+    let sending: boolean = false;
 
     async function handleCurrencyChange(e: any) {
         const currency = currencies.indexOf(e.target.value).toString();
@@ -30,7 +34,7 @@
         if (response.ok) {
             console.log(await response.json());
 
-            data.currency = currency; // neupdatuje - použít story
+            data.currency = currency; // neupdatuje - použít store
 
             currencyUpdated = true;
 
@@ -58,6 +62,26 @@
 
             setTimeout(() => {
                 languageUpdated = false;
+            }, 2000);
+        }
+    }
+
+    async function handleUsernameChange() {
+        const response = await fetch("/api/updatePreference", {
+            method: "PATCH",
+            body: JSON.stringify({
+                newUsername: newUsername,
+            }),
+        });
+
+        if (response.ok) {
+            console.log(await response.json());
+
+            newUsername = "";
+            usernameUpdated = true;
+
+            setTimeout(() => {
+                usernameUpdated = false;
             }, 2000);
         }
     }
@@ -101,7 +125,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-
+<!-- 
 <dialog
     class="border-3 border-zinc-600 bg-black
         text-zinc-300 backdrop:bg-black/40 backdrop:backdrop-blur-sm w-[80%] md:w-[60%] lg:w-[45%] xl:w-[35%]"
@@ -109,7 +133,6 @@
     on:close={() => (deletingAccount = false)}
     on:click|self={() => modalDelete.close()}
 >
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div on:click|stopPropagation>
         <div class="border-b-3 border-zinc-600 p-2 pb-8 text-white">
             <p class="mb-1 text-3xl font-bold">Delete account:</p>
@@ -123,7 +146,6 @@
             </p>
         </div>
 
-        <!-- svelte-ignore a11y-autofocus -->
         <form
             method="POST"
             class="flex flex-row justify-evenly mt-12 border-main"
@@ -140,7 +162,7 @@
             >
         </form>
     </div>
-</dialog>
+</dialog> -->
 
 <section in:fade={{ delay: 50, duration: 300 }}>
     <h1
@@ -168,7 +190,9 @@
                             >
                         {/each}
                     </select>
-                    <p class="italic text-gray-400 text-sm">*experimental feature</p>
+                    <p class="italic text-gray-400 text-sm">
+                        *experimental feature
+                    </p>
                     {#if currencyUpdated}
                         <p
                             transition:fade={{ duration: 200 }}
@@ -203,6 +227,58 @@
                             Language updated
                         </p>
                     {/if}
+                </form>
+            </div>
+        </section>
+        <section
+            class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8"
+        >
+            <h2 class="text-2xl">Username</h2>
+            <div class="mt-3">
+                <form
+                    method="POST"
+                    action="?/updateUsername"
+                    enctype="multipart/form-data"
+                    use:enhance={() => {
+                        sending = true;
+                        return async ({ result }) => {
+                            if (result) {
+                                sending = false;
+                                console.log(result);
+
+                                setTimeout(() => {
+                                    // window.location.reload();
+                                    
+                                }, 1500);
+                            }
+                        };
+                    }}
+                >
+                    <p class="mb-3 ">Your current username is <span class="text-lg font-bold text-purple-500">
+                        {data.username}</span></p>
+                    <div class="flex flex-col mb-6">
+                        <label for="newUsername">New username</label>
+                        <input
+                            class="mb-2 mt-1 my-input"
+                            type="text"
+                            bind:value={newUsername}
+                            id="newUsername"
+                            placeholder="new username"
+                        />
+                        {#if usernameUpdated}
+                            <p
+                                transition:fade={{ duration: 200 }}
+                                class="mt-2 text-green-600"
+                            >
+                                Username updated
+                            </p>
+                        
+                        {/if}
+                    </div>
+
+                    <button class="my-button-2 w-fit mt-4">
+                        <span class="relative z-10">Update</span>
+                    </button>
                 </form>
             </div>
         </section>
@@ -278,7 +354,7 @@
     </article>
 </section>
 
-<style>
+<!-- <style>
     dialog[open] {
         animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -301,4 +377,4 @@
             opacity: 1;
         }
     }
-</style>
+</style> -->

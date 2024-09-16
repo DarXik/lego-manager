@@ -28,7 +28,7 @@ model SetAttachment {
   description  String?        @db.VarChar(255)
   yearBought   Int?           @db.SmallInt
   price        Int?
-  currency     Int           @db.Int
+  currency     Int            @db.Int
   image        String?        @db.VarChar(255)
   instructions Instructions[]
   addedById    String         @db.Char(36)

@@ -13,7 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     try {
         const user = await prisma.users.findFirst({
             where: {
-                Sessions: {
+                sessions: {
                     some: {
                         token: event.locals.session
                     }
