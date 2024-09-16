@@ -30,7 +30,10 @@ declare module '$env/static/private' {
 	export const SECRET_ORIGIN: string;
 	export const SECRET_MEDIA_ORIGIN: string;
 	export const DATABASE_URL: string;
+	export const ACSetupSvcPort: string;
+	export const ACSvcPort: string;
 	export const ALLUSERSPROFILE: string;
+	export const AMDRMPATH: string;
 	export const APPDATA: string;
 	export const CHROME_CRASHPAD_PIPE_NAME: string;
 	export const COLORTERM: string;
@@ -38,8 +41,12 @@ declare module '$env/static/private' {
 	export const CommonProgramW6432: string;
 	export const COMPUTERNAME: string;
 	export const ComSpec: string;
+	export const DokanLibrary1: string;
+	export const DokanLibrary1_LibraryPath_x64: string;
+	export const DokanLibrary1_LibraryPath_x86: string;
 	export const DriverData: string;
-	export const EFC_11056: string;
+	export const EFC_11248: string;
+	export const EnableLog: string;
 	export const GIT_ASKPASS: string;
 	export const HOME: string;
 	export const HOMEDRIVE: string;
@@ -50,6 +57,7 @@ declare module '$env/static/private' {
 	export const LOGONSERVER: string;
 	export const NODE: string;
 	export const NODE_ENV: string;
+	export const NODE_PATH: string;
 	export const npm_command: string;
 	export const npm_config_engine_strict: string;
 	export const npm_config_frozen_lockfile: string;
@@ -95,6 +103,8 @@ declare module '$env/static/private' {
 	export const npm_package_type: string;
 	export const npm_package_version: string;
 	export const NUMBER_OF_PROCESSORS: string;
+	export const NVM_HOME: string;
+	export const NVM_SYMLINK: string;
 	export const OneDrive: string;
 	export const OneDriveConsumer: string;
 	export const ORIGINAL_XDG_CURRENT_DESKTOP: string;
@@ -113,7 +123,10 @@ declare module '$env/static/private' {
 	export const PROMPT: string;
 	export const PSModulePath: string;
 	export const PUBLIC: string;
+	export const RlsSvcPort: string;
 	export const SESSIONNAME: string;
+	export const STARSHIP_SESSION_KEY: string;
+	export const STARSHIP_SHELL: string;
 	export const SystemDrive: string;
 	export const SystemRoot: string;
 	export const TEMP: string;
@@ -124,6 +137,7 @@ declare module '$env/static/private' {
 	export const USERDOMAIN_ROAMINGPROFILE: string;
 	export const USERNAME: string;
 	export const USERPROFILE: string;
+	export const VIRTUAL_ENV_DISABLE_PROMPT: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const VSCODE_GIT_ASKPASS_NODE: string;
@@ -165,7 +179,10 @@ declare module '$env/dynamic/private' {
 		SECRET_ORIGIN: string;
 		SECRET_MEDIA_ORIGIN: string;
 		DATABASE_URL: string;
+		ACSetupSvcPort: string;
+		ACSvcPort: string;
 		ALLUSERSPROFILE: string;
+		AMDRMPATH: string;
 		APPDATA: string;
 		CHROME_CRASHPAD_PIPE_NAME: string;
 		COLORTERM: string;
@@ -173,8 +190,12 @@ declare module '$env/dynamic/private' {
 		CommonProgramW6432: string;
 		COMPUTERNAME: string;
 		ComSpec: string;
+		DokanLibrary1: string;
+		DokanLibrary1_LibraryPath_x64: string;
+		DokanLibrary1_LibraryPath_x86: string;
 		DriverData: string;
-		EFC_11056: string;
+		EFC_11248: string;
+		EnableLog: string;
 		GIT_ASKPASS: string;
 		HOME: string;
 		HOMEDRIVE: string;
@@ -185,6 +206,7 @@ declare module '$env/dynamic/private' {
 		LOGONSERVER: string;
 		NODE: string;
 		NODE_ENV: string;
+		NODE_PATH: string;
 		npm_command: string;
 		npm_config_engine_strict: string;
 		npm_config_frozen_lockfile: string;
@@ -230,6 +252,8 @@ declare module '$env/dynamic/private' {
 		npm_package_type: string;
 		npm_package_version: string;
 		NUMBER_OF_PROCESSORS: string;
+		NVM_HOME: string;
+		NVM_SYMLINK: string;
 		OneDrive: string;
 		OneDriveConsumer: string;
 		ORIGINAL_XDG_CURRENT_DESKTOP: string;
@@ -248,7 +272,10 @@ declare module '$env/dynamic/private' {
 		PROMPT: string;
 		PSModulePath: string;
 		PUBLIC: string;
+		RlsSvcPort: string;
 		SESSIONNAME: string;
+		STARSHIP_SESSION_KEY: string;
+		STARSHIP_SHELL: string;
 		SystemDrive: string;
 		SystemRoot: string;
 		TEMP: string;
@@ -259,6 +286,7 @@ declare module '$env/dynamic/private' {
 		USERDOMAIN_ROAMINGPROFILE: string;
 		USERNAME: string;
 		USERPROFILE: string;
+		VIRTUAL_ENV_DISABLE_PROMPT: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		VSCODE_GIT_ASKPASS_NODE: string;

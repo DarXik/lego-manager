@@ -2,8 +2,11 @@ import { Request, Response } from "express"
 import { verifyUser } from "../../services/userAuthentication"
 import prisma from "../../config/prisma"
 import { hashPassword, verifyPassword } from "../../services/userHash"
+import { Prisma } from "@prisma/client"
 
 const patch = async (req: Request, res: Response) => {
+    console.log(req.body)
+
     if (!req.headers.authorization || !req.body) {
         return res.status(400).send({ message: "something is missing" })
     }
@@ -152,10 +155,10 @@ const patch = async (req: Request, res: Response) => {
         }
 
     }
-    else if(req.body.newUsername){
+    else if (req.body.newUsername) {
         console.log("new username: ", req.body.newUsername)
 
-        try{
+        try {
             await prisma.users.update({
                 where: {
                     id: verifiedUser.user.id
@@ -167,13 +170,20 @@ const patch = async (req: Request, res: Response) => {
 
             return res.status(200).send({ message: "username updated" })
         }
-        catch(err){
-            console.log(err)
-            return res.status(500).send({ message: "username could not be updated" })
+        catch (e) {
+            console.log(e);
+
+            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+                if (e.code === "P2002") {
+                    return res.status(400).send({ problem: "username already exists" })
+                }
+            }
+
+            return res.status(500).send({ problem: "username could not be updated" })
         }
     }
     else {
-        return res.status(400).send({ message: "something is missing" })
+        return res.status(400).send({ problem: "something is missing" })
     }
 
 }

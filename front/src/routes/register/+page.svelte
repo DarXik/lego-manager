@@ -17,26 +17,19 @@
         password = document.getElementById("password");
         confirm_password = document.getElementById("confirm_password");
     });
-    
+
     $: if (password.length > 0 && confirm_password.length > 0) {
         passwordMatch = password !== confirm_password;
     } else if (password.length === 0 && confirm_password.length === 0) {
         passwordMatch = false;
     }
 
-    $: if (form?.success) goto("/login");
-
-    // $: if (form?.success) {
-    //     console.log("success");
-    //     goto("/login");
-    // }
-
-    // $: if (form?.problem) {
-    //     setTimeout(() => {
-    //         window.location.reload();
-    //     }, 15000);
-    // }
-</script>
+    $: if (form?.status === 201) {
+        setInterval(() => {
+            goto("/login");
+        }, 1000);
+    };
+</script> 
 
 <section
     class="flex items-center justify-center min-h-screen mx-10"
@@ -47,9 +40,14 @@
         class="w-full max-w-md p-8 space-y-4 bg-gray-950 border border-transparent shadow-lg"
     >
         <h1 class="text-2xl font-semibold text-center">Register</h1>
-        {#if form && !form.success}
+        {#if form?.status !== 201 && form?.message}
             <p class="text-lg text-center font-semibold error text-red-500">
-                {form?.problem.message}
+                {form?.message}
+            </p>
+        {/if}
+        {#if form?.status === 201 && form?.message}
+            <p class="text-lg text-center font-semibold success text-green-500">
+                {form?.message}
             </p>
         {/if}
         <form method="POST" class="" use:enhance>

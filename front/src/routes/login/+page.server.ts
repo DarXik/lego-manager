@@ -1,9 +1,10 @@
 import { env } from '$env/dynamic/private';
 const secretOrigin = env.SECRET_ORIGIN;
+import axios from 'axios';
 
 export const actions = {
-    default: async ({ request, cookies }) => {
-        const data = await request.formData();
+    default: async ({ request, cookies }: { request: Request, cookies: any }) => {
+        const data = await request.formData();        
 
         const username = data.get("email");
         const password = data.get("password");
@@ -15,38 +16,43 @@ export const actions = {
             };
         }
 
+        console.log("logging in");
+        try {            
+            console.log("contacting server", `http://${secretOrigin}:3000/user/login`);
 
-        try {
-            let response = await fetch(`http://${secretOrigin}:3000/user/login`, {
+            const response = await axios({
+                baseURL: `http://${secretOrigin}:3000/user/login`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json"
                 },
-                body: JSON.stringify({
+                data: JSON.stringify({
                     email: username,
                     password: password,
                 })
             })
 
-            if (response.ok) {
-                let res1 = await response.json()
 
+            let res1 = await response.data;
+
+            if (response.status === 200) {
                 cookies.set("session", res1.session, {
                     httpOnly: true,
                     path: "/",
                     sameSite: "none",
                     secure: true,
-                    maxAge: 60 * 60 * 24 * 60,                    
+                    maxAge: 60 * 60 * 24 * 60,
                 })
 
-                // redirect(302, "/");
-
-                return { success: true };
+                return { 
+                    success: true 
+                };
 
             } else {
                 return {
-                    problem: await response.json()
+                    succuess: false,
+                    problem: await res1.data
                 }
             }
         } catch (error) {

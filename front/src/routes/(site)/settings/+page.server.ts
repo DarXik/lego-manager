@@ -31,23 +31,51 @@ export const actions: Actions = {
         const formData = await request.formData();
         console.log("update: ", formData.get("newUsername"))
 
-
-        try {
-            const response = await axios({
-                url: "http://localhost:3000/user/update",
-                method: "PATCH",
-                headers: {
-                    "Authorization": locals.session || "",
-                },
-                data: formData
-            });
-
-            console.log(response);
-            return response.data;
+        if (!formData.get("newUsername")) {
+            return {
+                problem: "Missing required fields"
+            };
         }
-        catch (error) {
-            console.log(error);
-            return error;
+
+
+        // const response = await axios({
+        //     url: "http://localhost:3000/user/update",
+        //     method: "PATCH",
+        //     headers: {
+        //         "Authorization": locals.session || "",
+        //     },
+        //     data: {
+        //         newUsername: formData.get("newUsername")
+        //     }
+        // });
+
+        const response = await fetch(`http://localhost:3000/user/update`, {
+            method: "PATCH",
+            headers: new Headers({
+                "Authorization": locals.session || "",
+                "Content-Type": "application/json"
+            }),
+            body: JSON.stringify({
+                newUsername: formData.get("newUsername")
+            })
+        });
+
+
+
+        if (await response.ok) {
+            return {
+                message: "Username updated"
+            }
+        } else if (response.status === 400) {
+            return {
+                problem: "Username already exists"
+            }
         }
-    }
+        else {
+            return {
+                problem: "Username could not be updated"
+            }
+        }
+    },
+    
 }

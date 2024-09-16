@@ -13,7 +13,7 @@
         currencyUpdated: boolean,
         languageUpdated: boolean = false;
     let newUsername: String;
-    let usernameUpdated: boolean = false;
+    let usernameUpdatedStatus: any = "";
 
     let deletingAccount: boolean = false;
     let modalDelete: HTMLDialogElement;
@@ -62,26 +62,6 @@
 
             setTimeout(() => {
                 languageUpdated = false;
-            }, 2000);
-        }
-    }
-
-    async function handleUsernameChange() {
-        const response = await fetch("/api/updatePreference", {
-            method: "PATCH",
-            body: JSON.stringify({
-                newUsername: newUsername,
-            }),
-        });
-
-        if (response.ok) {
-            console.log(await response.json());
-
-            newUsername = "";
-            usernameUpdated = true;
-
-            setTimeout(() => {
-                usernameUpdated = false;
             }, 2000);
         }
     }
@@ -164,7 +144,7 @@
     </div>
 </dialog> -->
 
-<section in:fade={{ delay: 50, duration: 300 }}>
+<div in:fade={{ delay: 50, duration: 300 }}>
     <h1
         class="font-bold text-3xl lg:text-5xl px-6 pr-32 py-8 border-r-3 border-zinc-600 w-fit"
     >
@@ -244,35 +224,51 @@
                         return async ({ result }) => {
                             if (result) {
                                 sending = false;
-                                console.log(result);
+                                usernameUpdatedStatus = result.data;
+                                console.log(usernameUpdatedStatus);
+                                // data.username = newUsername;
 
                                 setTimeout(() => {
-                                    // window.location.reload();
-                                    
-                                }, 1500);
+                                    window.location.reload();
+
+                                }, 2000);
                             }
                         };
                     }}
                 >
-                    <p class="mb-3 ">Your current username is <span class="text-lg font-bold text-purple-500">
-                        {data.username}</span></p>
+                    <p class="mb-3">
+                        Your current username is <span
+                            class="text-lg font-bold text-purple-500"
+                        >
+                            {data.username}</span
+                        >
+                    </p>
                     <div class="flex flex-col mb-6">
                         <label for="newUsername">New username</label>
                         <input
                             class="mb-2 mt-1 my-input"
+                            name="newUsername"
                             type="text"
+                            required
                             bind:value={newUsername}
                             id="newUsername"
                             placeholder="new username"
+                            autocomplete="off"
                         />
-                        {#if usernameUpdated}
+                        {#if usernameUpdatedStatus.message}
                             <p
                                 transition:fade={{ duration: 200 }}
                                 class="mt-2 text-green-600"
                             >
-                                Username updated
+                                {usernameUpdatedStatus.message}
                             </p>
-                        
+                        {:else if usernameUpdatedStatus.problem}
+                            <p
+                                transition:fade={{ duration: 200 }}
+                                class="mt-2 text-red-600"
+                            >
+                                {usernameUpdatedStatus.problem}
+                            </p>
                         {/if}
                     </div>
 
@@ -352,7 +348,7 @@
             </button>
         </section> -->
     </article>
-</section>
+</div>
 
 <!-- <style>
     dialog[open] {

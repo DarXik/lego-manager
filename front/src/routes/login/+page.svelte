@@ -21,6 +21,7 @@
     }
 
     $: if (form?.success) goto("/");
+    $: console.log(form)
 </script>
 
 <section
@@ -32,7 +33,7 @@
         class="w-full max-w-md p-8 space-y-4 bg-gray-950 border border-gray-900 shadow-lg"
     >
         <h1 class="text-2xl font-semibold text-center">Log In</h1>
-        {#if form?.problem}
+        {#if form?.problem && !form?.success}
             <p class="text-lg text-center font-semibold error text-red-500">
                 {form?.problem.message}
             </p>

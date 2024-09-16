@@ -1,10 +1,11 @@
-import { redirect } from "@sveltejs/kit";
+import { env } from '$env/dynamic/private';
+const secretOrigin = env.SECRET_ORIGIN;
+import axios from 'axios';
 
 export const actions = {
-    default: async ({ request }) => {
+    default: async ({ request } : {request : Request}) => {
         const data = await request.formData();
-        console.log(data);
-
+    
         const password = data.get("password");
         const confirm_password = data.get("confirm_password");
         const username = data.get("username");
@@ -23,31 +24,24 @@ export const actions = {
             };
         }
 
-
+        console.log("registering");
         try {
-            let response = await fetch("http://localhost:3000/user/register", {
+            const response = await axios({
+                baseURL: `http://${secretOrigin}:3000/user/register`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json"
                 },
-                body: JSON.stringify({
+                data: JSON.stringify({
+                    username: username,
                     password: password,
-                    username: username
                 })
             })
-
-            console.log(response)
-
-            if (response.ok) {
-                // redirect(302, "/");
-                return { success: true };
-
-            } else {
-                return {
-                    success: false,
-                    problem: await response.json()
-                }
+            
+            return {
+                status: response.status,
+                message: await response.data.message
             }
 
         } catch (error) {

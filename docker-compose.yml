@@ -12,6 +12,7 @@ services:
       - ./lego-manager-db-conf:/etc/mysql/conf.d
     restart: always
 
+
   backend:
     build:
       context: back
@@ -28,6 +29,7 @@ services:
       - .env.backend
     depends_on:
       - db
+
 
   frontend:
     build:

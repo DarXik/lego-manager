@@ -25,10 +25,10 @@
 		"src/routes/api/updatePreference/+server.js"
 	],
 	"/login": [
-		"src/routes/login/+page.server.js"
+		"src/routes/login/+page.server.ts"
 	],
 	"/register": [
-		"src/routes/register/+page.server.js"
+		"src/routes/register/+page.server.ts"
 	],
 	"/(site)/settings": [
 		"src/routes/(site)/settings/+page.server.ts",
