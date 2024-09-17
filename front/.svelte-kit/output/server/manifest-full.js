@@ -7,10 +7,10 @@ function __memo(fn) {
 return {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set(["75192_Prod.webp","arrow-sort.svg","bough-no.svg","currencies/czk.svg","currencies/euro.svg","currencies/gbp.svg","currencies/usd.svg","error/error404.gif","error/error404.png","favicon.svg","lego-head.svg","navbar/account.svg","navbar/add.svg","navbar/hamburger.svg","navbar/lego-logo.svg","navbar/logout.svg","navbar/settings.svg","ornithopter-testing-2.webp","ornithopter-testing-3.png","ornithopter-testing.webp","owned-yes.svg","placeholder.webp","set/added.svg","set/bricks-icon.svg","set/collection-icon.svg","set/download.svg","set/edit-set.svg","set/last-modified.svg","set/number-icon.svg","set/open.svg","set/owned-icon.svg","set/price-euro-icon.svg","set/remove-set.svg","set/year-bought-icon.svg","set/year-released-icon.svg","sort.svg"]),
+	assets: new Set(["75192_Prod.webp","add-set/check-ok.svg","arrow-sort.svg","bough-no.svg","currencies/czk.svg","currencies/euro.svg","currencies/gbp.svg","currencies/usd.svg","error/error404.gif","error/error404.png","favicon.svg","lego-head.svg","navbar/account.svg","navbar/add.svg","navbar/hamburger.svg","navbar/lego-logo.svg","navbar/logout.svg","navbar/settings.svg","ornithopter-testing-2.webp","ornithopter-testing-3.png","ornithopter-testing.webp","owned-yes.svg","placeholder.webp","set/added.svg","set/bricks-icon.svg","set/collection-icon.svg","set/download.svg","set/edit-set.svg","set/last-modified.svg","set/number-icon.svg","set/open.svg","set/owned-icon.svg","set/price-euro-icon.svg","set/remove-media.svg","set/remove-set.svg","set/show-set.svg","set/year-bought-icon.svg","set/year-released-icon.svg","sort.svg"]),
 	mimeTypes: {".webp":"image/webp",".svg":"image/svg+xml",".gif":"image/gif",".png":"image/png"},
 	_: {
-		client: {"start":"_app/immutable/entry/start.uswOcB5g.js","app":"_app/immutable/entry/app.BDUfqb_Q.js","imports":["_app/immutable/entry/start.uswOcB5g.js","_app/immutable/chunks/entry.ClxdOwrk.js","_app/immutable/chunks/scheduler.DumJczGM.js","_app/immutable/chunks/index.JbVbP8D2.js","_app/immutable/entry/app.BDUfqb_Q.js","_app/immutable/chunks/scheduler.DumJczGM.js","_app/immutable/chunks/index.BeRZsODA.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
+		client: {"start":"_app/immutable/entry/start.9vDf-tQP.js","app":"_app/immutable/entry/app.s9-wi7zn.js","imports":["_app/immutable/entry/start.9vDf-tQP.js","_app/immutable/chunks/entry.DzSHvPUc.js","_app/immutable/chunks/scheduler.hocyY_A1.js","_app/immutable/chunks/index.DZQ1DQO6.js","_app/immutable/entry/app.s9-wi7zn.js","_app/immutable/chunks/scheduler.hocyY_A1.js","_app/immutable/chunks/index.Cn_gAlkC.js"],"stylesheets":[],"fonts":[],"uses_env_dynamic_public":false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
@@ -44,6 +44,13 @@ return {
 				params: [],
 				page: { layouts: [0,2,], errors: [1,,], leaf: 5 },
 				endpoint: null
+			},
+			{
+				id: "/api/deleteInstruction",
+				pattern: /^\/api\/deleteInstruction\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('./entries/endpoints/api/deleteInstruction/_server.js'))
 			},
 			{
 				id: "/api/deleteSet",

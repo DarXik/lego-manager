@@ -5,11 +5,12 @@
     "src": ".svelte-kit/generated/server/internal.js",
     "isEntry": true,
     "imports": [
-      "_internal.js"
+      "_internal.js",
+      "_shared-server.js"
     ]
   },
   "_app.js": {
-    "file": "_app/immutable/assets/app.DouZvqOd.css",
+    "file": "_app/immutable/assets/app.DQs7Mt1k.css",
     "src": "_app.js"
   },
   "_client.js": {
@@ -25,55 +26,54 @@
   },
   "_index.js": {
     "file": "chunks/index.js",
-    "name": "index"
-  },
-  "_index2.js": {
-    "file": "chunks/index2.js",
     "name": "index",
     "imports": [
       "_ssr.js"
     ]
+  },
+  "_index2.js": {
+    "file": "chunks/index2.js",
+    "name": "index"
   },
   "_internal.js": {
     "file": "chunks/internal.js",
     "name": "internal",
     "imports": [
-      "_ssr.js"
+      "_ssr.js",
+      "_shared-server.js"
     ],
     "dynamicImports": [
       "src/hooks.server.ts"
     ]
   },
+  "_shared-server.js": {
+    "file": "chunks/shared-server.js",
+    "name": "shared-server"
+  },
   "_ssr.js": {
     "file": "chunks/ssr.js",
     "name": "ssr"
   },
-  "_store.js": {
-    "file": "chunks/store.js",
-    "name": "store",
-    "imports": [
-      "_index2.js"
-    ]
-  },
-  "node_modules/.pnpm/@sveltejs+kit@2.5.7_@sveltejs+vite-plugin-svelte@3.1.0_svelte@4.2.16_vite@5.2.11_@types+node@_quv4uymf2tcvnxhvxotonwnyc4/node_modules/@sveltejs/kit/src/runtime/components/layout.svelte": {
+  "node_modules/@sveltejs/kit/src/runtime/components/layout.svelte": {
     "file": "entries/fallbacks/layout.svelte.js",
     "name": "entries/fallbacks/layout.svelte",
-    "src": "node_modules/.pnpm/@sveltejs+kit@2.5.7_@sveltejs+vite-plugin-svelte@3.1.0_svelte@4.2.16_vite@5.2.11_@types+node@_quv4uymf2tcvnxhvxotonwnyc4/node_modules/@sveltejs/kit/src/runtime/components/layout.svelte",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/layout.svelte",
     "isEntry": true,
     "imports": [
       "_ssr.js"
     ]
   },
-  "node_modules/.pnpm/@sveltejs+kit@2.5.7_@sveltejs+vite-plugin-svelte@3.1.0_svelte@4.2.16_vite@5.2.11_@types+node@_quv4uymf2tcvnxhvxotonwnyc4/node_modules/@sveltejs/kit/src/runtime/server/index.js": {
+  "node_modules/@sveltejs/kit/src/runtime/server/index.js": {
     "file": "index.js",
     "name": "index",
-    "src": "node_modules/.pnpm/@sveltejs+kit@2.5.7_@sveltejs+vite-plugin-svelte@3.1.0_svelte@4.2.16_vite@5.2.11_@types+node@_quv4uymf2tcvnxhvxotonwnyc4/node_modules/@sveltejs/kit/src/runtime/server/index.js",
+    "src": "node_modules/@sveltejs/kit/src/runtime/server/index.js",
     "isEntry": true,
     "imports": [
       "_internal.js",
-      "_index.js",
+      "_index2.js",
       "_exports.js",
-      "_index2.js"
+      "_index.js",
+      "_shared-server.js"
     ]
   },
   "src/hooks.server.ts": {
@@ -88,7 +88,8 @@
     "src": "src/routes/(site)/+layout.server.ts",
     "isEntry": true,
     "imports": [
-      "_index.js"
+      "_index2.js",
+      "_shared-server.js"
     ]
   },
   "src/routes/(site)/+layout.svelte": {
@@ -98,10 +99,10 @@
     "isEntry": true,
     "imports": [
       "_ssr.js",
-      "_store.js"
+      "_index.js"
     ],
     "css": [
-      "_app/immutable/assets/app.DouZvqOd.css"
+      "_app/immutable/assets/app.DQs7Mt1k.css"
     ]
   },
   "src/routes/(site)/+page.server.ts": {
@@ -117,12 +118,17 @@
     "isEntry": true,
     "imports": [
       "_ssr.js",
-      "_store.js",
       "_client.js"
     ],
     "css": [
       "_app/immutable/assets/_page.CmD9uA1w.css"
     ]
+  },
+  "src/routes/(site)/account/+page.server.ts": {
+    "file": "entries/pages/(site)/account/_page.server.ts.js",
+    "name": "entries/pages/(site)/account/_page.server.ts",
+    "src": "src/routes/(site)/account/+page.server.ts",
+    "isEntry": true
   },
   "src/routes/(site)/account/+page.svelte": {
     "file": "entries/pages/(site)/account/_page.svelte.js",
@@ -131,13 +137,19 @@
     "isEntry": true,
     "imports": [
       "_ssr.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page.CTAW6nVO.css"
     ]
   },
   "src/routes/(site)/add-set/+page.server.ts": {
     "file": "entries/pages/(site)/add-set/_page.server.ts.js",
     "name": "entries/pages/(site)/add-set/_page.server.ts",
     "src": "src/routes/(site)/add-set/+page.server.ts",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_shared-server.js"
+    ]
   },
   "src/routes/(site)/add-set/+page.svelte": {
     "file": "entries/pages/(site)/add-set/_page.svelte.js",
@@ -146,11 +158,10 @@
     "isEntry": true,
     "imports": [
       "_ssr.js",
-      "_client.js",
-      "_store.js"
+      "_client.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.BiuN7Qw9.css"
+      "_app/immutable/assets/_page.G7Eno9Bl.css"
     ]
   },
   "src/routes/(site)/set/[slug]/+page.js": {
@@ -163,7 +174,10 @@
     "file": "entries/pages/(site)/set/_slug_/_page.server.js",
     "name": "entries/pages/(site)/set/_slug_/_page.server",
     "src": "src/routes/(site)/set/[slug]/+page.server.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_shared-server.js"
+    ]
   },
   "src/routes/(site)/set/[slug]/+page.svelte": {
     "file": "entries/pages/(site)/set/_slug_/_page.svelte.js",
@@ -172,12 +186,17 @@
     "isEntry": true,
     "imports": [
       "_ssr.js",
-      "_client.js",
-      "_store.js"
+      "_client.js"
     ],
     "css": [
       "_app/immutable/assets/_page.syIrzaO5.css"
     ]
+  },
+  "src/routes/(site)/settings/+page.server.ts": {
+    "file": "entries/pages/(site)/settings/_page.server.ts.js",
+    "name": "entries/pages/(site)/settings/_page.server.ts",
+    "src": "src/routes/(site)/settings/+page.server.ts",
+    "isEntry": true
   },
   "src/routes/(site)/settings/+page.svelte": {
     "file": "entries/pages/(site)/settings/_page.svelte.js",
@@ -186,8 +205,7 @@
     "isEntry": true,
     "imports": [
       "_ssr.js",
-      "_client.js",
-      "_store.js"
+      "_client.js"
     ]
   },
   "src/routes/+error.svelte": {
@@ -200,8 +218,14 @@
       "_client.js"
     ],
     "css": [
-      "_app/immutable/assets/app.DouZvqOd.css"
+      "_app/immutable/assets/app.DQs7Mt1k.css"
     ]
+  },
+  "src/routes/api/deleteInstruction/+server.js": {
+    "file": "entries/endpoints/api/deleteInstruction/_server.js",
+    "name": "entries/endpoints/api/deleteInstruction/_server",
+    "src": "src/routes/api/deleteInstruction/+server.js",
+    "isEntry": true
   },
   "src/routes/api/deleteSet/+server.js": {
     "file": "entries/endpoints/api/deleteSet/_server.js",
@@ -221,11 +245,14 @@
     "src": "src/routes/api/updatePreference/+server.js",
     "isEntry": true
   },
-  "src/routes/login/+page.server.js": {
-    "file": "entries/pages/login/_page.server.js",
-    "name": "entries/pages/login/_page.server",
-    "src": "src/routes/login/+page.server.js",
-    "isEntry": true
+  "src/routes/login/+page.server.ts": {
+    "file": "entries/pages/login/_page.server.ts.js",
+    "name": "entries/pages/login/_page.server.ts",
+    "src": "src/routes/login/+page.server.ts",
+    "isEntry": true,
+    "imports": [
+      "_shared-server.js"
+    ]
   },
   "src/routes/login/+page.svelte": {
     "file": "entries/pages/login/_page.svelte.js",
@@ -234,20 +261,19 @@
     "isEntry": true,
     "imports": [
       "_ssr.js",
-      "_client.js",
-      "_store.js"
+      "_client.js"
     ],
     "css": [
-      "_app/immutable/assets/app.DouZvqOd.css"
+      "_app/immutable/assets/app.DQs7Mt1k.css"
     ]
   },
-  "src/routes/register/+page.server.js": {
-    "file": "entries/pages/register/_page.server.js",
-    "name": "entries/pages/register/_page.server",
-    "src": "src/routes/register/+page.server.js",
+  "src/routes/register/+page.server.ts": {
+    "file": "entries/pages/register/_page.server.ts.js",
+    "name": "entries/pages/register/_page.server.ts",
+    "src": "src/routes/register/+page.server.ts",
     "isEntry": true,
     "imports": [
-      "_index.js"
+      "_shared-server.js"
     ]
   },
   "src/routes/register/+page.svelte": {
@@ -260,7 +286,7 @@
       "_client.js"
     ],
     "css": [
-      "_app/immutable/assets/app.DouZvqOd.css"
+      "_app/immutable/assets/app.DQs7Mt1k.css"
     ]
   }
 }

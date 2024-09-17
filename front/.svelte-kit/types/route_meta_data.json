@@ -6,6 +6,7 @@
 	],
 	"/": [],
 	"/(site)/account": [
+		"src/routes/(site)/account/+page.server.ts",
 		"src/routes/(site)/+layout.server.ts"
 	],
 	"/(site)/add-set": [

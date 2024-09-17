@@ -6,7 +6,7 @@
     import { goto } from "$app/navigation";
     import type { ActionData, PageData } from "./$types.js";
 
-    export let data:PageData;
+    export let data: PageData;
     export let form: ActionData;
 
     let set = data.set;
@@ -23,7 +23,7 @@
     let loading = false;
     let updateStatus: any = "";
 
-    $:console.log(data)
+    $: console.log(data);
 
     onMount(() => {
         if (set) {

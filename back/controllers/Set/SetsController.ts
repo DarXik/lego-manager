@@ -38,6 +38,8 @@ const get = async (req: Request, res: Response) => {
                     addedOn: attachment.find((attachment: any) => attachment.setId == set.id)?.addedOn || null,
                     yearBought: attachment.find((attachment: any) => attachment.setId == set.id)?.yearBought || null,
                     addedBy: addedByUser?.username,
+                    yearReleased: set.yearReleased,
+                    partsAmount: set.partsAmount,
                 }
             })
 

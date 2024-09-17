@@ -26,12 +26,23 @@ export const actions: Actions = {
                 },
                 timeout: 15000
             });
-            console.log(response);
-            return response.data;
+
+            console.log(response.data);
+
+            return {
+                success: true,
+                message: response?.data?.message
+            };
             
         } catch (error) {
             console.log(error);
-            return error;
+            
+            return {
+                success: false,
+                message:error?.response?.data?.message || error?.message || "Something went wrong",
+                status: error?.response?.status || 500
+            };
+            
         }
 
     },

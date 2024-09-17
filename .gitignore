@@ -17,3 +17,5 @@
 .env.frontend
 .env.db
 .env
+/front/.svelte-kit
+/front/.svelte-kit

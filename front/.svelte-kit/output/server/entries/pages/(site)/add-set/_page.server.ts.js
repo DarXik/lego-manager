@@ -1,6 +1,8 @@
 import axios from "axios";
+import { p as private_env } from "../../../../chunks/shared-server.js";
+const secretOrigin = private_env.SECRET_ORIGIN;
 const actions = {
-  addSet: async ({ request, cookies, locals }) => {
+  addSet: async ({ request, locals }) => {
     const formData = await request.formData();
     if (!formData.get("name") || !formData.get("partsAmount") || !formData.get("setNumber") || !formData.get("themeName")) {
       return {
@@ -8,24 +10,28 @@ const actions = {
       };
     }
     console.log("form data: ", formData);
-    const newSet = await axios({
-      url: "http://localhost:3000/api/v1/sets/add",
-      method: "POST",
-      headers: {
-        "Authorization": locals.session || "",
-        "Content-Type": `multipart/form-data`
-      },
-      timeout: 5e3,
-      data: formData
-    });
-    console.log("new set: ", newSet.data);
-    if (newSet.status == 201) {
+    try {
+      const response = await axios({
+        baseURL: `http://${secretOrigin}:3000/api/v1/sets/add`,
+        method: "POST",
+        data: formData,
+        headers: {
+          "Authorization": locals.session || "",
+          "Content-Type": `multipart/form-data`
+        },
+        timeout: 15e3
+      });
+      console.log(response.data);
       return {
-        newSetAdded: newSet.data
+        success: true,
+        message: response?.data?.message
       };
-    } else {
+    } catch (error) {
+      console.log(error);
       return {
-        newSetFailed: newSet.data
+        success: false,
+        message: error?.response?.data?.message || error?.message || "Something went wrong",
+        status: error?.response?.status || 500
       };
     }
   },
@@ -33,7 +39,7 @@ const actions = {
     const data = await request.formData();
     const searchQuery = data.get("searchQuery");
     console.log("search query: ", searchQuery);
-    let response = await fetch(`http://localhost:3000/api/v1/sets/search/${searchQuery}`, {
+    let response = await fetch(`http://${secretOrigin}:3000/api/v1/sets/search/${searchQuery}`, {
       method: "GET",
       headers: new Headers({
         "Authorization": locals.session || ""

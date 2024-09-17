@@ -172,14 +172,16 @@
                     sending = false;
                     setStatus = result;
                     console.log(result);
-                    
-                    setTimeout(() => {
-                        window.location.reload();
-                        imageThumbnail = "";
-                        searchQuery = "";
-                        isSearching = false;
-                        files = null;
-                    }, 1500);
+
+                    if (setStatus?.data?.success) {
+                        setTimeout(() => {
+                            window.location.reload();
+                            imageThumbnail = "";
+                            searchQuery = "";
+                            isSearching = false;
+                            files = null;
+                        }, 1500);
+                    }
                 }
             };
         }}
@@ -407,7 +409,7 @@
                     isSearching}
                 ><span class="relative z-10">Add set</span>
             </button>
-            {#if setStatus?.data?.message}
+            {#if setStatus?.data?.success}
                 <p
                     class="text-green-500 font-bold uppercase transition-all flex flex-row gap-1"
                 >
@@ -421,9 +423,9 @@
                 </p>
             {/if}
 
-            {#if setStatus?.status == 500}
+            {#if !setStatus?.data?.success && setStatus?.data?.message}
                 <p class="text-red-500 font-bold uppercase transition-all">
-                    Set could not be added
+                    {setStatus?.data.message}
                 </p>
             {/if}
 

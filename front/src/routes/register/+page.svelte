@@ -10,26 +10,46 @@
 
     let password: any = "";
     let confirm_password: any = "";
-    let passwordMatch: boolean = false;
+    let passwordMatch: boolean = true;
     let showPassword: boolean = false;
+    let username: any = "";
 
     onMount(() => {
         password = document.getElementById("password");
         confirm_password = document.getElementById("confirm_password");
+
+        console.log(password);
     });
 
-    $: if (password.length > 0 && confirm_password.length > 0) {
-        passwordMatch = password !== confirm_password;
-    } else if (password.length === 0 && confirm_password.length === 0) {
-        passwordMatch = false;
+    // nekontroluje na frontu
+    $: if (password && password.length > 0 && confirm_password.length > 0) {
+        passwordMatch = password == confirm_password;
+        console.log(passwordMatch);
+    } else if (
+        password &&
+        password.length === 0 &&
+        confirm_password.length === 0
+    ) {
+        passwordMatch = true;
+    }
+
+    $: if (form) {
+        username = form?.username;
+        console.log(username);
     }
 
     $: if (form?.status === 201) {
         setInterval(() => {
             goto("/login");
         }, 1000);
-    };
-</script> 
+    } else if (form?.problem || (form?.message && form?.status !== 201)) {
+        
+
+        setTimeout(() => {
+            form = null;
+        }, 3000);
+    }
+</script>
 
 <section
     class="flex items-center justify-center min-h-screen mx-10"
@@ -40,9 +60,9 @@
         class="w-full max-w-md p-8 space-y-4 bg-gray-950 border border-transparent shadow-lg"
     >
         <h1 class="text-2xl font-semibold text-center">Register</h1>
-        {#if form?.status !== 201 && form?.message}
+        {#if (form?.status !== 201 && form?.message) || form?.problem}
             <p class="text-lg text-center font-semibold error text-red-500">
-                {form?.message}
+                {form?.message || form?.problem}
             </p>
         {/if}
         {#if form?.status === 201 && form?.message}
@@ -60,32 +80,20 @@
                     required
                     autocomplete="off"
                     class="my-input"
+                    bind:value={username}
                 />
             </div>
-            <!-- <div class="flex flex-col space-y-1 mb-4">
-                <label for="email" class="text-sm font-medium">Email</label>
-                <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    value={form?.email ?? ""}
-                    required
-                    autocomplete="off"
-                    class="my-input"
-                />
-            </div> -->
             <div class="flex flex-col space-y-1 mb-4">
                 <label for="password" class="text-sm font-medium"
                     >Password</label
                 >
                 <div class="w-full h-fit relative">
                     <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
                         name="password"
                         required
                         autocomplete="off"
                         class="my-input"
+                        type={showPassword ? "text" : "password"}
                     />
                     <input
                         type="checkbox"
@@ -104,12 +112,12 @@
                 </label>
                 <div class="w-full h-fit relative">
                     <input
-                        type={showPassword ? "text" : "password"}
                         id="confirm_password"
                         name="confirm_password"
                         required
                         autocomplete="off"
                         class="my-input"
+                        type={showPassword ? "text" : "password"}
                     />
                     <input
                         type="checkbox"
@@ -121,13 +129,16 @@
                         class="w-6 absolute top-1/2 -translate-y-1/2 right-0 -translate-x-2 z-20 cursor-pointer active:scale-90 transition-all"
                     />
                 </div>
-                <p class:hidden={!passwordMatch} class="text-red-500 text-sm">
+                <p
+                    class:hidden={passwordMatch}
+                    class="text-red-500 text-sm visible"
+                >
                     Passwords do not match
                 </p>
             </div>
             <button
                 type="submit"
-                disabled={passwordMatch}
+                disabled={!passwordMatch}
                 class="text-base my-button-2 disabled:opacity-75 disabled:pointer-events-none disabled:cursor-not-allowed mb-8"
             >
                 <span class="relative z-10">Register</span>

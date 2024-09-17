@@ -17,6 +17,12 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.6.8
+      charts.css:
+        specifier: ^1.1.0
+        version: 1.1.0
+      check-password-strength:
+        specifier: ^2.0.10
+        version: 2.0.10
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -601,6 +607,12 @@ packages:
 
   caniuse-lite@1.0.30001617:
     resolution: {integrity: sha512-mLyjzNI9I+Pix8zwcrpxEbGlfqOkF9kM3ptzmKNw5tizSyYwMe+nGLTqMK9cO+0E+Bh6TsBxNAaHWEM8xwSsmA==}
+
+  charts.css@1.1.0:
+    resolution: {integrity: sha512-K1Qyb8ZKsu5cDrVbZeHECk/xSq6iOl8IDTR35uaMdhr/Vyyxvg9nYQy3KNB3aidxJ2E251afX5q2725N0uL3Vw==}
+
+  check-password-strength@2.0.10:
+    resolution: {integrity: sha512-HRM5ICPmtnNtLnTv2QrfVkq1IxI9z3bzYpDJ1k5ixwD9HtJGHuv265R6JmHOV6r8wLhQMlULnIUVpkrC2yaiCw==}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -1810,6 +1822,10 @@ snapshots:
   camelcase-css@2.0.1: {}
 
   caniuse-lite@1.0.30001617: {}
+
+  charts.css@1.1.0: {}
+
+  check-password-strength@2.0.10: {}
 
   chokidar@3.6.0:
     dependencies:

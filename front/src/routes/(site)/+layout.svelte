@@ -1,5 +1,7 @@
 <script lang="ts">
   import "../../app.css";
+  import 'charts.css';
+
   import Navbar from "./components/Navbar.svelte";
   import { onMount } from "svelte";
   import { userSets, userInfo } from "$lib/store";

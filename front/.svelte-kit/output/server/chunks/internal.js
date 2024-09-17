@@ -1,4 +1,5 @@
-import { c as create_ssr_component, s as setContext, v as validate_component, m as missing_component } from "./ssr.js";
+import { c as create_ssr_component, f as setContext, v as validate_component, m as missing_component } from "./ssr.js";
+import "./shared-server.js";
 let base = "";
 let assets = base;
 const initial = { base, assets };
@@ -12,16 +13,6 @@ function reset() {
 }
 function set_assets(path) {
   assets = initial.assets = path;
-}
-let public_env = {};
-let safe_public_env = {};
-function set_private_env(environment) {
-}
-function set_public_env(environment) {
-  public_env = environment;
-}
-function set_safe_public_env(environment) {
-  safe_public_env = environment;
 }
 function afterUpdate() {
 }
@@ -149,10 +140,10 @@ const options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\r\n<html lang="en">\r\n	<head>\r\n		<meta charset="utf-8" />\r\n		<link rel="icon" href="' + assets2 + '/LEGO_logo.svg" />\r\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\r\n		' + head + '\r\n	</head>\r\n	<body data-sveltekit-preload-data="hover">\r\n		<div style="display: contents">' + body + "</div>\r\n	</body>\r\n</html>\r\n",
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\r\n<html lang="en">\r\n	<head>\r\n		<meta charset="utf-8" />\r\n		<link rel="icon" href="' + assets2 + '/navbar/lego-logo.svg" />\r\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\r\n		' + head + '\r\n	</head>\r\n	<body data-sveltekit-preload-data="hover">\r\n		<div style="display: contents">' + body + "</div>\r\n	</body>\r\n</html>\r\n",
     error: ({ status, message }) => '<!DOCTYPE html>\r\n<html lang="en">\r\n	<head>\r\n		<meta charset="utf-8" />\r\n		<title>' + message + "</title>\r\n	</head>\r\n	<body>\r\n		<h1>My custom error page</h1>\r\n		<p>Status: " + status + "</p>\r\n		<p>Message: " + message + "</p>\r\n	</body>\r\n</html>"
   },
-  version_hash: "1cipn0c"
+  version_hash: "a1d9q3"
 };
 async function get_hooks() {
   return {
@@ -163,18 +154,13 @@ export {
   assets as a,
   base as b,
   options as c,
-  set_private_env as d,
-  prerendering as e,
-  set_public_env as f,
+  set_building as d,
+  set_manifest as e,
+  set_prerendering as f,
   get_hooks as g,
-  set_safe_public_env as h,
-  set_assets as i,
-  set_building as j,
-  set_manifest as k,
-  set_prerendering as l,
-  set_read_implementation as m,
+  set_read_implementation as h,
   override as o,
-  public_env as p,
+  prerendering as p,
   reset as r,
-  safe_public_env as s
+  set_assets as s
 };

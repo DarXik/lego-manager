@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 
 config()
 
-export const load = async ({ fetch, locals, data }: Parameters<PageServerLoad>[0]) => {
+export const load = async ({ fetch, locals, data }: { fetch: any, locals: { session: string }, data: any }) => {
 
     const response = await fetch(`http://${process.env.SECRET_ORIGIN}:3000/api/v1/sets`, {
         method: 'GET',
@@ -21,3 +21,4 @@ export const load = async ({ fetch, locals, data }: Parameters<PageServerLoad>[0
         sets: res1
     }
 }
+;null as any as PageServerLoad;

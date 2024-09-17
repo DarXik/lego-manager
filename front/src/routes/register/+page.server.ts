@@ -1,12 +1,13 @@
 import { env } from '$env/dynamic/private';
 const secretOrigin = env.SECRET_ORIGIN;
 import axios from 'axios';
+import { passwordStrength } from 'check-password-strength'
 
 export const actions = {
-    default: async ({ request } : {request : Request}) => {
+    default: async ({ request }: { request: Request }) => {
         const data = await request.formData();
-    
-        const password = data.get("password");
+
+        const password = data.get("password")?.toString() || "";
         const confirm_password = data.get("confirm_password");
         const username = data.get("username");
 
@@ -24,6 +25,13 @@ export const actions = {
             };
         }
 
+        if (passwordStrength(password).id < 3 && password.length < 8) {
+            return {
+                username,
+                problem: "Password is too weak"
+            }
+        }
+
         console.log("registering");
         try {
             const response = await axios({
@@ -38,7 +46,7 @@ export const actions = {
                     password: password,
                 })
             })
-            
+
             return {
                 status: response.status,
                 message: await response.data.message

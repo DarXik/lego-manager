@@ -1,10 +1,8 @@
-import type { PageServerLoad } from './$types';
-// import { env } from '$env/dynamic/private';
 import { config } from 'dotenv';
 
 config()
 
-export const load: PageServerLoad = async ({ fetch, locals, data }: { fetch: any, locals: { session: string }, data: any }) => {
+export const load: any = async ({ fetch, locals, data }: { fetch: any, locals: { session: string }, data: any }) => {
 
     const response = await fetch(`http://${process.env.SECRET_ORIGIN}:3000/api/v1/sets`, {
         method: 'GET',

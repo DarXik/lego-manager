@@ -1,1 +1,0 @@
-dialog[open].svelte-olach8{animation:svelte-olach8-zoom .3s cubic-bezier(.34,1.56,.64,1)}@keyframes svelte-olach8-zoom{0%{transform:scale(.95)}to{transform:scale(1)}}dialog[open].svelte-olach8::backdrop{animation:svelte-olach8-fade .2s ease-out}@keyframes svelte-olach8-fade{0%{opacity:0}to{opacity:1}}

@@ -1,5 +1,7 @@
+import { config } from "dotenv";
+config();
 const load = async ({ fetch, locals, data }) => {
-  const response = await fetch("http://localhost:3001/api/v1/sets", {
+  const response = await fetch(`http://${process.env.SECRET_ORIGIN}:3000/api/v1/sets`, {
     method: "GET",
     headers: {
       "Authorization": locals.session || ""
@@ -11,8 +13,6 @@ const load = async ({ fetch, locals, data }) => {
     sets: res1
   };
 };
-const actions = {};
 export {
-  actions,
   load
 };
