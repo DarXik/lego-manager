@@ -4,7 +4,7 @@ import prisma from "../../config/prisma";
 
 const get = async (req: Request, res: Response) => {
 
-    // počáteční kontrla
+    // počáteční kontrola
     if (!req.headers.authorization) {
         return res.status(400).send({ message: "something is missing" })
     }
@@ -19,11 +19,12 @@ const get = async (req: Request, res: Response) => {
         console.log("get all sets")
         try {
             const sets: any = await prisma.sets.findMany({ where: { usedBy: { some: { id: verifiedUser.user.id } } } })
-            const attachment = await prisma.setAttachment.findMany({ where: { setId: { in: sets.map((set: any) => set.id) }, addedById: verifiedUser.user.id } })
 
             if (!sets || sets.length == 0) {
                 return res.status(404).send({ message: "sets not found" })
             }
+
+            const attachment = await prisma.setAttachment.findMany({ where: { setId: { in: sets.map((set: any) => set.id) }, addedById: verifiedUser.user.id } })
 
             console.log("sets found: ", sets)
 
@@ -38,8 +39,6 @@ const get = async (req: Request, res: Response) => {
                     addedOn: attachment.find((attachment: any) => attachment.setId == set.id)?.addedOn || null,
                     yearBought: attachment.find((attachment: any) => attachment.setId == set.id)?.yearBought || null,
                     addedBy: addedByUser?.username,
-                    yearReleased: set.yearReleased,
-                    partsAmount: set.partsAmount,
                 }
             })
 

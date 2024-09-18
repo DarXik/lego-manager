@@ -4,7 +4,7 @@ config()
 
 export const load: any = async ({ fetch, locals, data }: { fetch: any, locals: { session: string }, data: any }) => {
 
-    const response = await fetch(`http://${process.env.SECRET_ORIGIN}:3000/api/v1/sets`, {
+    const response = await fetch(`http://${process.env.SECRET_ORIGIN}:3000/user/stats`, {
         method: 'GET',
         headers: {
             "Authorization": locals.session || ""
@@ -12,9 +12,10 @@ export const load: any = async ({ fetch, locals, data }: { fetch: any, locals: {
     })
 
     const res1 = await response.json()
+    console.log(res1);
 
     return {
         ...data,
-        sets: res1
+        stats: res1
     }
 }

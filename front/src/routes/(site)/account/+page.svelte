@@ -3,73 +3,102 @@
     import type { PageData } from "./$types";
 
     export let data: PageData;
-
-    interface ReleaseDate {
-        year: number;
-        frequency: number;
+    interface Stats {
+        releaseDates: any[];
+        purchaseDates: any[];
+        partsAmountTotal: number;
+        setsUsedAmount: number;
+        setsUsedByAmount: number;
+        setsContributedAmount: number;
+        totalPrice: number;
     }
 
-    let releaseDates: { [key: number]: ReleaseDate } = {};
-    let purchaseDates: { [key: number]: ReleaseDate } = {};
-    let partsAmountTotal: number = 0;
-    let sets = data.sets;
-
-    sets.forEach((set: any) => {
-        if (set.yearReleased) {
-            if (releaseDates[set.yearReleased]) {
-                releaseDates[set.yearReleased].frequency++;
-            } else {
-                releaseDates[set.yearReleased] = {
-                    year: set.yearReleased,
-                    frequency: 1,
-                };
-            }
-        }
-
-        if (set.yearBought) {
-            if (purchaseDates[set.yearBought]) {
-                purchaseDates[set.yearBought].frequency++;
-            } else {
-                purchaseDates[set.yearBought] = {
-                    year: set.yearBought,
-                    frequency: 1,
-                };
-            }
-        }
-
-        if (set.partsAmount) {
-            partsAmountTotal += set.partsAmount;
-        }
-    });
-
-    let releaseDatesArray = Object.values(releaseDates);
-    let purchaseDatesArray = Object.values(purchaseDates);
-    $: console.log(partsAmountTotal);
+    let stats: Stats = data.stats;
+    let currencies = ["CZK", "EUR", "USD", "GBP"];
+    $: console.log(stats);
 </script>
 
 <section in:fade={{ delay: 50, duration: 300 }}>
     <div class="border-b-3 border-zinc-600">
         <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl p-6">
-            Your account
+            Your account stats
         </h1>
     </div>
-    <div class="flex gap-x-16 px-4 py-8 lg:w-10/12">
-        <div class="w-full h-full" id="release-year-chart">
+    <div class="text-lg md:text-xl lg:w-9/12 border-zinc-600 flex flex-col">
+        <div class="flex justify-between md:flex-row flex-col md:border-b-3 border-zinc-600">
+            <div class="stat flex flex-col max-md:flex-row max-md:items-end gap-1">
+                <p>
+                    <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                        {stats.setsUsedAmount}
+                    </span>
+                    
+                </p>
+                <p>{stats.setsUsedAmount > 1 ? "total sets " : "set "}in your
+                    collection</p>
+            </div>
+            <div class="stat flex flex-col max-md:flex-row max-md:items-end gap-1">
+                <p>
+                    <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                        {stats.setsContributedAmount}
+                    </span>
+                    
+                </p>
+                <p>
+                    {stats.setsContributedAmount > 1 ? " sets " : "set "} contributed
+                    by you
+                </p>
+            </div>
+            <div class="stat flex flex-col max-md:flex-row max-md:items-end gap-1">
+                <p>
+                    <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                        {stats.setsUsedByAmount}
+                    </span>
+                    
+                </p>
+                <p>
+                    {stats.setsUsedByAmount > 1 ? "sets are " : "set is "} used by
+                    the community
+                </p>
+            </div>
+        </div>
+
+        <div class="stat md:border-b-3">
+            <p>
+                <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                    {stats.totalPrice}
+                </span>
+                {currencies[data.currency]} spent on your collection
+            </p>
+        </div>
+        <div class="stat">
+            <p>
+                <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                    {stats.partsAmountTotal}
+                </span>
+                {stats.partsAmountTotal == 1 ? "brick " : "bricks "} built in total
+            </p>
+        </div>
+    </div>
+    <div
+        class="flex flex-col gap-y-16 md:flex-row gap-x-16 max-md:mx-1 md:px-4 py-8 lg:w-9/12 md:border-main md:border-r-3"
+    >
+        <div class="w-full h-max" id="release-year-chart">
             <table
-                class="charts-css bar data-center show-heading show-labels show-{Math.floor(
-                    releaseDatesArray.length / 3,
+                class="charts-css bar data-center show-heading show-labels show-{Math.ceil(
+                    stats.releaseDates.length / 2,
                 )}-secondary-axes data-spacing-2 datasets-spacing-1 labels-align-inline-center"
-                style="--aspect-ratio: {releaseDatesArray.length / 2} / 3;"
+                style="--aspect-ratio: {stats.releaseDates.length / 2} / 3;"
             >
-                <p class="mx-auto mb-3 text-xl">
+                <p class="mx-auto mb-3 text-2xl">
                     Sets' release year distribution
                 </p>
                 <tbody>
-                    {#each releaseDatesArray as date}
+                    {#each stats.releaseDates as date}
                         <tr>
                             <th>{date.year}</th>
                             <td
-                                style="--size:calc( {date.frequency} / {releaseDatesArray.length} ); color: black; "
+                                style="--size:calc( {date.frequency} / {stats
+                                    .releaseDates.length} ); color: black; "
                                 >{date.frequency}</td
                             >
                         </tr>
@@ -77,53 +106,49 @@
                 </tbody>
             </table>
         </div>
-        <div class="w-full h-full" id="purchase-year-chart">
+        <div class="w-full h-full max-md:border-t-3 max-md:py-4 border-zinc-600" id="purchase-year-chart">
             <table
-                class="charts-css bar data-center show-heading show-labels show-{Math.floor(
-                    purchaseDatesArray.length,
+                class="charts-css bar data-center show-heading show-labels show-{Math.ceil(
+                    stats.purchaseDates.length / 2,
                 )}-secondary-axes data-spacing-2 datasets-spacing-1 labels-align-inline-center"
-                style="--aspect-ratio: {purchaseDatesArray.length * 2} / 3;"
+                style="--aspect-ratio: {stats.purchaseDates.length * 2} / 3;"
             >
-                <p class="mx-auto mb-3 text-xl">
+                <p class="mx-auto mb-3 text-2xl">
                     Sets' purchase year distribution
                 </p>
                 <tbody>
-                    {#each purchaseDatesArray as date}
+                    {#each stats.purchaseDates as date}
                         <tr>
                             <th>{date.year}</th>
                             <td
-                                style="--size:calc( {date.frequency} / {purchaseDatesArray.length} ); color: black; "
+                                style="--size:calc( {date.frequency} / {stats
+                                    .purchaseDates.length} ); color: black; "
                                 >{date.frequency}</td
                             >
                         </tr>
                     {/each}
                 </tbody>
             </table>
-        </div>
-    </div>
-    <div class="border-main">
-        <div>
-            <p class="text-xl p-6">
-                You have {sets.length} sets in your collection, with a total of
-                {partsAmountTotal} bricks.
-            </p>
         </div>
     </div>
 </section>
 
-<style>
+<style lang="postcss">
     #release-year-chart .bar {
         /* --aspect-ratio: 4 / 3; */
-        --color: rgb(204, 156, 204);
-        --secondary-axes-color: rgba(104, 104, 104, 0.63);
+        --color: rgb(129, 74, 151);
+        --secondary-axes-color: rgba(104, 104, 104, 0.534);
         --secondary-axes-style: solid;
         --secondary-axes-width: 1px;
     }
     #purchase-year-chart .bar {
         /* --aspect-ratio: 6 / 3; */
-        --color: rgb(182, 113, 182);
-        --secondary-axes-color: rgba(104, 104, 104, 0.63);
+        --color: rgb(129, 74, 151);
+        --secondary-axes-color: rgba(104, 104, 104, 0.534);
         --secondary-axes-style: solid;
         --secondary-axes-width: 1px;
+    }
+    .stat {
+        @apply w-full max-md:border-b-3 md:border-r-3 border-zinc-600 p-6 md:text-center;
     }
 </style>
