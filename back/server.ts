@@ -14,6 +14,7 @@ import updateRoute from "./routes/user/update/User"
 import userPreferences from "./routes/user/preferences/User"
 import deleteAccountRoute from "./routes/user/delete/User"
 import statsRoute from "./routes/user/stats/Stats"
+import favoriteRoute from "./routes/api/v1/favorite/Favorite"
 
 import multer from "multer";
 
@@ -41,6 +42,7 @@ app.use("/api/v1/sets/search", setsSearchRoute);
 app.use("/api/v1/sets/edit", upload.any(), setsEditRoute);
 app.use("/api/v1/image", imageRoute);
 app.use("/api/v1/instructions", instructionsRoute);
+app.use("/api/v1/sets/favorite", favoriteRoute);
 
 app.get("/", (req, res) => {
     res.send("Lego Manager API v1")

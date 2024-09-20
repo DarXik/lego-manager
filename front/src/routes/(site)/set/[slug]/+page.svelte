@@ -39,6 +39,16 @@
         priceEdit = set?.price;
     }
 
+    async function favoriteSet() {
+        const request = await fetch("/api/favoriteSet", {
+            method: "POST",
+            body: JSON.stringify({
+                setId: data.slug,
+                action: "favorite",
+            }),
+        });
+    }
+
     async function deleteSet() {
         const request = await fetch("/api/deleteSet", {
             method: "POST",
@@ -65,6 +75,11 @@
         loading = true;
     }
 </script>
+
+<svelte:head>
+    <title>{set.name}</title>
+    <meta name="description" content={set.description} />
+</svelte:head>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog
@@ -430,6 +445,9 @@
                     class="my-button-2"
                 >
                     <span class="relative z-10">Delete set</span>
+                </button>
+                <button on:click={favoriteSet} class="my-button-2">
+                    <span class="relative z-10">Add to favorites</span>
                 </button>
             </div>
         </div>

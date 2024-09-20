@@ -36,7 +36,7 @@
   <div
     class="md:ml-24 flex md:flex-row flex-col max-md:text-center justify-between items-center w-full max-md:text-sm"
   >
-    <small><p class="md:text-start w-full">Version: 1.0</p></small>
+    <small><p class="md:text-start w-full">Version: 0.1</p></small>
     <small
       ><p class="md:text-end w-full">
         &copy; {new Date().getFullYear()} | Made by David Pitra

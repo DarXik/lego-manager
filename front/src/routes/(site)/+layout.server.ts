@@ -23,7 +23,7 @@ export const load: LayoutServerLoad = (async ({ locals, data, cookies }: PageSer
 
         return {
             ...data,
-            // sessionId: locals.session,
+            sessionId: locals.session,
             username: res.username,
             currency: res.preferredCurrency,
             language: res.preferredLanguage

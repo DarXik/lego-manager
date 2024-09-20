@@ -19,6 +19,9 @@
 	"/api/deleteSet": [
 		"src/routes/api/deleteSet/+server.js"
 	],
+	"/api/favoriteSet": [
+		"src/routes/api/favoriteSet/+server.ts"
+	],
 	"/api/logout": [
 		"src/routes/api/logout/+server.js"
 	],

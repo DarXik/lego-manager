@@ -19,6 +19,7 @@ model Sets {
   attachments  SetAttachment[]
   instructions Instructions[]
   usedBy       Users[]         @relation("usedBy")
+  favoritedBy  Users[]         @relation("favoriteSets")
 }
 
 model SetAttachment {
@@ -28,7 +29,7 @@ model SetAttachment {
   description  String?        @db.VarChar(255)
   yearBought   Int?           @db.SmallInt
   price        Int?
-  currency     Int           @db.Int
+  currency     Int            @db.Int
   image        String?        @db.VarChar(255)
   instructions Instructions[]
   addedById    String         @db.Char(36)
@@ -60,6 +61,7 @@ model Users {
   Instructions      Instructions[]
   ownedSets         Sets[]
   deleted           Boolean         @default(false)
+  favoriteSets      Sets[]          @relation("favoriteSets")
 }
 
 model Sessions {

@@ -24,7 +24,7 @@ export const load = (async ({ locals, data, cookies }: PageServerLoadEvent) => {
 
         return {
             ...data,
-            // sessionId: locals.session,
+            sessionId: locals.session,
             username: res.username,
             currency: res.preferredCurrency,
             language: res.preferredLanguage

@@ -134,33 +134,33 @@
     </article>
     <article class="p-8 border-main">
         <div
-            class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:auto-rows-fr gap-6 md:w-fit max-md:flex flex-col items-center w-full"
+            class="gap-6 md:w-fit flex flex-row max-md:justify-center flex-wrap items-center w-full"
         >
             {#if sets.length > 0}
                 {#each sets as set}
                     <button
-                        class="w-64 h-fit md:w-72 md:h-72 group"
+                        class="w-72 h-72 group"
                         on:click={() => goto(`/set/${set.id}`)}
                     >
                         <div
-                            class="group-hover:border-zinc-100 transition-all group-active:scale-95 group-focus:border-zinc-100 bg-black/50 border border-gray-600/50 h-full w-full"
+                            class="group-hover:border-zinc-100 transition-all group-active:scale-95 group-focus:border-zinc-100
+                            bg-black/50 border border-gray-600/50 h-full w-full"
                         >
                             <div
-                                class="border-b border-gray-600/50 group-hover:border-zinc-100 transition-all py-2 px-4 h-[15%]"
+                                class="border-b border-gray-600/50 group-hover:border-zinc-100
+                                transition-all py-2 px-4 h-[15%]"
                             >
                                 <p class="text-start">{set.localId + 1}</p>
                             </div>
                             <div
-                                class="flex flex-col justify-between py-2 px-4 md:h-[85%]"
+                                class="flex flex-col justify-between py-2 px-4 h-[85%]"
                             >
-                                <div>
-                                    <p
-                                        class="text-xl font-bold text-start max-md:mb-8"
-                                    >
+                                <div class=" max-md:mb-8">
+                                    <p class="text-xl font-bold text-start">
                                         {set.name}
                                     </p>
                                 </div>
-                                <div>
+                                <div class="h-fit">
                                     <p class="text-start h-fit max-md:hidden">
                                         <span class="text-gray-500 text-sm"
                                             >theme</span
@@ -181,7 +181,11 @@
                                             .toLocaleString("de-DE")
                                             .split(",")[0]}
                                     </p>
-                                    <p class="text-start" class:hidden={set.addedBy == data.username}>
+                                    <p
+                                        class="text-start"
+                                        class:hidden={set.addedBy ==
+                                            data.username}
+                                    >
                                         <span class="text-gray-500 text-sm"
                                             >owned by</span
                                         >

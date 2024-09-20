@@ -4,7 +4,7 @@ const secretOrigin = env.SECRET_ORIGIN;
 
 export const load = async ({ params, locals }) => {
     let slug = params.slug
-    console.log(slug)
+    
     const response = await fetch(`http://${secretOrigin}:3000/api/v1/sets/${slug}`, {
         method: "GET",
         headers: {
