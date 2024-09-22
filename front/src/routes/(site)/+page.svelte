@@ -41,6 +41,7 @@
     });
 </script>
 
+
 <section in:fade={{ delay: 50, duration: 300 }}>
     <article class="flex max-md:flex-col">
         <div class="p-8 border-r-3 border-zinc-600 w-full md:w-1/2">

@@ -102,6 +102,8 @@
             passwordMatch = false;
         }
     }
+
+    let sessions: any[] = data.sessions;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -150,195 +152,214 @@
     >
         Settings
     </h1>
-    <article class="flex max-md:flex-col">
-        <section
-            class="border-main md:border-r-3 border-b-3 md:w-1/3 px-6 py-8"
-        >
-            <h2 class="text-2xl">Preferences</h2>
-            <div class="mb-6 mt-3">
-                <h3 class="">Currency:</h3>
-                <form class="max-w-xs mt-3">
-                    <select
-                        id="currencies"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        on:change={(e) => handleCurrencyChange(e)}
-                    >
-                        {#each currencies as currency, index}
-                            <option
-                                selected={index === data.currency}
-                                value={currency}>{currency}</option
-                            >
-                        {/each}
-                    </select>
-                    <p class="italic text-gray-400 text-sm">
-                        *experimental feature
-                    </p>
-                    {#if currencyUpdated}
-                        <p
-                            transition:fade={{ duration: 200 }}
-                            class="pt-2 text-green-600"
+    <div class="flex flex-col">
+        <div class="flex max-md:flex-col">
+            <div
+                class="border-main md:border-r-3 border-b-3 md:w-1/3 px-6 py-8"
+            >
+                <h2 class="text-2xl">Preferences</h2>
+                <div class="mb-6 mt-3">
+                    <h3 class="">Currency:</h3>
+                    <form class="max-w-xs mt-3">
+                        <select
+                            id="currencies"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            on:change={(e) => handleCurrencyChange(e)}
                         >
-                            Currency updated
+                            {#each currencies as currency, index}
+                                <option
+                                    selected={index === data.currency}
+                                    value={currency}>{currency}</option
+                                >
+                            {/each}
+                        </select>
+                        <p class="italic text-gray-400 text-sm">
+                            *experimental feature
                         </p>
-                    {/if}
-                </form>
-            </div>
-            <div class="">
-                <h3 class="">Language:</h3>
-                <form class="max-w-xs mt-3">
-                    <select
-                        id="currencies"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        on:change={(e) => handleLanguageChange(e)}
-                    >
-                        {#each languages as language, index}
-                            <option
-                                selected={index === data.language}
-                                value={language}>{language}</option
-                            >
-                        {/each}
-                    </select>
-                    <p class="italic text-gray-400 text-sm">*not working yet</p>
-                    {#if languageUpdated}
-                        <p
-                            transition:fade={{ duration: 200 }}
-                            class="pt-2 text-green-600"
-                        >
-                            Language updated
-                        </p>
-                    {/if}
-                </form>
-            </div>
-        </section>
-        <section
-            class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8"
-        >
-            <h2 class="text-2xl">Username</h2>
-            <div class="mt-3">
-                <form
-                    method="POST"
-                    action="?/updateUsername"
-                    enctype="multipart/form-data"
-                    use:enhance={() => {
-                        sending = true;
-                        return async ({ result }) => {
-                            if (result) {
-                                sending = false;
-                                usernameUpdatedStatus = result.data;
-                                console.log(usernameUpdatedStatus);
-                                // data.username = newUsername;
-
-                                setTimeout(() => {
-                                    window.location.reload();
-
-                                }, 2000);
-                            }
-                        };
-                    }}
-                >
-                    <p class="mb-3">
-                        Your current username is <span
-                            class="text-lg font-bold text-purple-500"
-                        >
-                            {data.username}</span
-                        >
-                    </p>
-                    <div class="flex flex-col mb-6">
-                        <label for="newUsername">New username</label>
-                        <input
-                            class="mb-2 mt-1 my-input"
-                            name="newUsername"
-                            type="text"
-                            required
-                            bind:value={newUsername}
-                            id="newUsername"
-                            placeholder="new username"
-                            autocomplete="off"
-                        />
-                        {#if usernameUpdatedStatus.message}
+                        {#if currencyUpdated}
                             <p
                                 transition:fade={{ duration: 200 }}
-                                class="mt-2 text-green-600"
+                                class="pt-2 text-green-600"
                             >
-                                {usernameUpdatedStatus.message}
-                            </p>
-                        {:else if usernameUpdatedStatus.problem}
-                            <p
-                                transition:fade={{ duration: 200 }}
-                                class="mt-2 text-red-600"
-                            >
-                                {usernameUpdatedStatus.problem}
+                                Currency updated
                             </p>
                         {/if}
-                    </div>
-
-                    <button class="my-button-2 w-fit mt-4">
-                        <span class="relative z-10">Update</span>
-                    </button>
-                </form>
-            </div>
-        </section>
-        <section
-            class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8"
-        >
-            <h2 class="text-2xl">Password</h2>
-            <div class="mt-3">
-                <div>
-                    <form class="max-w-xs flex flex-col">
-                        <label for="currentPassword"
-                            >Your current password</label
+                    </form>
+                </div>
+                <div class="">
+                    <h3 class="">Language:</h3>
+                    <form class="max-w-xs mt-3">
+                        <select
+                            id="currencies"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            on:change={(e) => handleLanguageChange(e)}
                         >
-                        <input
-                            class="mb-3 mt-1 my-input"
-                            type="text"
-                            bind:value={currentPassword}
-                            id="currentPassword"
-                            placeholder="current password"
-                        />
+                            {#each languages as language, index}
+                                <option
+                                    selected={index === data.language}
+                                    value={language}>{language}</option
+                                >
+                            {/each}
+                        </select>
+                        <p class="italic text-gray-400 text-sm">
+                            *not working yet
+                        </p>
+                        {#if languageUpdated}
+                            <p
+                                transition:fade={{ duration: 200 }}
+                                class="pt-2 text-green-600"
+                            >
+                                Language updated
+                            </p>
+                        {/if}
+                    </form>
+                </div>
+            </div>
+            <div
+                class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8"
+            >
+                <h2 class="text-2xl">Username</h2>
+                <div class="mt-3">
+                    <form
+                        method="POST"
+                        action="?/updateUsername"
+                        enctype="multipart/form-data"
+                        use:enhance={() => {
+                            sending = true;
+                            return async ({ result }) => {
+                                if (result) {
+                                    sending = false;
+                                    usernameUpdatedStatus = result.data;
+                                    console.log(usernameUpdatedStatus);
+                                    // data.username = newUsername;
+
+                                    setTimeout(() => {
+                                        window.location.reload();
+                                    }, 2000);
+                                }
+                            };
+                        }}
+                    >
+                        <p class="mb-3">
+                            Your current username is <span
+                                class="text-lg font-bold text-purple-500"
+                            >
+                                {data.username}</span
+                            >
+                        </p>
                         <div class="flex flex-col mb-6">
-                            <label for="newPassword">New password</label>
+                            <label for="newUsername">New username</label>
                             <input
                                 class="mb-2 mt-1 my-input"
-                                type="password"
-                                bind:value={newPassword}
-                                id="newPassword"
-                                placeholder="new password"
+                                name="newUsername"
+                                type="text"
+                                required
+                                bind:value={newUsername}
+                                id="newUsername"
+                                placeholder="new username"
+                                autocomplete="off"
                             />
-                            <label for="newPasswordRepeat"
-                                >Repeat new password</label
-                            >
-                            <input
-                                type="password"
-                                class="my-input mt-1"
-                                bind:value={newPasswordRepeat}
-                                id="newPasswordRepeat"
-                                placeholder="repeat new password"
-                            />
-                            {#if !passwordMatch}
-                                <p class="mt-2 text-red-600">
-                                    Passwords do not match
-                                </p>
-                            {/if}
-                            {#if passwordUpdated}
+                            {#if usernameUpdatedStatus.message}
                                 <p
                                     transition:fade={{ duration: 200 }}
                                     class="mt-2 text-green-600"
                                 >
-                                    Password updated
+                                    {usernameUpdatedStatus.message}
+                                </p>
+                            {:else if usernameUpdatedStatus.problem}
+                                <p
+                                    transition:fade={{ duration: 200 }}
+                                    class="mt-2 text-red-600"
+                                >
+                                    {usernameUpdatedStatus.problem}
                                 </p>
                             {/if}
                         </div>
 
-                        <button
-                            on:click={handlePasswordChange}
-                            class="my-button-2 w-fit mt-4"
-                        >
+                        <button class="my-button-2 w-fit mt-4">
                             <span class="relative z-10">Update</span>
                         </button>
                     </form>
                 </div>
             </div>
-        </section>
+            <div
+                class="md:border-main border-gray-600 md:border-r-3 border-b-3 md:w-1/3 px-4 py-8"
+            >
+                <h2 class="text-2xl">Password</h2>
+                <div class="mt-3">
+                    <div>
+                        <form class="max-w-xs flex flex-col">
+                            <label for="currentPassword"
+                                >Your current password</label
+                            >
+                            <input
+                                class="mb-3 mt-1 my-input"
+                                type="text"
+                                bind:value={currentPassword}
+                                id="currentPassword"
+                                placeholder="current password"
+                            />
+                            <div class="flex flex-col mb-6">
+                                <label for="newPassword">New password</label>
+                                <input
+                                    class="mb-2 mt-1 my-input"
+                                    type="password"
+                                    bind:value={newPassword}
+                                    id="newPassword"
+                                    placeholder="new password"
+                                />
+                                <label for="newPasswordRepeat"
+                                    >Repeat new password</label
+                                >
+                                <input
+                                    type="password"
+                                    class="my-input mt-1"
+                                    bind:value={newPasswordRepeat}
+                                    id="newPasswordRepeat"
+                                    placeholder="repeat new password"
+                                />
+                                {#if !passwordMatch}
+                                    <p class="mt-2 text-red-600">
+                                        Passwords do not match
+                                    </p>
+                                {/if}
+                                {#if passwordUpdated}
+                                    <p
+                                        transition:fade={{ duration: 200 }}
+                                        class="mt-2 text-green-600"
+                                    >
+                                        Password updated
+                                    </p>
+                                {/if}
+                            </div>
+
+                            <button
+                                on:click={handlePasswordChange}
+                                class="my-button-2 w-fit mt-4"
+                            >
+                                <span class="relative z-10">Update</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+            class=" border-gray-600 md:border-r-3 border-b-3  px-4 py-8"
+        >
+            <h2 class="text-2xl">Sessions</h2>
+            <div class="mt-3">
+                {#each sessions as session, index}
+                    <div class="flex flex-row justify-between">
+                        <p>{new Date(session.addedOn).toLocaleString("de-DE")}</p>
+                        <p>{session.browser}</p>
+                        <p>{session.os}</p>
+                        <p>{session.location}</p>
+                    </div>
+                {/each}
+            </div>
+        </div>
+
         <!-- <section class="md:border-main md:border-b-3 md:w-1/3 px-4 py-8">
             <h3 class="text-2xl mb-3">Account:</h3>
             <button
@@ -347,7 +368,7 @@
                 ><span class="relative z-10">Delete account</span>
             </button>
         </section> -->
-    </article>
+    </div>
 </div>
 
 <!-- <style>

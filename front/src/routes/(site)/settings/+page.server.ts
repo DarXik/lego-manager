@@ -77,5 +77,19 @@ export const actions: Actions = {
             }
         }
     },
-    
+
+}
+
+export const load = async ({ locals, data }: any) => {
+    const res = await fetch(`http://localhost:3000/user/sessions`, {
+        method: "GET",
+        headers: new Headers({ "Authorization": locals.session || "" })
+    });
+
+    const sessions = await res.json();
+
+    return {
+        ...data,
+        sessions
+    }
 }

@@ -1,13 +1,18 @@
 import { env } from '$env/dynamic/private';
 const secretOrigin = env.SECRET_ORIGIN;
 import axios from 'axios';
+import type { Cookies } from '@sveltejs/kit';
+
+;
 
 export const actions = {
-    default: async ({ request, cookies }: { request: Request, cookies: any }) => {
-        const data = await request.formData();        
+    default: async ({ request, cookies }: { request: Request, cookies: Cookies }) => {
+        const data = await request.formData();
 
         const username = data.get("email");
         const password = data.get("password");
+        const coords = data.get("coords");
+        const agent = request.headers?.get("user-agent");
 
         if (!username || !password) {
             return {
@@ -17,8 +22,7 @@ export const actions = {
         }
 
         console.log("logging in");
-        try {            
-            console.log("contacting server", `http://${secretOrigin}:3000/user/login`);
+        try {
 
             const response = await axios({
                 baseURL: `http://${secretOrigin}:3000/user/login`,
@@ -30,6 +34,8 @@ export const actions = {
                 data: JSON.stringify({
                     email: username,
                     password: password,
+                    coords: coords,
+                    agent: agent
                 })
             })
 
@@ -45,8 +51,8 @@ export const actions = {
                     maxAge: 60 * 60 * 24 * 60,
                 })
 
-                return { 
-                    success: true 
+                return {
+                    success: true
                 };
 
             } else {

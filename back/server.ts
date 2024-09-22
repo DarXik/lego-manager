@@ -15,13 +15,13 @@ import userPreferences from "./routes/user/preferences/User"
 import deleteAccountRoute from "./routes/user/delete/User"
 import statsRoute from "./routes/user/stats/Stats"
 import favoriteRoute from "./routes/api/v1/favorite/Favorite"
+import sessionsRoute from "./routes/user/sessions/Session"
 
 import multer from "multer";
 
 const upload = multer()
 const app = express();
 const PORT = 3000;
-
 
 app.use(express.json({ limit: "500mb" }));
 app.use(express.urlencoded({ limit: "500mb", extended: true }));
@@ -34,6 +34,7 @@ app.use("/user/update", updateRoute);
 app.use("/user/preferences", userPreferences);
 app.use("/user/deleteAccount", deleteAccountRoute);
 app.use("/user/stats", statsRoute);
+app.use("/user/sessions", sessionsRoute);
 
 app.use("/api/v1/sets", setsRoute);
 app.use("/api/v1/sets/add", upload.any(), setsAddRoute);

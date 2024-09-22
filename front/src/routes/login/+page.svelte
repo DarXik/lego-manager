@@ -1,9 +1,14 @@
 <script lang="ts">
+    import Geolocation from "svelte-geolocation";
     import "../../app.css";
     import { enhance } from "$app/forms";
     import { fade } from "svelte/transition";
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
+
+    // let coords: any = [];
+    // $: console.log(JSON.stringify(coords));
+    // let wantToGetPosition: boolean = false;
 
     export let form: any;
     export let data: any;
@@ -18,11 +23,13 @@
 
     $: if (password.length === 0) {
         passwordMatch = false;
-    }
+    }    
 
     $: if (form?.success) goto("/");
-    $: console.log(form)
+    $: console.log(form);
 </script>
+
+<!-- <Geolocation getPosition={true} bind:coords /> -->
 
 <section
     class="flex items-center justify-center min-h-screen mx-10"
@@ -39,10 +46,9 @@
             </p>
         {/if}
         <form method="POST" class="" use:enhance>
+            <!-- <input type="hidden" id="coord" name="coord" class="hidden" autocomplete="off" bind:value={coords}> -->
             <div class="flex flex-col space-y-1 mb-4">
-                <label for="email" class="text-sm font-medium"
-                    >Username</label
-                >
+                <label for="email" class="text-sm font-medium">Username</label>
                 <input
                     type="text"
                     id="email"

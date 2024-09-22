@@ -65,8 +65,12 @@ model Users {
 }
 
 model Sessions {
-  id     String @id @default(uuid()) @db.Char(36)
-  token  String @db.VarChar(255)
-  userId String @db.Char(36)
-  user   Users  @relation(fields: [userId], references: [id])
+  id       String   @id @default(uuid()) @db.Char(36)
+  token    String   @db.VarChar(255)
+  userId   String   @db.Char(36)
+  user     Users    @relation(fields: [userId], references: [id])
+  location String?  @db.VarChar(255)
+  browser  String?  @db.VarChar(255)
+  os       String?  @db.VarChar(255)
+  addedOn  DateTime @default(now())
 }
