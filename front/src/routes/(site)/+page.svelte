@@ -41,6 +41,10 @@
     });
 </script>
 
+<svelte:head>
+    <title>Your Sets</title>
+</svelte:head>
+
 
 <section in:fade={{ delay: 50, duration: 300 }}>
     <article class="flex max-md:flex-col">

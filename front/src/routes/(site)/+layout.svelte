@@ -6,7 +6,6 @@
   import { onMount } from "svelte";
   import { userSets, userInfo } from "$lib/store";
   import type { PageData } from "./$types";
-    import { title } from "process";
 
   export let data: PageData;
 

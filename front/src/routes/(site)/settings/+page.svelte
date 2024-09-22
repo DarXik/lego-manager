@@ -106,6 +106,10 @@
     let sessions: any[] = data.sessions;
 </script>
 
+<svelte:head>
+    <title>Settings</title>
+</svelte:head>
+
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <!-- 
 <dialog
@@ -344,19 +348,49 @@
                 </div>
             </div>
         </div>
-        <div
-            class=" border-gray-600 md:border-r-3 border-b-3  px-4 py-8"
-        >
-            <h2 class="text-2xl">Sessions</h2>
+        <div class=" border-gray-600 md:border-r-3 border-b-3 px-4 py-8">
+            <h2 class="text-2xl">
+                Sessions <span class="text-sm text-zinc-400"
+                    >({sessions.length})</span
+                >
+            </h2>
             <div class="mt-3">
-                {#each sessions as session, index}
-                    <div class="flex flex-row justify-between">
-                        <p>{new Date(session.addedOn).toLocaleString("de-DE")}</p>
-                        <p>{session.browser}</p>
-                        <p>{session.os}</p>
-                        <p>{session.location}</p>
+                <!-- {#each sessions as session, index} -->
+                <div class="flex flex-row gap-x-12">
+                    <div class="flex flex-col">
+                        <p class="mb-1">Active since</p>
+                        {#each sessions as session}
+                            <p class="text-sm">
+                                {new Date(session.addedOn).toLocaleString(
+                                    "de-DE",
+                                    {
+                                        dateStyle: "short",
+                                        timeStyle: "short",
+                                    },
+                                )}
+                            </p>
+                        {/each}
                     </div>
-                {/each}
+                    <div class="flex flex-col">
+                        <p class="mb-1">Device</p>
+                        {#each sessions as session}
+                            <p class="text-sm">
+                                {session.os} | {session.browser}
+                            </p>
+                        {/each}
+                    </div>
+                    <div>
+                        <p class="mb-1">Location</p>
+                        {#each sessions as session}
+                            {#if session.location}
+                                <p class="text-sm">{session.location}</p>
+                            {:else}
+                                <p class="text-sm italic">Unknown</p>
+                            {/if}
+                        {/each}
+                    </div>
+                </div>
+                <!-- {/each} -->
             </div>
         </div>
 

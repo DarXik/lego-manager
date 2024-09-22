@@ -18,6 +18,10 @@
     $: console.log(stats);
 </script>
 
+<svelte:head>
+    <title>Account</title>
+</svelte:head>
+
 <section in:fade={{ delay: 50, duration: 300 }}>
     <div class="border-b-3 border-zinc-600">
         <h1 class="font-bold text-3xl md:text-4xl lg:text-5xl p-6">
