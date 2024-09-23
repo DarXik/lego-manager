@@ -26,7 +26,8 @@ export const load: LayoutServerLoad = (async ({ locals, data, cookies }: PageSer
             sessionId: locals.session,
             username: res.username,
             currency: res.preferredCurrency,
-            language: res.preferredLanguage
+            language: res.preferredLanguage,
+            favoritedSets: res.favoritedSets
         }
     }
 

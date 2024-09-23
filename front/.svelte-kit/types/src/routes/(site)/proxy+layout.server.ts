@@ -27,7 +27,8 @@ export const load = (async ({ locals, data, cookies }: PageServerLoadEvent) => {
             sessionId: locals.session,
             username: res.username,
             currency: res.preferredCurrency,
-            language: res.preferredLanguage
+            language: res.preferredLanguage,
+            favoritedSets: res.favoritedSets
         }
     }
 

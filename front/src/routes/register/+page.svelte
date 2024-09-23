@@ -51,6 +51,11 @@
     }
 </script>
 
+<svelte:head>
+    <title>Register</title>
+    <meta name="description" content="Register for an account" />
+</svelte:head>
+
 <section
     class="flex items-center justify-center min-h-screen mx-10"
     in:fade={{ delay: 50, duration: 300 }}

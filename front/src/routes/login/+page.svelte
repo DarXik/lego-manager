@@ -31,6 +31,12 @@
 
 <!-- <Geolocation getPosition={true} bind:coords /> -->
 
+<svelte:head>
+    <title>Login</title>
+    <meta name="description" content="Login to your account" />
+</svelte:head>
+
+
 <section
     class="flex items-center justify-center min-h-screen mx-10"
     in:fade={{ delay: 50, duration: 300 }}

@@ -43,6 +43,7 @@
 
 <svelte:head>
     <title>Your Sets</title>
+    <meta name="description" content="Your sets" />
 </svelte:head>
 
 

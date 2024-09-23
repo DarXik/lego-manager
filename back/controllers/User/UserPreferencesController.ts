@@ -14,13 +14,24 @@ const get = async (req: Request, res: Response) => {
     }
 
     try {
-        const user: any = await prisma.users.findUnique({ where: { id: verifiedUser.user.id } })
+        const user: any = await prisma.users.findUnique({
+            where: { id: verifiedUser.user.id },
+            include: { favoritedSets: true }
+        })
+
+        console.log(user.favoritedSets)
 
         return res.status(200).send({
             username: user.username,
             email: user.email,
             preferredCurrency: user.preferredCurrency,
-            preferredLanguage: user.preferredLanguage
+            preferredLanguage: user.preferredLanguage,
+            favoritedSets: user.favoritedSets.map((set: any) => {
+                return {
+                    id: set.id,
+                    name: set.name
+                }
+            })
         })
 
     }

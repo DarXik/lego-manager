@@ -56,6 +56,7 @@
 
 <svelte:head>
     <title>Add Set</title>
+    <meta name="description" content="Add a new set" />
 </svelte:head>
 
 <section in:fade={{ delay: 50, duration: 300 }}>

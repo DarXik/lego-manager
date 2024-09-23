@@ -14,12 +14,13 @@
     }
 
     let stats: Stats = data.stats;
-    let currencies = ["CZK", "EUR", "USD", "GBP"];
+    let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
     $: console.log(stats);
 </script>
 
 <svelte:head>
     <title>Account</title>
+    <meta name="description" content="Your account stats" />
 </svelte:head>
 
 <section in:fade={{ delay: 50, duration: 300 }}>
@@ -29,49 +30,67 @@
         </h1>
     </div>
     <div class="text-lg md:text-xl lg:w-9/12 border-zinc-600 flex flex-col">
-        <div class="flex justify-between md:flex-row flex-col md:border-b-3 border-zinc-600">
-            <div class="stat flex flex-col max-md:flex-row max-md:items-end gap-1">
+        <div
+            class="flex justify-between md:flex-row flex-col md:border-b-3 border-zinc-600"
+        >
+            <div
+                class="stat flex flex-col max-md:flex-row max-md:items-end gap-1"
+            >
                 <p>
-                    <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                    <span
+                        class="text-3xl md:text-5xl lg:text-6xl text-purple-600"
+                    >
                         {stats.setsUsedAmount}
                     </span>
-                    
                 </p>
-                <p>{stats.setsUsedAmount > 1 ? "total sets " : "set "}in your
-                    collection</p>
-            </div>
-            <div class="stat flex flex-col max-md:flex-row max-md:items-end gap-1">
                 <p>
-                    <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                    {stats.setsUsedAmount == 1 ? "total sets " : "set "}in your
+                    collection
+                </p>
+            </div>
+            <div
+                class="stat flex flex-col max-md:flex-row max-md:items-end gap-1"
+            >
+                <p>
+                    <span
+                        class="text-3xl md:text-5xl lg:text-6xl text-purple-600"
+                    >
                         {stats.setsContributedAmount}
                     </span>
-                    
                 </p>
                 <p>
-                    {stats.setsContributedAmount > 1 ? " sets " : "set "} contributed
+                    {stats.setsContributedAmount == 1 ? " sets " : "set "} contributed
                     by you
                 </p>
             </div>
-            <div class="stat flex flex-col max-md:flex-row max-md:items-end gap-1">
+            <div
+                class="stat flex flex-col max-md:flex-row max-md:items-end gap-1"
+            >
                 <p>
-                    <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
+                    <span
+                        class="text-3xl md:text-5xl lg:text-6xl text-purple-600"
+                    >
                         {stats.setsUsedByAmount}
                     </span>
-                    
                 </p>
                 <p>
-                    {stats.setsUsedByAmount > 1 ? "sets are " : "set is "} used by
-                    the community
+                    {stats.setsUsedByAmount == 1 ? "sets are " : "set is "} used
+                    by the community
                 </p>
             </div>
         </div>
 
-        <div class="stat md:border-b-3">
-            <p>
+        <div class="stat md:border-b-3 flex flex-row justify-center items-end">
+            <p class="flex flex-row items-baseline">
                 <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
                     {stats.totalPrice}
                 </span>
-                {currencies[data.currency]} spent on your collection
+                <img
+                    src="../../../../currencies/{currencies[data.currency]}"
+                    alt="currency"
+                    class="md:w-6 lg:w-7 w-5 self-baseline h-fit"
+                />
+                spent on your collection
             </p>
         </div>
         <div class="stat">
@@ -86,7 +105,7 @@
     <div
         class="flex flex-col gap-y-16 md:flex-row gap-x-16 max-md:mx-1 md:px-4 py-8 lg:w-9/12 md:border-main md:border-r-3"
     >
-        <div class="w-full h-max" id="release-year-chart">
+        <div class="w-full h-[20em]" id="release-year-chart">
             <table
                 class="charts-css bar data-center show-heading show-labels show-{Math.ceil(
                     stats.releaseDates.length / 2,
@@ -110,7 +129,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="w-full h-full max-md:border-t-3 max-md:py-4 border-zinc-600" id="purchase-year-chart">
+        <div
+            class="w-full h-fit max-md:border-t-3 max-md:py-4 border-zinc-600"
+            id="purchase-year-chart"
+        >
             <table
                 class="charts-css bar data-center show-heading show-labels show-{Math.ceil(
                     stats.purchaseDates.length / 2,

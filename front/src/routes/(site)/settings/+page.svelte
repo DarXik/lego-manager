@@ -104,10 +104,21 @@
     }
 
     let sessions: any[] = data.sessions;
+    sessions.sort(
+        (a: any, b: any) =>
+            new Date(a.addedOn).getTime() - new Date(b.addedOn).getTime(),
+    );
+    for (let i = 0; i < sessions.length - 1; i++) {
+        console.log(
+            new Date(sessions[i].addedOn).getTime() -
+                new Date(sessions[i + 1].addedOn).getTime(),
+        );
+    }
 </script>
 
 <svelte:head>
     <title>Settings</title>
+    <meta name="description" content="Settings" />
 </svelte:head>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -355,42 +366,73 @@
                 >
             </h2>
             <div class="mt-3">
-                <!-- {#each sessions as session, index} -->
                 <div class="flex flex-row gap-x-12">
                     <div class="flex flex-col">
-                        <p class="mb-1">Active since</p>
+                        <p class="mb-1.5">Active since</p>
                         {#each sessions as session}
-                            <p class="text-sm">
-                                {new Date(session.addedOn).toLocaleString(
-                                    "de-DE",
-                                    {
-                                        dateStyle: "short",
-                                        timeStyle: "short",
-                                    },
-                                )}
-                            </p>
+                            {#if session.addedOn}
+                                <p class="text-sm mb-1">
+                                    {new Date(session.addedOn).toLocaleString(
+                                        "de-DE",
+                                        {
+                                            dateStyle: "short",
+                                            timeStyle: "short",
+                                        },
+                                    )}
+                                </p>
+                            {:else}
+                                <p class="text-sm italic mb-1 text-zinc-400">
+                                    Unknown
+                                </p>
+                            {/if}
                         {/each}
                     </div>
                     <div class="flex flex-col">
-                        <p class="mb-1">Device</p>
+                        <p class="mb-1.5">Device</p>
                         {#each sessions as session}
-                            <p class="text-sm">
-                                {session.os} | {session.browser}
-                            </p>
+                            {#if session.os && session.browser}
+                                <p class="text-sm mb-1">
+                                    {session.os}
+                                    <span class="text-zinc-400">&bull;</span>
+                                    {session.browser}
+                                </p>
+                            {:else}
+                                {#if session.os}
+                                    <p class="text-sm mb-1">{session.os}</p>
+                                {:else}
+                                    <p
+                                        class="text-sm italic mb-1 text-zinc-400"
+                                    >
+                                        Unknown
+                                    </p>
+                                {/if}
+                                {#if session.browser}
+                                    <p class="text-sm mb-1">
+                                        {session.browser}
+                                    </p>
+                                {:else}
+                                    <p
+                                        class="text-sm italic mb-1 text-zinc-400"
+                                    >
+                                        Unknown
+                                    </p>
+                                {/if}
+                            {/if}
                         {/each}
                     </div>
                     <div>
-                        <p class="mb-1">Location</p>
+                        <p class="mb-1.5">Location</p>
                         {#each sessions as session}
                             {#if session.location}
-                                <p class="text-sm">{session.location}</p>
+                                <p class="text-sm mb-1">{session.location}</p>
                             {:else}
-                                <p class="text-sm italic">Unknown</p>
+                                <p class="text-sm italic mb-1 text-zinc-400">
+                                    Unknown
+                                </p>
                             {/if}
                         {/each}
                     </div>
                 </div>
-                <!-- {/each} -->
             </div>
         </div>
 

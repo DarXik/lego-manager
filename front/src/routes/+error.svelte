@@ -5,6 +5,7 @@
 
 <svelte:head>
     <title>Error {$page.status}</title>
+    <meta name="description" content="Error page" />
 </svelte:head>
 
 <main class="min-h-screen flex items-center justify-center no-un">

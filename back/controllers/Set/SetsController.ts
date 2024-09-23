@@ -51,13 +51,15 @@ const get = async (req: Request, res: Response) => {
         }
     }
 
-    // jeden specifický set
+    // jeden specifický set - podle id v url
     else {
         // console.log("looking for set: ", req.params.id);
 
         try {
             const set = await prisma.sets.findUnique({ where: { id: req.params.id, usedBy: { some: { id: verifiedUser.user.id } } } })
+
             const attachment = await prisma.setAttachment.findFirst({ where: { setId: set?.id, addedById: verifiedUser.user.id } })
+
             const myInstructions = await prisma.instructions.findMany({
                 where: {
                     setId: set?.id,
@@ -65,6 +67,7 @@ const get = async (req: Request, res: Response) => {
                     set: { usedBy: { some: { id: verifiedUser.user.id } } }
                 }
             })
+
             const allInstructions = await prisma.instructions.findMany({
                 where: {
                     setId: set?.id,
@@ -72,6 +75,7 @@ const get = async (req: Request, res: Response) => {
                     set: { usedBy: { some: { id: verifiedUser.user.id } } }
                 }
             })
+
             // console.log(myInstructions)
             // console.log(allInstructions)
 

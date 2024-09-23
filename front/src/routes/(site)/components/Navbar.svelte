@@ -21,6 +21,8 @@
     let isVisible: boolean = false;
     let w: number;
 
+    export let favoritedSets: any[];
+
     onMount(() => {
         w = window.innerWidth;
     });
@@ -93,7 +95,7 @@
 >
     <div>
         <div class="md:pb-6 px-6 md:border-b-3 border-zinc-600 items-center">
-            <a href="/" title="home">
+            <a href="/" title="Home">
                 <img
                     src="../../../../navbar/lego-logo.svg"
                     alt="lego logo"
@@ -102,10 +104,10 @@
             </a>
         </div>
         <div
-            class="hidden md:visible md:flex flex-col items-center py-6 px-6 gap-y-6"
+            class="hidden md:visible md:flex flex-col items-center py-6 px-6 gap-y-4"
         >
             <a
-                title="account"
+                title="Account stats"
                 href="/account"
                 class=" active:scale-90 transition-all"
                 on:mouseenter={() => (accountHover = true)}
@@ -145,7 +147,7 @@
                 </svg>
             </a>
             <a
-                title="add new set"
+                title="Add new set"
                 href="/add-set"
                 class=" active:scale-90 transition-all"
                 on:mouseenter={() => (addHover = true)}
@@ -175,18 +177,34 @@
                 </svg>
             </a>
         </div>
+        <div
+            class="md:pb-6 px-6 md:border-t-3 border-zinc-600 hidden md:visible md:flex flex-col items-center py-6 gap-y-4"
+        >
+            {#each favoritedSets as set, index}
+                <!-- <div class="border-2 border-white "> -->
+                <a
+                    title={set.name}
+                    href={`/set/${set.id}`}
+                    on:click={() => window.location.href = `/set/${set.id}`}
+                    class=" text-lg border-2 rounded-md w-8 h-8 flex items-center justify-center transition-all  hover:text-yellow-500 hover:border-yellow-500"
+                >
+                    {index + 1}
+                </a>
+                <!-- </div> -->
+            {/each}
+        </div>
     </div>
     <div
-        class="hidden md:visible md:flex flex-col gap-y-3 items-center border-t-[3px] border-zinc-600 pt-6"
+        class="hidden md:visible md:flex flex-col gap-y-4 items-center border-t-[3px] border-zinc-600 pt-6"
     >
-        <a title="settings" href="/settings">
+        <a title="Settings" href="/settings">
             <img
                 src="../../../../navbar/settings.svg"
                 alt="settings"
                 class="w-7 h-7 hover:rotate-45 transition-all active:scale-90"
             />
         </a>
-        <button title="logout" on:click={logout}>
+        <button title="Logout" on:click={logout}>
             <img
                 src="../../../../navbar/logout.svg"
                 alt="logout"

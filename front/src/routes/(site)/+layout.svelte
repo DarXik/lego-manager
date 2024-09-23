@@ -20,7 +20,7 @@
 
 
 
-<Navbar />
+<Navbar favoritedSets={data.favoritedSets} />
 
 <main class="md:ml-24 max-md:mt-20 min-h-screen">
   <div class="border-b-3 border-zinc-600 p-4 px-6 max-md:hidden">
@@ -38,10 +38,10 @@
   <div
     class="md:ml-24 flex md:flex-row flex-col max-md:text-center justify-between items-center w-full max-md:text-sm"
   >
-    <small><p class="md:text-start w-full">Version: 0.1</p></small>
+    <small><p class="md:text-start w-full">Version: 0.9</p></small>
     <small
       ><p class="md:text-end w-full">
-        &copy; {new Date().getFullYear()} | Made by David Pitra
+        &copy; {new Date().getFullYear()} <span class="text-zinc-400">&bull;</span> Made by David Pitra
       </p>
       <!-- <p>730 584 006 | david@cosminary.dev</p> -->
     </small>
