@@ -4,8 +4,7 @@ import prisma from "../../config/prisma";
 
 const patch = async (req: Request, res: Response) => {
     // počáteční kontrola
-    console.log(req.body);
-    console.log(req.headers)
+
     if (!req.headers.authorization || !req.body) {
         return res.status(400).send({ message: "something is missing" })
     }
@@ -28,6 +27,15 @@ const patch = async (req: Request, res: Response) => {
         }
 
         if (req.body.action == "favorite") {
+            const userFavoritesAmount = await prisma.users.findUnique({
+                where: { id: verifiedUser.user.id },
+                select: { favoritedSets: true }
+            })
+
+            if (userFavoritesAmount?.favoritedSets?.length ?? 0 >= 3) {
+                return res.status(400).send({ message: "you can only have 3 favorited sets" })
+            }
+
             const newFavorite = await prisma.users.update({
                 where: {
                     id: verifiedUser.user.id
@@ -49,6 +57,15 @@ const patch = async (req: Request, res: Response) => {
             }
         }
         else if (req.body.action == "unfavorite") {
+            const userSets = await prisma.users.findUnique({
+                where: { id: verifiedUser.user.id },
+                select: { favoritedSets: true }
+            })
+
+            if (!userSets?.favoritedSets?.some((set: any) => set.id == req.body.setId)) {
+                return res.status(400).send({ message: "set is not favorited" })
+            }
+
             const newFavorite = await prisma.users.update({
                 where: {
                     id: verifiedUser.user.id

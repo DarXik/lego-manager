@@ -39,14 +39,21 @@
         priceEdit = set?.price;
     }
 
-    async function favoriteSet() {
+    let favorite: boolean = data.set.isFavorited;
+
+    async function favoriteSet(action: string) {
         const request = await fetch("/api/favoriteSet", {
             method: "POST",
             body: JSON.stringify({
                 setId: data.slug,
-                action: "favorite",
+                action: action,
             }),
         });
+
+        if (request.ok) {
+            favorite = !favorite;
+            
+        }
     }
 
     async function deleteSet() {
@@ -446,8 +453,28 @@
                 >
                     <span class="relative z-10">Delete set</span>
                 </button>
-                <button on:click={favoriteSet} class="my-button-2">
-                    <span class="relative z-10">Add to favorites</span>
+
+                <button
+                    title={favorite ? "Unfavorite" : "Favorite"}
+                    on:click={() =>
+                        favoriteSet(favorite ? "unfavorite" : "favorite")}
+                    class=" hover:scale-110 transition-all"
+                >
+                    <svg
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                        fill={favorite ? "red" : "transparent"}
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-10 h-10 transition-all duration-300"
+                    >
+                        <path
+                            d="M4.45067 13.9082L11.4033 20.4395C11.6428 20.6644 11.7625 20.7769 11.9037 20.8046C11.9673 20.8171 12.0327 20.8171 12.0963 20.8046C12.2375 20.7769 12.3572 20.6644 12.5967 20.4395L19.5493 13.9082C21.5055 12.0706 21.743 9.0466 20.0978 6.92607L19.7885 6.52734C17.8203 3.99058 13.8696 4.41601 12.4867 7.31365C12.2913 7.72296 11.7087 7.72296 11.5133 7.31365C10.1304 4.41601 6.17972 3.99058 4.21154 6.52735L3.90219 6.92607C2.25695 9.0466 2.4945 12.0706 4.45067 13.9082Z"
+                            stroke={favorite ? "transparent" : "#52525b"}
+                            stroke-width="2"
+                            class="transition-all duration-300"
+                        />
+                    </svg>
                 </button>
             </div>
         </div>

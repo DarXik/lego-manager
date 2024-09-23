@@ -59,6 +59,7 @@ const get = async (req: Request, res: Response) => {
             const set = await prisma.sets.findUnique({ where: { id: req.params.id, usedBy: { some: { id: verifiedUser.user.id } } } })
 
             const attachment = await prisma.setAttachment.findFirst({ where: { setId: set?.id, addedById: verifiedUser.user.id } })
+            const favoritedSets = await prisma.users.findUnique({ where: { id: verifiedUser.user.id }, include: { favoritedSets: true } })
 
             const myInstructions = await prisma.instructions.findMany({
                 where: {
@@ -86,7 +87,16 @@ const get = async (req: Request, res: Response) => {
             if (attachment && set) {
                 const { id, addedById, ...rest } = attachment
 
-                return res.status(200).send({ ...set, ...rest, attachmentId: id, attachmentAddedById: addedById, allInstructions: allInstructions, myInstructions: myInstructions })
+                return res.status(200).send(
+                    {
+                        ...set,
+                        ...rest,
+                        attachmentId: id,
+                        attachmentAddedById: addedById,
+                        allInstructions: allInstructions,
+                        myInstructions: myInstructions,
+                        isFavorited: favoritedSets?.favoritedSets?.some((favoritedSet: any) => favoritedSet.id == set.id)
+                    })
             }
         }
         catch (err) {

@@ -75,6 +75,7 @@ declare module '$env/static/private' {
 	export const npm_package_dependencies_pnpm: string;
 	export const npm_package_dependencies_request_ip: string;
 	export const npm_package_dependencies_short_uuid: string;
+	export const npm_package_dependencies_svelte_heart: string;
 	export const npm_package_dependencies_svelte_persisted_store: string;
 	export const npm_package_dependencies_svelte_transition: string;
 	export const npm_package_dependencies_uuid: string;
@@ -230,6 +231,7 @@ declare module '$env/dynamic/private' {
 		npm_package_dependencies_pnpm: string;
 		npm_package_dependencies_request_ip: string;
 		npm_package_dependencies_short_uuid: string;
+		npm_package_dependencies_svelte_heart: string;
 		npm_package_dependencies_svelte_persisted_store: string;
 		npm_package_dependencies_svelte_transition: string;
 		npm_package_dependencies_uuid: string;

@@ -108,12 +108,6 @@
         (a: any, b: any) =>
             new Date(a.addedOn).getTime() - new Date(b.addedOn).getTime(),
     );
-    for (let i = 0; i < sessions.length - 1; i++) {
-        console.log(
-            new Date(sessions[i].addedOn).getTime() -
-                new Date(sessions[i + 1].addedOn).getTime(),
-        );
-    }
 </script>
 
 <svelte:head>
@@ -257,7 +251,7 @@
                     >
                         <p class="mb-3">
                             Your current username is <span
-                                class="text-lg font-bold text-purple-500"
+                                class="text-lg text-purple-400"
                             >
                                 {data.username}</span
                             >

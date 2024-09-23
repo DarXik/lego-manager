@@ -81,7 +81,7 @@
         </div>
 
         <div class="stat md:border-b-3 flex flex-row justify-center items-end">
-            <p class="flex flex-row items-baseline">
+            <p class="flex flex-row items-baseline gap-x-1">
                 <span class="text-3xl md:text-5xl lg:text-6xl text-purple-600">
                     {stats.totalPrice}
                 </span>
@@ -105,7 +105,7 @@
     <div
         class="flex flex-col gap-y-16 md:flex-row gap-x-16 max-md:mx-1 md:px-4 py-8 lg:w-9/12 md:border-main md:border-r-3"
     >
-        <div class="w-full h-[20em]" id="release-year-chart">
+        <div class="w-full {stats.releaseDates.length < 2? "h-[10em]" : "h-[20em]"}" id="release-year-chart">
             <table
                 class="charts-css bar data-center show-heading show-labels show-{Math.ceil(
                     stats.releaseDates.length / 2,
