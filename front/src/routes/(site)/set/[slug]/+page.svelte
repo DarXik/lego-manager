@@ -52,7 +52,7 @@
 
         if (request.ok) {
             favorite = !favorite;
-            
+
         }
     }
 
@@ -456,6 +456,7 @@
 
                 <button
                     title={favorite ? "Unfavorite" : "Favorite"}
+                    disabled={data.favoritedSets.length >= 3 && !favorite}
                     on:click={() =>
                         favoriteSet(favorite ? "unfavorite" : "favorite")}
                     class=" hover:scale-110 transition-all"

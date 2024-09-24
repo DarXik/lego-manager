@@ -42,4 +42,42 @@ const get = async (req: Request, res: Response) => {
     }
 }
 
-export default { get }
+const deleteSession = async (req: Request, res: Response) => {
+    if (!req.headers.authorization || !req.params.sessionId) {
+        return res.status(400).send({ message: "something is missing" })
+    }
+
+    const verifiedUser: any = await verifyUser(req.headers.authorization.toString())
+    if (!verifiedUser.user || !verifiedUser.token) {
+        return res.status(404).send({ message: "user not found" })
+    }
+
+    console.log("session to delete: ", verifiedUser.token)
+    try {
+        await prisma.users.update({
+            where: { id: verifiedUser.user.id },
+            data: {
+                sessions: { delete: { id: req.params.sessionId } }
+            }
+        })
+
+        const session = await prisma.sessions.delete({
+            where: {
+                id: req.params.sessionId,
+            }
+        })
+
+
+        if (!session) {
+            return res.status(404).send({ message: "session not found" })
+        }
+
+        return res.status(200).send({ message: "session deleted" })
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(503).send({ message: "could not delete session" })
+    }
+}
+
+export default { get, deleteSession }

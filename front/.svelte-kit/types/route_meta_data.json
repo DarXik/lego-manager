@@ -16,6 +16,9 @@
 	"/api/deleteInstruction": [
 		"src/routes/api/deleteInstruction/+server.js"
 	],
+	"/api/deleteSession": [
+		"src/routes/api/deleteSession/+server.ts"
+	],
 	"/api/deleteSet": [
 		"src/routes/api/deleteSet/+server.js"
 	],

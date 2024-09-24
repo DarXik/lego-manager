@@ -90,6 +90,22 @@
         }
     }
 
+    async function deleteSession(id: string) {
+        const response = await fetch("/api/deleteSession", {
+            method: "DELETE",
+            body: JSON.stringify({
+                id,
+            }),
+        });
+
+        console.log(await response.json())
+
+        if (response.ok) {
+            console.log(await response.json());
+            window.location.reload();
+        }
+    }
+
     $: if (
         newPassword &&
         newPasswordRepeat &&
@@ -417,13 +433,30 @@
                     <div>
                         <p class="mb-1.5">Location</p>
                         {#each sessions as session}
-                            {#if session.location}
-                                <p class="text-sm mb-1">{session.location}</p>
-                            {:else}
-                                <p class="text-sm italic mb-1 text-zinc-400">
-                                    Unknown
-                                </p>
-                            {/if}
+                            <div class="flex flex-row gap-x-6">
+                                {#if session.location}
+                                    <p class="text-sm mb-1">
+                                        {session.location}
+                                    </p>
+                                {:else}
+                                    <p
+                                        class="text-sm italic mb-1 text-zinc-400"
+                                    >
+                                        Unknown
+                                    </p>
+                                {/if}
+                                <button
+                                    title="Delete session"
+                                    on:click={() => deleteSession(session.id)}
+                                    class="pr-4 self-center hover:scale-105 transition-all active:scale-95"
+                                >
+                                    <img
+                                        src="../../../../settings/remove.svg"
+                                        alt={session.id}
+                                        class="w-5"
+                                    />
+                                </button>
+                            </div>
                         {/each}
                     </div>
                 </div>

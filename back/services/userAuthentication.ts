@@ -19,11 +19,12 @@ const verifyUser = async (token: string) => {
         try {
             const foundUser = await prisma.users.findFirst({
                 where: {
-                    AND: [
-                        { id: decoded.user },
-                        { sessions: { some: { token: token } } },
-                        { sessions: { some: { userId: decoded.user } } },
-                    ]
+                    AND:
+                        [
+                            { id: decoded.user },
+                            { sessions: { some: { token: token } } },
+                            { sessions: { some: { userId: decoded.user } } },
+                        ]
                 }
             })
 

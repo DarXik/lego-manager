@@ -32,7 +32,8 @@ const patch = async (req: Request, res: Response) => {
                 select: { favoritedSets: true }
             })
 
-            if (userFavoritesAmount?.favoritedSets?.length ?? 0 >= 3) {
+            console.log(`${verifiedUser.user.id} has ${userFavoritesAmount?.favoritedSets?.length} favorited sets`)
+            if (userFavoritesAmount?.favoritedSets && userFavoritesAmount.favoritedSets.length >= 3) {
                 return res.status(400).send({ message: "you can only have 3 favorited sets" })
             }
 
