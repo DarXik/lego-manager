@@ -61,17 +61,6 @@ const deleteSession = async (req: Request, res: Response) => {
             }
         })
 
-        const session = await prisma.sessions.delete({
-            where: {
-                id: req.params.sessionId,
-            }
-        })
-
-
-        if (!session) {
-            return res.status(404).send({ message: "session not found" })
-        }
-
         return res.status(200).send({ message: "session deleted" })
     }
     catch (err) {

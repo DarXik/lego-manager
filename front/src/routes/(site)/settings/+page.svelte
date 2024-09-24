@@ -98,9 +98,8 @@
             }),
         });
 
-        console.log(await response.json())
 
-        if (response.ok) {
+        if (await response.status === 200) {
             console.log(await response.json());
             window.location.reload();
         }
@@ -435,12 +434,12 @@
                         {#each sessions as session}
                             <div class="flex flex-row gap-x-6">
                                 {#if session.location}
-                                    <p class="text-sm mb-1">
+                                    <p class="text-sm mb-1 w-full">
                                         {session.location}
                                     </p>
                                 {:else}
                                     <p
-                                        class="text-sm italic mb-1 text-zinc-400"
+                                        class="text-sm italic mb-1 text-zinc-400 w-full"
                                     >
                                         Unknown
                                     </p>
@@ -448,12 +447,12 @@
                                 <button
                                     title="Delete session"
                                     on:click={() => deleteSession(session.id)}
-                                    class="pr-4 self-center hover:scale-105 transition-all active:scale-95"
+                                    class="pr-4 self-center  transition-all active:scale-95"
                                 >
                                     <img
                                         src="../../../../settings/remove.svg"
                                         alt={session.id}
-                                        class="w-5"
+                                        class="w-6"
                                     />
                                 </button>
                             </div>

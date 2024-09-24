@@ -105,17 +105,14 @@
     <div
         class="flex flex-col gap-y-16 md:flex-row gap-x-16 max-md:mx-1 md:px-4 py-8 lg:w-9/12 md:border-main md:border-r-3"
     >
-        <div
-            class="w-full {stats.releaseDates.length < 2
-                ? 'h-[10em]'
-                : 'h-[20em]'}"
-            id="release-year-chart"
-        >
+        <div class="w-full" id="release-year-chart">
             <table
                 class="charts-css bar data-center show-heading show-labels show-{Math.ceil(
                     stats.releaseDates.length / 2,
                 )}-secondary-axes data-spacing-2 datasets-spacing-1 labels-align-inline-center"
-                style="--aspect-ratio: {stats.releaseDates.length / 2} / 3;"
+                style="--aspect-ratio: {stats.releaseDates.length >= 3
+                    ? stats.releaseDates.length / 2
+                    : stats.releaseDates.length * 2};"
             >
                 <p class="mx-auto mb-3 text-2xl">
                     Sets' release year distribution
@@ -135,16 +132,16 @@
             </table>
         </div>
         <div
-            class="w-full {stats.purchaseDates.length < 2
-                ? 'h-[10em]'
-                : 'h-[20em]'} max-md:border-t-3 max-md:py-4 border-zinc-600"
+            class="w-full max-md:border-t-3 max-md:py-4 border-zinc-600"
             id="purchase-year-chart"
         >
             <table
                 class="charts-css bar data-center show-heading show-labels show-{Math.ceil(
                     stats.purchaseDates.length / 2,
                 )}-secondary-axes data-spacing-2 datasets-spacing-1 labels-align-inline-center"
-                style="--aspect-ratio: {stats.purchaseDates.length * 2} / 3;"
+                style="--aspect-ratio: {stats.purchaseDates.length >= 3
+                    ? stats.purchaseDates.length / 2
+                    : stats.purchaseDates.length * 2};"
             >
                 <p class="mx-auto mb-3 text-2xl">
                     Sets' purchase year distribution

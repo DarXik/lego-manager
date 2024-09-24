@@ -22,6 +22,8 @@
     let currencies = ["czk.svg", "euro.svg", "usd.svg", "gbp.svg"];
     let loading = false;
     let updateStatus: any = "";
+    let cannotFavorite: boolean = false;
+    let favorite: boolean = data.set.isFavorited;
 
     $: console.log(data);
 
@@ -39,9 +41,17 @@
         priceEdit = set?.price;
     }
 
-    let favorite: boolean = data.set.isFavorited;
+    $: console.log(cannotFavorite);
 
     async function favoriteSet(action: string) {
+        if (data.favoritedSets.length >= 3 && action == "favorite") {
+            cannotFavorite = true;
+            setTimeout(() => {
+                cannotFavorite = false;
+            }, 1500);
+            return;
+        }
+
         const request = await fetch("/api/favoriteSet", {
             method: "POST",
             body: JSON.stringify({
@@ -53,6 +63,11 @@
         if (request.ok) {
             favorite = !favorite;
 
+            if (action == "unfavorite") {
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
         }
     }
 
@@ -456,10 +471,9 @@
 
                 <button
                     title={favorite ? "Unfavorite" : "Favorite"}
-                    disabled={data.favoritedSets.length >= 3 && !favorite}
                     on:click={() =>
                         favoriteSet(favorite ? "unfavorite" : "favorite")}
-                    class=" hover:scale-110 transition-all"
+                    class="hover:scale-110 transition-all"
                 >
                     <svg
                         width="20px"
@@ -478,6 +492,14 @@
                     </svg>
                 </button>
             </div>
+            {#if cannotFavorite}
+                <p
+                    transition:fade={{ duration: 100 }}
+                    class="ml-4 text-red-400 transition-all"
+                >
+                    You can only favorite 3 sets
+                </p>
+            {/if}
         </div>
     </div>
 </section>
