@@ -41,8 +41,6 @@
         priceEdit = set?.price;
     }
 
-    $: console.log(cannotFavorite);
-
     async function favoriteSet(action: string) {
         if (data.favoritedSets.length >= 3 && action == "favorite") {
             cannotFavorite = true;
@@ -93,9 +91,9 @@
     $: if (modalDelete && deletingSet && !editingSet) modalDelete.showModal();
     $: if (modalEdit && editingSet && !deletingSet) modalEdit.showModal();
 
-    function handleSubmit() {
-        loading = true;
-    }
+    // function handleSubmit() {
+    //     loading = true;
+    // }
 </script>
 
 <svelte:head>
@@ -190,7 +188,7 @@
         <form
             method="POST"
             action="?/updateSet"
-            on:submit|preventDefault={handleSubmit}
+            on:submit|preventDefault={() => (loading = true)}
             use:enhance={() => {
                 return async ({ result }) => {
                     if (result) {
@@ -495,7 +493,7 @@
             {#if cannotFavorite}
                 <p
                     transition:fade={{ duration: 100 }}
-                    class="ml-4 text-red-400 transition-all"
+                    class="ml-4 font-semibold text-red-500 transition-all"
                 >
                     You can only favorite 3 sets
                 </p>

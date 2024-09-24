@@ -44,7 +44,7 @@
                     </span>
                 </p>
                 <p>
-                    {stats.setsUsedAmount == 1 ? "total sets " : "set "}in your
+                    {stats.setsUsedAmount != 1 ? "total sets " : "set "} in your
                     collection
                 </p>
             </div>
@@ -59,7 +59,7 @@
                     </span>
                 </p>
                 <p>
-                    {stats.setsContributedAmount == 1 ? " sets " : "set "} contributed
+                    {stats.setsContributedAmount != 1 ? " sets " : "set "} contributed
                     by you
                 </p>
             </div>
@@ -74,7 +74,7 @@
                     </span>
                 </p>
                 <p>
-                    {stats.setsUsedByAmount == 1 ? "sets are " : "set is "} used
+                    {stats.setsUsedByAmount != 1 ? "sets are " : "set is "} used
                     by the community
                 </p>
             </div>
