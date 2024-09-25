@@ -44,58 +44,35 @@ const patch = async (req: Request, res: Response) => {
             })
 
             for (const attachment of attachments) {
-                console.log("requested currency ", req.body.currency)
-                console.log("current currency ", attachment.currency)
-
-
                 if (attachment.price) {
-                    let newPrice: any;
+                    console.log("requested currency ", req.body.currency)
+                    console.log("current currency ", attachment.currency)
 
-                    try {
-                        // nefungují historické ceny
-                        newPrice = await fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currencies[attachment.currency]}.min.json`)
-                        newPrice = await newPrice.json()
-                    }
-                    catch (err) {
-                        console.log(err)
+                    let originalCurrency: string = currencies[attachment.currency]
+                    let newCurrency: string = currencies[parseInt(req.body.currency)]
 
-                        try {
-                            newPrice = await fetch(`https://latest.currency-api.pages.dev/v1/currencies/${currencies[attachment?.currency]}.min.json`)
-                        }
-                        catch (err) {
-                            console.log(err)
-                            return res.status(500).send({ message: "currency conversion failed" })
-                        }
-                    }
+                    let newPrice: any = await fetch(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${originalCurrency}.json`);
+                    // console.log((await newPrice.json())[originalCurrency][newCurrency])
 
-                    const result: number = Math.ceil(attachment.price * (newPrice[currencies[attachment.currency]][currencies[req.body.currency]]));
 
-                    console.log(`currency conversion from ${attachment.price} ${currencies[attachment.currency]} to ${currencies[parseInt(req.body.currency)]} resulted in ${result} ${currencies[parseInt(req.body.currency)]}`)
+                    console.log(attachment.price)
+                    let price: number = attachment.price * (await newPrice.json())[originalCurrency][newCurrency]
+                    console.log(price)
 
-                    await prisma.setAttachment.update({
-                        where: {
-
-                            id: attachment.id
-                        },
-                        data: {
-                            price: result,
-                            currency: parseInt(req.body.currency)
-                        }
-                    })
                 }
                 else {
                     console.log("no price")
 
-                    await prisma.setAttachment.update({
-                        where: {
+                    // await prisma.setAttachment.update({
+                    //     where: {
 
-                            id: attachment.id
-                        },
-                        data: {
-                            currency: parseInt(req.body.currency)
-                        }
+                    //         id: attachment.id
+                    //     },
+                    //     data: {
+                    //         currency: parseInt(req.body.currency)
+                    //     }
 
-                    })
+                    // })
                 }
             }
             return res.status(200).send({ message: "preferred currency updated" })
