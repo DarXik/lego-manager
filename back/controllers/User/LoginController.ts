@@ -71,7 +71,7 @@ const post = async (req: Request, res: Response) => {
 
         const userSession: string = createToken(user.id.toString()).toString()
         console.log(req.body.agent)
-        const location: string = req.body?.coords;
+        const location: string = req.body?.coords || "Unknown";
 
         let browser: string = getBrowser(req.body?.agent);
         const os: string = getOS(req.body?.agent);
