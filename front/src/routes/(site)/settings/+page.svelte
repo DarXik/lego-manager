@@ -433,7 +433,7 @@
                         <p class="mb-1.5">Location</p>
                         {#each sessions as session}
                             <div class="flex flex-row gap-x-6">
-                                {#if session.location}
+                                {#if session.location || session.location === "Unknown"}
                                     <p class="text-sm mb-1 w-full">
                                         {session.location}
                                     </p>

@@ -80,15 +80,20 @@ const post = async (req: Request, res: Response) => {
         console.log("os: ", os);
 
         try {
-
-            await prisma.users.update({
-                where: { id: user.id },
+            await prisma.sessions.create(({
                 data: {
-                    sessions: {
-                        create: [{ token: userSession, browser: browser, location: location, os: os }]
+                    token: userSession,
+                    location: location,
+                    browser: browser,
+                    os: os,
+
+                    user: {
+                        connect: {
+                            id: user.id
+                        }
                     }
                 }
-            })
+            }))
 
             console.log("user logged in")
 

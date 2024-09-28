@@ -17,7 +17,7 @@ export const actions: Actions = {
 
         try {
             const response = await axios({
-                baseURL: `http://${secretOrigin}:3000/api/v1/sets/add`,
+                baseURL: `http://${secretOrigin}/api/v1/sets/add`,
                 method: "POST",
                 data: formData,
                 headers: {
@@ -52,7 +52,7 @@ export const actions: Actions = {
 
         console.log("search query: ", searchQuery);
 
-        let response = await fetch(`http://${secretOrigin}:3000/api/v1/sets/search/${searchQuery}`, {
+        let response = await fetch(`http://${secretOrigin}/api/v1/sets/search/${searchQuery}`, {
             method: "GET",
             headers: new Headers({
                 "Authorization": locals.session || ""

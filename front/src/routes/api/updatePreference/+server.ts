@@ -5,7 +5,7 @@ export async function PATCH({ request, locals }) {
     
     console.log("update: ", data)
     const response = await axios({
-        url: "http://localhost:3000/user/update",
+        url: `http://${process.env.SECRET_ORIGIN}/user/update`,
         method: "PATCH",
         headers: {
             "Authorization": locals.session || "",

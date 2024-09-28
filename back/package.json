@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc",
-    "start": "pnpm exec prisma db push && node build/server.js",
+    "start": "pnpm exec prisma db push --accept-data-loss && node build/server.js",
     "dev": "tsc && node build/server.js"
   },
   "keywords": [],

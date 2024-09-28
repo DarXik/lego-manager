@@ -12,7 +12,7 @@ export const load: LayoutServerLoad = (async ({ locals, data, cookies }: PageSer
     }
     else {
 
-        const response = await fetch(`http://${secretOrigin}:3000/user/preferences`, {
+        const response = await fetch(`http://${secretOrigin}/user/preferences`, {
             method: 'GET',
             headers: {
                 "Authorization": locals.session || ""

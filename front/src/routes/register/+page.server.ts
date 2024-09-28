@@ -35,7 +35,7 @@ export const actions = {
         console.log("registering");
         try {
             const response = await axios({
-                baseURL: `http://${secretOrigin}:3000/user/register`,
+                baseURL: `http://${secretOrigin}/user/register`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

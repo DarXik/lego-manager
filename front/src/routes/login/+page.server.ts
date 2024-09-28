@@ -25,7 +25,7 @@ export const actions = {
         try {
 
             const response = await axios({
-                baseURL: `http://${secretOrigin}:3000/user/login`,
+                baseURL: `http://${secretOrigin}/user/login`,
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
