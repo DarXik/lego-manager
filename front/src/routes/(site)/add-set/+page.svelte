@@ -334,7 +334,7 @@
                     autocomplete="off"
                     maxlength="30"
                     class="my-input"
-                    placeholder="149.99"
+                    placeholder="149"
                     on:focusin={() => (priceFocused = true)}
                     on:focusout={() => (priceFocused = false)}
                 />

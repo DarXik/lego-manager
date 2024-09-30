@@ -13,7 +13,7 @@ export const load = (async ({ locals, data, cookies }: PageServerLoadEvent) => {
     }
     else {
 
-        const response = await fetch(`http://${secretOrigin}:3000/user/preferences`, {
+        const response = await fetch(`http://${secretOrigin}/user/preferences`, {
             method: 'GET',
             headers: {
                 "Authorization": locals.session || ""

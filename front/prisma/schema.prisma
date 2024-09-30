@@ -19,7 +19,7 @@ model Sets {
   attachments  SetAttachment[]
   instructions Instructions[]
   usedBy       Users[]         @relation("usedBy")
-  favoritedBy  Users[]         @relation("favoriteSets")
+  favoritedBy  Users[]         @relation("favoritedBy")
 }
 
 model SetAttachment {
@@ -61,12 +61,16 @@ model Users {
   Instructions      Instructions[]
   ownedSets         Sets[]
   deleted           Boolean         @default(false)
-  favoriteSets      Sets[]          @relation("favoriteSets")
+  favoritedSets     Sets[]          @relation("favoritedBy")
 }
 
 model Sessions {
-  id     String @id @default(uuid()) @db.Char(36)
-  token  String @db.VarChar(255)
-  userId String @db.Char(36)
-  user   Users  @relation(fields: [userId], references: [id])
+  id       String   @id @default(uuid()) @db.Char(36)
+  token    String   @db.VarChar(255)
+  userId   String   @db.Char(36)
+  user     Users    @relation(fields: [userId], references: [id])
+  location String   @db.VarChar(255)
+  browser  String   @db.VarChar(255)
+  os       String   @db.VarChar(255)
+  addedOn  DateTime @default(now())
 }

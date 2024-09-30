@@ -14,22 +14,22 @@
 		"src/routes/(site)/+layout.server.ts"
 	],
 	"/api/deleteInstruction": [
-		"src/routes/api/deleteInstruction/+server.js"
+		"src/routes/api/deleteInstruction/+server.ts"
 	],
 	"/api/deleteSession": [
 		"src/routes/api/deleteSession/+server.ts"
 	],
 	"/api/deleteSet": [
-		"src/routes/api/deleteSet/+server.js"
+		"src/routes/api/deleteSet/+server.ts"
 	],
 	"/api/favoriteSet": [
 		"src/routes/api/favoriteSet/+server.ts"
 	],
 	"/api/logout": [
-		"src/routes/api/logout/+server.js"
+		"src/routes/api/logout/+server.ts"
 	],
 	"/api/updatePreference": [
-		"src/routes/api/updatePreference/+server.js"
+		"src/routes/api/updatePreference/+server.ts"
 	],
 	"/login": [
 		"src/routes/login/+page.server.ts"
@@ -42,8 +42,8 @@
 		"src/routes/(site)/+layout.server.ts"
 	],
 	"/(site)/set/[slug]": [
-		"src/routes/(site)/set/[slug]/+page.js",
-		"src/routes/(site)/set/[slug]/+page.server.js",
+		"src/routes/(site)/set/[slug]/+page.ts",
+		"src/routes/(site)/set/[slug]/+page.server.ts",
 		"src/routes/(site)/+layout.server.ts"
 	]
 }

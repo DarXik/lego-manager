@@ -37,20 +37,7 @@ export const actions = {
                 problem: "Missing required fields"
             };
         }
-
-
-        // const response = await axios({
-        //     url: "http://localhost:3000/user/update",
-        //     method: "PATCH",
-        //     headers: {
-        //         "Authorization": locals.session || "",
-        //     },
-        //     data: {
-        //         newUsername: formData.get("newUsername")
-        //     }
-        // });
-
-        const response = await fetch(`http://localhost:3000/user/update`, {
+        const response = await fetch(`http://${process.env.SECRET_ORIGIN}/user/update`, {
             method: "PATCH",
             headers: new Headers({
                 "Authorization": locals.session || "",
@@ -60,8 +47,6 @@ export const actions = {
                 newUsername: formData.get("newUsername")
             })
         });
-
-
 
         if (await response.ok) {
             return {
@@ -82,7 +67,7 @@ export const actions = {
 }
 
 export const load = async ({ locals, data }: any) => {
-    const res = await fetch(`http://localhost:3000/user/sessions`, {
+    const res = await fetch(`http://${process.env.SECRET_ORIGIN}/user/sessions`, {
         method: "GET",
         headers: new Headers({ "Authorization": locals.session || "" })
     });
