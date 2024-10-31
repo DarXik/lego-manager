@@ -27,6 +27,7 @@ const get = async (req: Request, res: Response) => {
         //     }
         // })
 
+        // blbě
         let session = await prisma.sessions.findFirst({
             where: {
                 userId: verifiedUser.user.id
